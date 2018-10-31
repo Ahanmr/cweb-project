@@ -1,0 +1,1413 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>cweb.pbs.session &mdash; cweb 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="author" title="About these documents" href="../../../about.html" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html">
+          
+
+          
+            
+            <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">About CWeb</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../why.html">Why to Use CWeb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../about.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developer Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../beginner.html">Beginner Usage Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced.html">Advanced Usage Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cpu.html">CPU Optimization Techniques</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Portable Batch System</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../qsub.html">Qsub: Single Function Submission</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../qsession.html">QSession: Running Multiple Jobs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../qdel.html">Qdel: Remove Running Jobs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../qstat.html">Qstat: View PBS Job Status</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../resources.html">Resource Configuration</a></li>
+</ul>
+<p class="caption"><span class="caption-text">SSH System</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../sub.html">Sub: Single Function Submission</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../session.html">Session: Running Multiple Jobs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../del.html">Del: Remove Running Jobs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../stat.html">Stat: View Job Status</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">cweb</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>cweb.pbs.session</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for cweb.pbs.session</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/bin/env/python3</span>
+<span class="c1">#-*- encdoing: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">===============================================================================</span>
+
+<span class="sd">===============================================================================</span>
+
+
+<span class="sd">-------------------------------------------------------------------------------</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+<span class="kn">import</span> <span class="nn">importlib</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">dill</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">tqdm</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;Stephen Offer&quot;</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">===============================================================================</span>
+
+<span class="sd">===============================================================================</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="QSession"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.session.QSession">[docs]</a><span class="k">class</span> <span class="nc">QSession</span><span class="p">():</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A method&#39;s docstring with parameters and return value.</span>
+<span class="sd">        </span>
+<span class="sd">        Use all the cool Sphinx capabilities in this description, e.g. to give</span>
+<span class="sd">        usage examples ...</span>
+<span class="sd">        </span>
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; another_class.foo(&#39;&#39;, AClass())        </span>
+<span class="sd">        </span>
+<span class="sd">        :param arg1: first argument</span>
+<span class="sd">        :type arg1: string</span>
+<span class="sd">        :param arg2: second argument</span>
+<span class="sd">        :type arg2: :class:`module.AClass`</span>
+<span class="sd">        :return: something</span>
+<span class="sd">        :rtype: string</span>
+<span class="sd">        :raises: TypeError</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Multi-job control of qsub submissions</span>
+
+<span class="sd">        Multi-job Usage:</span>
+
+<span class="sd">            &gt;&gt; with devcloud.Session() as sess:</span>
+<span class="sd">            &gt;&gt;     sess.load(job1)</span>
+<span class="sd">            &gt;&gt;     sess.load(job2)</span>
+<span class="sd">            &gt;&gt;     sess.load(job3)</span>
+<span class="sd">            &gt;&gt;     sess.run()</span>
+<span class="sd">            &gt;&gt;     [output1,output2,output3] = sess.output</span>
+<span class="sd">            </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">jobs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="nb">print</span><span class="p">(</span><span class="nb">locals</span><span class="p">())</span>
+        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span>
+
+        <span class="c1"># State a type variable for comparison debugging</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__type__</span>       <span class="o">=</span> <span class="s2">&quot;__session__&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_id</span>        <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">devcloud_dir</span>   <span class="o">=</span> <span class="s2">&quot;job_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time_id</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">job</span>            <span class="o">=</span> <span class="n">devcloud_functions</span><span class="o">.</span><span class="n">DevCloudJob</span><span class="p">()</span>
+
+        <span class="c1"># Boolean value for debugging mode</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">debug</span>          <span class="o">=</span> <span class="kc">True</span>
+        <span class="c1"># Boolean value for verbose mode</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span>        <span class="o">=</span> <span class="kc">True</span>
+        <span class="c1"># Qsub script placeholder for number of nodes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_nodes</span>        <span class="o">=</span> <span class="mi">1</span>
+        <span class="c1"># Qsub script placeholder for number of cores</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_cores</span>        <span class="o">=</span> <span class="mi">1</span>
+        <span class="c1"># Qsub script placeholder for the walltime allocated</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_walltime</span>   <span class="o">=</span> <span class="s1">&#39;1:00:00&#39;</span>
+        <span class="c1"># Qsub script placeholder for memory allocated</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_memory</span>     <span class="o">=</span> <span class="s1">&#39;4GB&#39;</span>
+        <span class="c1"># Qsub script placeholder for cpu time allocated</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_cpu</span>        <span class="o">=</span> <span class="s1">&#39;1:00:00&#39;</span>
+        <span class="c1"># Qsub script placeholder for the output file</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_file</span>    <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># Qsub script placeholder for the error file</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">error_file</span>     <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># Qsub script placeholder for python script string</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">python_script</span>  <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">walltime</span>       <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">default</span>        <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ssh</span>            <span class="o">=</span> <span class="n">ssh_interface</span><span class="o">.</span><span class="n">DevCloudInterface</span><span class="p">(</span>
+                                <span class="n">devcloud_config</span><span class="o">.</span><span class="n">USERNAME</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">qstat</span>          <span class="o">=</span> <span class="n">qstat_functions</span><span class="o">.</span><span class="n">Qstat</span><span class="p">(</span><span class="n">devcloud_config</span><span class="o">.</span><span class="n">USERNAME</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">remove_dir</span>     <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">wait_time</span>      <span class="o">=</span> <span class="mf">0.5</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">result</span>         <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">all_complete</span>   <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">mh</span>             <span class="o">=</span> <span class="kc">None</span>
+
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+    <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A method&#39;s docstring with parameters and return value.</span>
+<span class="sd">        </span>
+<span class="sd">        Use all the cool Sphinx capabilities in this description, e.g. to give</span>
+<span class="sd">        usage examples ...</span>
+<span class="sd">        </span>
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; another_class.foo(&#39;&#39;, AClass())        </span>
+<span class="sd">        </span>
+<span class="sd">        :param arg1: first argument</span>
+<span class="sd">        :type arg1: string</span>
+<span class="sd">        :param arg2: second argument</span>
+<span class="sd">        :type arg2: :class:`module.AClass`</span>
+<span class="sd">        :return: something</span>
+<span class="sd">        :rtype: string</span>
+<span class="sd">        :raises: TypeError</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Return </span>
+        <span class="k">pass</span>
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+    <span class="k">def</span> <span class="nf">__mul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A method&#39;s docstring with parameters and return value.</span>
+<span class="sd">        </span>
+<span class="sd">        Use all the cool Sphinx capabilities in this description, e.g. to give</span>
+<span class="sd">        usage examples ...</span>
+<span class="sd">        </span>
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; another_class.foo(&#39;&#39;, AClass())        </span>
+<span class="sd">        </span>
+<span class="sd">        :param arg1: first argument</span>
+<span class="sd">        :type arg1: string</span>
+<span class="sd">        :param arg2: second argument</span>
+<span class="sd">        :type arg2: :class:`module.AClass`</span>
+<span class="sd">        :return: something</span>
+<span class="sd">        :rtype: string</span>
+<span class="sd">        :raises: TypeError</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Return multiple qsub submissions job objects</span>
+        <span class="k">pass</span>
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A method&#39;s docstring with parameters and return value.</span>
+<span class="sd">        </span>
+<span class="sd">        Use all the cool Sphinx capabilities in this description, e.g. to give</span>
+<span class="sd">        usage examples ...</span>
+<span class="sd">        </span>
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; another_class.foo(&#39;&#39;, AClass())        </span>
+<span class="sd">        </span>
+<span class="sd">        :param arg1: first argument</span>
+<span class="sd">        :type arg1: string</span>
+<span class="sd">        :param arg2: second argument</span>
+<span class="sd">        :type arg2: :class:`module.AClass`</span>
+<span class="sd">        :return: something</span>
+<span class="sd">        :rtype: string</span>
+<span class="sd">        :raises: TypeError</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return true if both jobs are for the same function else false</span>
+<span class="sd">        </span>
+<span class="sd">        Input</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A method&#39;s docstring with parameters and return value.</span>
+<span class="sd">        </span>
+<span class="sd">        Use all the cool Sphinx capabilities in this description, e.g. to give</span>
+<span class="sd">        usage examples ...</span>
+<span class="sd">        </span>
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; another_class.foo(&#39;&#39;, AClass())        </span>
+<span class="sd">        </span>
+<span class="sd">        :param arg1: first argument</span>
+<span class="sd">        :type arg1: string</span>
+<span class="sd">        :param arg2: second argument</span>
+<span class="sd">        :type arg2: :class:`module.AClass`</span>
+<span class="sd">        :return: something</span>
+<span class="sd">        :rtype: string</span>
+<span class="sd">        :raises: TypeError</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Return false if both jobs are the same function else true&quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+    <span class="k">def</span> <span class="nf">__ge__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A method&#39;s docstring with parameters and return value.</span>
+<span class="sd">        </span>
+<span class="sd">        Use all the cool Sphinx capabilities in this description, e.g. to give</span>
+<span class="sd">        usage examples ...</span>
+<span class="sd">        </span>
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; another_class.foo(&#39;&#39;, AClass())        </span>
+<span class="sd">        </span>
+<span class="sd">        :param arg1: first argument</span>
+<span class="sd">        :type arg1: string</span>
+<span class="sd">        :param arg2: second argument</span>
+<span class="sd">        :type arg2: :class:`module.AClass`</span>
+<span class="sd">        :return: something</span>
+<span class="sd">        :rtype: string</span>
+<span class="sd">        :raises: TypeError</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot; Return True if walltime is greater than or equal to the wall time </span>
+<span class="sd">        of job object or integer or float else return False</span>
+<span class="sd">        </span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">key</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A method&#39;s docstring with parameters and return value.</span>
+<span class="sd">        </span>
+<span class="sd">        Use all the cool Sphinx capabilities in this description, e.g. to give</span>
+<span class="sd">        usage examples ...</span>
+<span class="sd">        </span>
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; another_class.foo(&#39;&#39;, AClass())        </span>
+<span class="sd">        </span>
+<span class="sd">        :param arg1: first argument</span>
+<span class="sd">        :type arg1: string</span>
+<span class="sd">        :param arg2: second argument</span>
+<span class="sd">        :type arg2: :class:`module.AClass`</span>
+<span class="sd">        :return: something</span>
+<span class="sd">        :rtype: string</span>
+<span class="sd">        :raises: TypeError</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Return the item by the index key if a multitask job object&quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+    <span class="k">def</span> <span class="nf">__gt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A method&#39;s docstring with parameters and return value.</span>
+<span class="sd">        </span>
+<span class="sd">        Use all the cool Sphinx capabilities in this description, e.g. to give</span>
+<span class="sd">        usage examples ...</span>
+<span class="sd">        </span>
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; another_class.foo(&#39;&#39;, AClass())        </span>
+<span class="sd">        </span>
+<span class="sd">        :param arg1: first argument</span>
+<span class="sd">        :type arg1: string</span>
+<span class="sd">        :param arg2: second argument</span>
+<span class="sd">        :type arg2: :class:`module.AClass`</span>
+<span class="sd">        :return: something</span>
+<span class="sd">        :rtype: string</span>
+<span class="sd">        :raises: TypeError</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot; Return True if walltime is greater than wall time of job object or </span>
+<span class="sd">        integer or float else return False</span>
+<span class="sd">        </span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+    <span class="k">def</span> <span class="nf">__le__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A method&#39;s docstring with parameters and return value.</span>
+<span class="sd">        </span>
+<span class="sd">        Use all the cool Sphinx capabilities in this description, e.g. to give</span>
+<span class="sd">        usage examples ...</span>
+<span class="sd">        </span>
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; another_class.foo(&#39;&#39;, AClass())        </span>
+<span class="sd">        </span>
+<span class="sd">        :param arg1: first argument</span>
+<span class="sd">        :type arg1: string</span>
+<span class="sd">        :param arg2: second argument</span>
+<span class="sd">        :type arg2: :class:`module.AClass`</span>
+<span class="sd">        :return: something</span>
+<span class="sd">        :rtype: string</span>
+<span class="sd">        :raises: TypeError</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot; Return True if walltime is less than or equal to the wall time of </span>
+<span class="sd">        job object or integer or float else return False</span>
+<span class="sd">        </span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+    <span class="k">def</span> <span class="nf">__lt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A method&#39;s docstring with parameters and return value.</span>
+<span class="sd">        </span>
+<span class="sd">        Use all the cool Sphinx capabilities in this description, e.g. to give</span>
+<span class="sd">        usage examples ...</span>
+<span class="sd">        </span>
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; another_class.foo(&#39;&#39;, AClass())        </span>
+<span class="sd">        </span>
+<span class="sd">        :param arg1: first argument</span>
+<span class="sd">        :type arg1: string</span>
+<span class="sd">        :param arg2: second argument</span>
+<span class="sd">        :type arg2: :class:`module.AClass`</span>
+<span class="sd">        :return: something</span>
+<span class="sd">        :rtype: string</span>
+<span class="sd">        :raises: TypeError</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot; Return True if walltime is less than wall time of job object or </span>
+<span class="sd">        integer or float else return False</span>
+<span class="sd">        </span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="QSession.index"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.session.QSession.index">[docs]</a>    <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A method&#39;s docstring with parameters and return value.</span>
+<span class="sd">        </span>
+<span class="sd">        Use all the cool Sphinx capabilities in this description, e.g. to give</span>
+<span class="sd">        usage examples ...</span>
+<span class="sd">        </span>
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; another_class.foo(&#39;&#39;, AClass())        </span>
+<span class="sd">        </span>
+<span class="sd">        :param arg1: first argument</span>
+<span class="sd">        :type arg1: string</span>
+<span class="sd">        :param arg2: second argument</span>
+<span class="sd">        :type arg2: :class:`module.AClass`</span>
+<span class="sd">        :return: something</span>
+<span class="sd">        :rtype: string</span>
+<span class="sd">        :raises: TypeError</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Return the index of the job ids if a multijob object&quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+    <span class="k">def</span> <span class="nf">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A method&#39;s docstring with parameters and return value.</span>
+<span class="sd">        </span>
+<span class="sd">        Use all the cool Sphinx capabilities in this description, e.g. to give</span>
+<span class="sd">        usage examples ...</span>
+<span class="sd">        </span>
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; another_class.foo(&#39;&#39;, AClass())        </span>
+<span class="sd">        </span>
+<span class="sd">        :param arg1: first argument</span>
+<span class="sd">        :type arg1: string</span>
+<span class="sd">        :param arg2: second argument</span>
+<span class="sd">        :type arg2: :class:`module.AClass`</span>
+<span class="sd">        :return: something</span>
+<span class="sd">        :rtype: string</span>
+<span class="sd">        :raises: TypeError</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+    <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A method&#39;s docstring with parameters and return value.</span>
+<span class="sd">        </span>
+<span class="sd">        Use all the cool Sphinx capabilities in this description, e.g. to give</span>
+<span class="sd">        usage examples ...</span>
+<span class="sd">        </span>
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; another_class.foo(&#39;&#39;, AClass())        </span>
+<span class="sd">        </span>
+<span class="sd">        :param arg1: first argument</span>
+<span class="sd">        :type arg1: string</span>
+<span class="sd">        :param arg2: second argument</span>
+<span class="sd">        :type arg2: :class:`module.AClass`</span>
+<span class="sd">        :return: something</span>
+<span class="sd">        :rtype: string</span>
+<span class="sd">        :raises: TypeError</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+    <span class="k">def</span> <span class="nf">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A method&#39;s docstring with parameters and return value.</span>
+<span class="sd">        </span>
+<span class="sd">        Use all the cool Sphinx capabilities in this description, e.g. to give</span>
+<span class="sd">        usage examples ...</span>
+<span class="sd">        </span>
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; another_class.foo(&#39;&#39;, AClass())        </span>
+<span class="sd">        </span>
+<span class="sd">        :param arg1: first argument</span>
+<span class="sd">        :type arg1: string</span>
+<span class="sd">        :param arg2: second argument</span>
+<span class="sd">        :type arg2: :class:`module.AClass`</span>
+<span class="sd">        :return: something</span>
+<span class="sd">        :rtype: string</span>
+<span class="sd">        :raises: TypeError</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">#Exception handling here</span>
+        <span class="k">return</span>
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="QSession.login"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.session.QSession.login">[docs]</a>    <span class="k">def</span> <span class="nf">login</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">username</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A method&#39;s docstring with parameters and return value.</span>
+<span class="sd">        </span>
+<span class="sd">        Use all the cool Sphinx capabilities in this description, e.g. to give</span>
+<span class="sd">        usage examples ...</span>
+<span class="sd">        </span>
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; another_class.foo(&#39;&#39;, AClass())        </span>
+<span class="sd">        </span>
+<span class="sd">        :param arg1: first argument</span>
+<span class="sd">        :type arg1: string</span>
+<span class="sd">        :param arg2: second argument</span>
+<span class="sd">        :type arg2: :class:`module.AClass`</span>
+<span class="sd">        :return: something</span>
+<span class="sd">        :rtype: string</span>
+<span class="sd">        :raises: TypeError</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">username</span><span class="p">,</span><span class="nb">str</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Incorrect username arg type: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="nb">type</span><span class="p">(</span><span class="n">username</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">username</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">string</span><span class="o">.</span><span class="n">ascii_letters</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Invalid char </span><span class="si">{}</span><span class="s2"> in username arg&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)),</span><span class="s1">&#39;username.txt&#39;</span><span class="p">),</span><span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">username</span><span class="p">)</span></div>
+
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="QSession.allocate_nodes"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.session.QSession.allocate_nodes">[docs]</a>    <span class="k">def</span> <span class="nf">allocate_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">n_nodes</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A method&#39;s docstring with parameters and return value.</span>
+<span class="sd">        </span>
+<span class="sd">        Use all the cool Sphinx capabilities in this description, e.g. to give</span>
+<span class="sd">        usage examples ...</span>
+<span class="sd">        </span>
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; another_class.foo(&#39;&#39;, AClass())        </span>
+<span class="sd">        </span>
+<span class="sd">        :param arg1: first argument</span>
+<span class="sd">        :type arg1: string</span>
+<span class="sd">        :param arg2: second argument</span>
+<span class="sd">        :type arg2: :class:`module.AClass`</span>
+<span class="sd">        :return: something</span>
+<span class="sd">        :rtype: string</span>
+<span class="sd">        :raises: TypeError</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Set the number of nodes for a job</span>
+<span class="sd">        Input: n number of nodes</span>
+<span class="sd">            Type: int, float</span>
+
+<span class="sd">        Usage:</span>
+<span class="sd">            &gt;&gt; # Use two nodes</span>
+<span class="sd">            &gt;&gt; qsub_job.allocate_nodes(2)</span>
+<span class="sd">            &gt;&gt; qsub_job.start()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n_nodes</span><span class="p">,(</span><span class="nb">float</span><span class="p">,</span><span class="nb">int</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Invalid type for arg n_nodes: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="nb">type</span><span class="p">(</span><span class="n">n_nodes</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span>
+        <span class="n">n_nodes</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">n_nodes</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">n_nodes</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">n_nodes</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_nodes</span> <span class="o">=</span> <span class="n">n_nodes</span></div>
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="QSession.allocate_cpu_time"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.session.QSession.allocate_cpu_time">[docs]</a>    <span class="k">def</span> <span class="nf">allocate_cpu_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">cpu_time</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A method&#39;s docstring with parameters and return value.</span>
+<span class="sd">        </span>
+<span class="sd">        Use all the cool Sphinx capabilities in this description, e.g. to give</span>
+<span class="sd">        usage examples ...</span>
+<span class="sd">        </span>
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; another_class.foo(&#39;&#39;, AClass())        </span>
+<span class="sd">        </span>
+<span class="sd">        :param arg1: first argument</span>
+<span class="sd">        :type arg1: string</span>
+<span class="sd">        :param arg2: second argument</span>
+<span class="sd">        :type arg2: :class:`module.AClass`</span>
+<span class="sd">        :return: something</span>
+<span class="sd">        :rtype: string</span>
+<span class="sd">        :raises: TypeError</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_cpu</span> <span class="o">=</span> <span class="n">cpu_time</span></div>
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="QSession.allocate_walltime"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.session.QSession.allocate_walltime">[docs]</a>    <span class="k">def</span> <span class="nf">allocate_walltime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">walltime</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A method&#39;s docstring with parameters and return value.</span>
+<span class="sd">        </span>
+<span class="sd">        Use all the cool Sphinx capabilities in this description, e.g. to give</span>
+<span class="sd">        usage examples ...</span>
+<span class="sd">        </span>
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; another_class.foo(&#39;&#39;, AClass())        </span>
+<span class="sd">        </span>
+<span class="sd">        :param arg1: first argument</span>
+<span class="sd">        :type arg1: string</span>
+<span class="sd">        :param arg2: second argument</span>
+<span class="sd">        :type arg2: :class:`module.AClass`</span>
+<span class="sd">        :return: something</span>
+<span class="sd">        :rtype: string</span>
+<span class="sd">        :raises: TypeError</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_walltime</span> <span class="o">=</span> <span class="n">walltime</span></div>
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="QSession.allocate_cores"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.session.QSession.allocate_cores">[docs]</a>    <span class="k">def</span> <span class="nf">allocate_cores</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">n_cores</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A method&#39;s docstring with parameters and return value.</span>
+<span class="sd">        </span>
+<span class="sd">        Use all the cool Sphinx capabilities in this description, e.g. to give</span>
+<span class="sd">        usage examples ...</span>
+<span class="sd">        </span>
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; another_class.foo(&#39;&#39;, AClass())        </span>
+<span class="sd">        </span>
+<span class="sd">        :param arg1: first argument</span>
+<span class="sd">        :type arg1: string</span>
+<span class="sd">        :param arg2: second argument</span>
+<span class="sd">        :type arg2: :class:`module.AClass`</span>
+<span class="sd">        :return: something</span>
+<span class="sd">        :rtype: string</span>
+<span class="sd">        :raises: TypeError</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Set the number of cores for a job</span>
+<span class="sd">        Input: n number of cores</span>
+<span class="sd">            Type: int, float</span>
+
+<span class="sd">        Usage:</span>
+<span class="sd">            &gt;&gt; # Use two cores</span>
+<span class="sd">            &gt;&gt; qsub_job.allocate_cores(2)</span>
+<span class="sd">            &gt;&gt; qsub_job.start()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n_cores</span><span class="p">,(</span><span class="nb">float</span><span class="p">,</span><span class="nb">int</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Invalid type for arg n_cores: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="nb">type</span><span class="p">(</span><span class="n">n_cores</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span>
+        <span class="n">n_cores</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">n_cores</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">n_cores</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">n_cores</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_cores</span> <span class="o">=</span> <span class="n">n_cores</span></div>
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="QSession.allocate_memory"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.session.QSession.allocate_memory">[docs]</a>    <span class="k">def</span> <span class="nf">allocate_memory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">memory</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A method&#39;s docstring with parameters and return value.</span>
+<span class="sd">        </span>
+<span class="sd">        Use all the cool Sphinx capabilities in this description, e.g. to give</span>
+<span class="sd">        usage examples ...</span>
+<span class="sd">        </span>
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; another_class.foo(&#39;&#39;, AClass())        </span>
+<span class="sd">        </span>
+<span class="sd">        :param arg1: first argument</span>
+<span class="sd">        :type arg1: string</span>
+<span class="sd">        :param arg2: second argument</span>
+<span class="sd">        :type arg2: :class:`module.AClass`</span>
+<span class="sd">        :return: something</span>
+<span class="sd">        :rtype: string</span>
+<span class="sd">        :raises: TypeError</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Set the amount of memory for the job</span>
+<span class="sd">        Input: string in format &#39;10GB&#39; or &#39;500MB&#39;</span>
+<span class="sd">            Type: str</span>
+
+<span class="sd">        Usage:</span>
+<span class="sd">            &gt;&gt; # Use three GB</span>
+<span class="sd">            &gt;&gt; qsub_job.allocate_memory(&#39;3GB&#39;)</span>
+<span class="sd">            &gt;&gt; qsub_job.start()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">memory</span><span class="p">,</span><span class="nb">int</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">memory</span> <span class="o">&gt;</span> <span class="n">devcloud_config</span><span class="o">.</span><span class="n">MAX_MEMORY</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Max memory arg </span><span class="si">{}</span><span class="s2"> exceeded: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">devcloud_config</span><span class="o">.</span><span class="n">MAX_MEMORY</span><span class="p">,</span><span class="n">memory</span><span class="p">))</span>
+
+            <span class="k">if</span> <span class="n">memory</span> <span class="o">&lt;</span> <span class="n">devcloud_config</span><span class="o">.</span><span class="n">MIN_MEMORY</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Lower than min memory </span><span class="si">{}</span><span class="s2"> arg: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">devcloud_config</span><span class="o">.</span><span class="n">MIN_MEMORY</span><span class="p">,</span><span class="n">memory</span><span class="p">))</span>
+
+            <span class="n">memory</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">MB&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">memory</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">memory</span><span class="p">,</span><span class="nb">str</span><span class="p">):</span>
+            <span class="n">valid</span> <span class="o">=</span> <span class="kc">True</span>
+
+            <span class="k">if</span> <span class="n">memory</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">((</span><span class="s1">&#39;GB&#39;</span><span class="p">,</span><span class="s1">&#39;MB&#39;</span><span class="p">)):</span>
+                <span class="k">try</span><span class="p">:</span>
+
+                    <span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">memory</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span>
+
+                    <span class="k">if</span> <span class="s1">&#39;G&#39;</span> <span class="ow">in</span> <span class="n">memory</span><span class="o">.</span><span class="n">upper</span><span class="p">():</span>
+                        <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="nb">int</span><span class="p">(</span><span class="n">devcloud_config</span><span class="o">.</span><span class="n">MAX_MEMORY</span><span class="o">/</span><span class="mi">1000</span><span class="p">):</span>
+                            <span class="n">valid</span> <span class="o">=</span> <span class="kc">False</span>
+
+                        <span class="k">elif</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="nb">int</span><span class="p">(</span><span class="n">devcloud_config</span><span class="o">.</span><span class="n">MIN_MEMORY</span><span class="o">/</span><span class="mi">1000</span><span class="p">):</span>
+                            <span class="n">valid</span> <span class="o">=</span> <span class="kc">False</span>
+
+                    <span class="k">elif</span> <span class="s1">&#39;M&#39;</span> <span class="ow">in</span> <span class="n">memory</span><span class="o">.</span><span class="n">upper</span><span class="p">():</span>
+                        <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="n">devcloud_config</span><span class="o">.</span><span class="n">MAX_MEMORY</span><span class="p">:</span>
+                            <span class="n">valid</span> <span class="o">=</span> <span class="kc">False</span>
+
+                        <span class="k">elif</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="n">devcloud_config</span><span class="o">.</span><span class="n">MIN_MEMORY</span><span class="p">:</span>
+                            <span class="n">valid</span> <span class="o">=</span> <span class="kc">False</span>
+
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="n">valid</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">valid</span> <span class="o">=</span> <span class="kc">False</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">valid</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Invalid memory arg: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">memory</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid memory arg type: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="nb">type</span><span class="p">(</span><span class="n">memory</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_memory</span> <span class="o">=</span> <span class="n">memory</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">job</span><span class="o">.</span><span class="n">set_memory</span> <span class="o">=</span> <span class="n">memory</span></div>
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="QSession.generate_qsub_script"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.session.QSession.generate_qsub_script">[docs]</a>    <span class="k">def</span> <span class="nf">generate_qsub_script</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A method&#39;s docstring with parameters and return value.</span>
+<span class="sd">        </span>
+<span class="sd">        Use all the cool Sphinx capabilities in this description, e.g. to give</span>
+<span class="sd">        usage examples ...</span>
+<span class="sd">        </span>
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; another_class.foo(&#39;&#39;, AClass())        </span>
+<span class="sd">        </span>
+<span class="sd">        :param arg1: first argument</span>
+<span class="sd">        :type arg1: string</span>
+<span class="sd">        :param arg2: second argument</span>
+<span class="sd">        :type arg2: :class:`module.AClass`</span>
+<span class="sd">        :return: something</span>
+<span class="sd">        :rtype: string</span>
+<span class="sd">        :raises: TypeError</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Generate a qsub submission bash script&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">default</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">scripts</span><span class="o">.</span><span class="n">job_script_default</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">n_nodes</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">n_cores</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">set_walltime</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">set_memory</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">set_cpu</span><span class="p">,</span>
+                <span class="s1">&#39;python </span><span class="si">{}</span><span class="s1">/job.py&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">devcloud_dir</span><span class="p">))</span></div>
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="QSession.data_dump"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.session.QSession.data_dump">[docs]</a>    <span class="k">def</span> <span class="nf">data_dump</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">data</span><span class="p">,</span><span class="n">path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A method&#39;s docstring with parameters and return value.</span>
+<span class="sd">        </span>
+<span class="sd">        Use all the cool Sphinx capabilities in this description, e.g. to give</span>
+<span class="sd">        usage examples ...</span>
+<span class="sd">        </span>
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; another_class.foo(&#39;&#39;, AClass())        </span>
+<span class="sd">        </span>
+<span class="sd">        :param arg1: first argument</span>
+<span class="sd">        :type arg1: string</span>
+<span class="sd">        :param arg2: second argument</span>
+<span class="sd">        :type arg2: :class:`module.AClass`</span>
+<span class="sd">        :return: something</span>
+<span class="sd">        :rtype: string</span>
+<span class="sd">        :raises: TypeError</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="nb">str</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Invalid path arg type: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="nb">type</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">dill</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="n">f</span><span class="p">)</span>        </div>
+
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="QSession.write_script"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.session.QSession.write_script">[docs]</a>    <span class="k">def</span> <span class="nf">write_script</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">script</span><span class="p">,</span><span class="n">path</span><span class="p">,</span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A method&#39;s docstring with parameters and return value.</span>
+<span class="sd">        </span>
+<span class="sd">        Use all the cool Sphinx capabilities in this description, e.g. to give</span>
+<span class="sd">        usage examples ...</span>
+<span class="sd">        </span>
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; another_class.foo(&#39;&#39;, AClass())        </span>
+<span class="sd">        </span>
+<span class="sd">        :param arg1: first argument</span>
+<span class="sd">        :type arg1: string</span>
+<span class="sd">        :param arg2: second argument</span>
+<span class="sd">        :type arg2: :class:`module.AClass`</span>
+<span class="sd">        :return: something</span>
+<span class="sd">        :rtype: string</span>
+<span class="sd">        :raises: TypeError</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Writes a string to a file specified</span>
+
+<span class="sd">        Input: </span>
+<span class="sd">                script: str of python script</span>
+<span class="sd">                path:   str of path for the output file</span>
+<span class="sd">                mode:   char of open mode</span>
+
+<span class="sd">                    `w&#39;   Truncate file to zero length or create text file </span>
+<span class="sd">                    for writing. The stream is positioned at the beginning </span>
+<span class="sd">                    of the file.</span>
+
+<span class="sd">                    `w+&#39;  Open for reading and writing. The file is created </span>
+<span class="sd">                    if it does not exist, otherwise it is truncated. </span>
+<span class="sd">                    The stream is positioned at the beginning of the file.</span>
+
+<span class="sd">                    `a`   Open for writing. The file is created if it does </span>
+<span class="sd">                    not exist.  The stream is positioned at the end of the </span>
+<span class="sd">                    file. Subsequent writes to the file will always end up </span>
+<span class="sd">                    at the then current end of file, irrespective of any </span>
+<span class="sd">                    intervening fseek(3) or similar.</span>
+
+<span class="sd">                    `a+&#39;  Open for reading and writing. The file is created </span>
+<span class="sd">                    if it does not exist.  The stream is positioned at the </span>
+<span class="sd">                    end of the file.  Subsequent writes to the file will </span>
+<span class="sd">                    always end up at the then current end of file, </span>
+<span class="sd">                    irrespective of any intervening fseek(3) or similar.</span>
+<span class="sd">                </span>
+<span class="sd">        Output: None</span>
+
+<span class="sd">        Usage:</span>
+<span class="sd">            &gt;&gt; q = qsub()</span>
+<span class="sd">            &gt;&gt; q.write_script(&quot;print(&#39;hello&#39;)&quot;,&quot;test.py&quot;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">mode</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;w&#39;</span><span class="p">,</span><span class="s1">&#39;w+&#39;</span><span class="p">,</span><span class="s1">&#39;a&#39;</span><span class="p">,</span><span class="s1">&#39;a+&#39;</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Invalid mode arg: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mode</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">script</span><span class="p">,</span><span class="nb">str</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Invalid script arg type: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="nb">type</span><span class="p">(</span><span class="n">script</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="nb">str</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Invalid path arg type: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="nb">type</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="n">mode</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">script</span><span class="p">)</span></div>
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="QSession.make_function"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.session.QSession.make_function">[docs]</a>    <span class="k">def</span> <span class="nf">make_function</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A method&#39;s docstring with parameters and return value.</span>
+<span class="sd">        </span>
+<span class="sd">        Use all the cool Sphinx capabilities in this description, e.g. to give</span>
+<span class="sd">        usage examples ...</span>
+<span class="sd">        </span>
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; another_class.foo(&#39;&#39;, AClass())        </span>
+<span class="sd">        </span>
+<span class="sd">        :param arg1: first argument</span>
+<span class="sd">        :type arg1: string</span>
+<span class="sd">        :param arg2: second argument</span>
+<span class="sd">        :type arg2: :class:`module.AClass`</span>
+<span class="sd">        :return: something</span>
+<span class="sd">        :rtype: string</span>
+<span class="sd">        :raises: TypeError</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Create file for serialized function within local job folder</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">function</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">jobs</span><span class="p">):</span>
+            <span class="n">function_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">local_job_dir</span><span class="p">,</span>
+                <span class="s1">&#39;func</span><span class="si">{}</span><span class="s1">.pkl&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">data_dump</span><span class="p">(</span><span class="n">function</span><span class="p">,</span><span class="n">function_file</span><span class="p">)</span></div>
+
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="QSession.make_arg"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.session.QSession.make_arg">[docs]</a>    <span class="k">def</span> <span class="nf">make_arg</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A method&#39;s docstring with parameters and return value.</span>
+<span class="sd">        </span>
+<span class="sd">        Use all the cool Sphinx capabilities in this description, e.g. to give</span>
+<span class="sd">        usage examples ...</span>
+<span class="sd">        </span>
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; another_class.foo(&#39;&#39;, AClass())        </span>
+<span class="sd">        </span>
+<span class="sd">        :param arg1: first argument</span>
+<span class="sd">        :type arg1: string</span>
+<span class="sd">        :param arg2: second argument</span>
+<span class="sd">        :type arg2: :class:`module.AClass`</span>
+<span class="sd">        :return: something</span>
+<span class="sd">        :rtype: string</span>
+<span class="sd">        :raises: TypeError</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Create file for serialized args within local job folder</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">arg</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">):</span>
+            <span class="n">arg_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">local_job_dir</span><span class="p">,</span><span class="s1">&#39;args</span><span class="si">{}</span><span class="s1">.pkl&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data_dump</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span><span class="n">arg_file</span><span class="p">)</span></div>
+
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="QSession.make_python"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.session.QSession.make_python">[docs]</a>    <span class="k">def</span> <span class="nf">make_python</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A method&#39;s docstring with parameters and return value.</span>
+<span class="sd">        </span>
+<span class="sd">        Use all the cool Sphinx capabilities in this description, e.g. to give</span>
+<span class="sd">        usage examples ...</span>
+<span class="sd">        </span>
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; another_class.foo(&#39;&#39;, AClass())        </span>
+<span class="sd">        </span>
+<span class="sd">        :param arg1: first argument</span>
+<span class="sd">        :type arg1: string</span>
+<span class="sd">        :param arg2: second argument</span>
+<span class="sd">        :type arg2: :class:`module.AClass`</span>
+<span class="sd">        :return: something</span>
+<span class="sd">        :rtype: string</span>
+<span class="sd">        :raises: TypeError</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Create python script for unserializing data and calling function</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">local_pyscript</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">local_job_dir</span><span class="p">,</span><span class="s1">&#39;job.py&#39;</span><span class="p">)</span>
+
+        <span class="n">python_script</span> <span class="o">=</span> <span class="n">scripts</span><span class="o">.</span><span class="n">session_script</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="o">.</span><span class="n">major</span><span class="p">,</span>
+            <span class="s2">&quot;job_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time_id</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">write_script</span><span class="p">(</span><span class="n">python_script</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">local_pyscript</span><span class="p">)</span></div>
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="QSession.make_qsub"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.session.QSession.make_qsub">[docs]</a>    <span class="k">def</span> <span class="nf">make_qsub</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A method&#39;s docstring with parameters and return value.</span>
+<span class="sd">        </span>
+<span class="sd">        Use all the cool Sphinx capabilities in this description, e.g. to give</span>
+<span class="sd">        usage examples ...</span>
+<span class="sd">        </span>
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; another_class.foo(&#39;&#39;, AClass())        </span>
+<span class="sd">        </span>
+<span class="sd">        :param arg1: first argument</span>
+<span class="sd">        :type arg1: string</span>
+<span class="sd">        :param arg2: second argument</span>
+<span class="sd">        :type arg2: :class:`module.AClass`</span>
+<span class="sd">        :return: something</span>
+<span class="sd">        :rtype: string</span>
+<span class="sd">        :raises: TypeError</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">local_sh_script</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">local_job_dir</span><span class="p">,</span><span class="s1">&#39;qsub_script&#39;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="n">ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">desc</span><span class="o">=</span><span class="s1">&#39;Generating qsub script: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">local_sh_script</span><span class="p">)):</span>
+            <span class="n">qsub_script</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_qsub_script</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="n">ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">desc</span><span class="o">=</span><span class="s1">&#39;Writing qsub file: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">local_sh_script</span><span class="p">)):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">write_script</span><span class="p">(</span><span class="n">qsub_script</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">local_sh_script</span><span class="p">)</span></div>
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="QSession.make_modules"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.session.QSession.make_modules">[docs]</a>    <span class="k">def</span> <span class="nf">make_modules</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A method&#39;s docstring with parameters and return value.</span>
+<span class="sd">        </span>
+<span class="sd">        Use all the cool Sphinx capabilities in this description, e.g. to give</span>
+<span class="sd">        usage examples ...</span>
+<span class="sd">        </span>
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; another_class.foo(&#39;&#39;, AClass())        </span>
+<span class="sd">        </span>
+<span class="sd">        :param arg1: first argument</span>
+<span class="sd">        :type arg1: string</span>
+<span class="sd">        :param arg2: second argument</span>
+<span class="sd">        :type arg2: :class:`module.AClass`</span>
+<span class="sd">        :return: something</span>
+<span class="sd">        :rtype: string</span>
+<span class="sd">        :raises: TypeError</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">mod_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">local_job_dir</span><span class="p">,</span><span class="s2">&quot;req.modules&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="n">ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">desc</span><span class="o">=</span><span class="s1">&#39;Generating module file: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mod_file</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mh</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">mod_file</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mh</span><span class="o">.</span><span class="n">generate_module_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">local_job_dir</span><span class="p">)</span></div>
+
+
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="QSession.create_local_files_verbose"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.session.QSession.create_local_files_verbose">[docs]</a>    <span class="k">def</span> <span class="nf">create_local_files_verbose</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A method&#39;s docstring with parameters and return value.</span>
+<span class="sd">        </span>
+<span class="sd">        Use all the cool Sphinx capabilities in this description, e.g. to give</span>
+<span class="sd">        usage examples ...</span>
+<span class="sd">        </span>
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; another_class.foo(&#39;&#39;, AClass())        </span>
+<span class="sd">        </span>
+<span class="sd">        :param arg1: first argument</span>
+<span class="sd">        :type arg1: string</span>
+<span class="sd">        :param arg2: second argument</span>
+<span class="sd">        :type arg2: :class:`module.AClass`</span>
+<span class="sd">        :return: something</span>
+<span class="sd">        :rtype: string</span>
+<span class="sd">        :raises: TypeError</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Create the required local files for the serialized data to send</span>
+<span class="sd">        to DevCloud and deletes the folder afterwards. Output what is going</span>
+<span class="sd">        on to the stdout.</span>
+
+<span class="sd">        Input: None</span>
+<span class="sd">        Output: None</span>
+
+<span class="sd">        Usage:</span>
+<span class="sd">            &gt;&gt; q = qsub(fnc,args)</span>
+<span class="sd">            &gt;&gt; q.create_local_files_verbose()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Create local scratch folder</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">local_dev_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s1">&#39;~&#39;</span><span class="p">),</span>
+            <span class="s1">&#39;devcloud_jobs&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Check if path exists</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">local_dev_dir</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="n">ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                    <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Creating local devcloud directory: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">local_dev_dir</span><span class="p">)):</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">local_dev_dir</span><span class="p">)</span>
+
+        <span class="c1"># Check if path is dir</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">local_dev_dir</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">SystemError</span><span class="p">(</span><span class="s2">&quot;DevCloud dir path not dir: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">local_dev_dir</span><span class="p">))</span>
+
+        <span class="c1"># Create local job folder</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">local_job_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">local_dev_dir</span><span class="p">,</span>
+            <span class="s2">&quot;job_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time_id</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">local_job_dir</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">SystemError</span><span class="p">(</span><span class="s2">&quot;DevCloud dir path already exists: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">local_job_dir</span><span class="p">))</span>
+
+        <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">local_job_dir</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">make_python</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">make_qsub</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">make_arg</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">make_function</span><span class="p">()</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">make_modules</span><span class="p">()</span>  </div>
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="QSession.load"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.session.QSession.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">target</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A method&#39;s docstring with parameters and return value.</span>
+<span class="sd">        </span>
+<span class="sd">        Use all the cool Sphinx capabilities in this description, e.g. to give</span>
+<span class="sd">        usage examples ...</span>
+<span class="sd">        </span>
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; another_class.foo(&#39;&#39;, AClass())        </span>
+<span class="sd">        </span>
+<span class="sd">        :param arg1: first argument</span>
+<span class="sd">        :type arg1: string</span>
+<span class="sd">        :param arg2: second argument</span>
+<span class="sd">        :type arg2: :class:`module.AClass`</span>
+<span class="sd">        :return: something</span>
+<span class="sd">        :rtype: string</span>
+<span class="sd">        :raises: TypeError</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">jobs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">args</span><span class="p">)</span></div>
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="QSession.run"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.session.QSession.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A method&#39;s docstring with parameters and return value.</span>
+<span class="sd">        </span>
+<span class="sd">        Use all the cool Sphinx capabilities in this description, e.g. to give</span>
+<span class="sd">        usage examples ...</span>
+<span class="sd">        </span>
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; another_class.foo(&#39;&#39;, AClass())        </span>
+<span class="sd">        </span>
+<span class="sd">        :param arg1: first argument</span>
+<span class="sd">        :type arg1: string</span>
+<span class="sd">        :param arg2: second argument</span>
+<span class="sd">        :type arg2: :class:`module.AClass`</span>
+<span class="sd">        :return: something</span>
+<span class="sd">        :rtype: string</span>
+<span class="sd">        :raises: TypeError</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">create_local_files_verbose</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="n">ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">desc</span><span class="o">=</span><span class="s1">&#39;Sending job directory to DevCloud&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ssh</span><span class="o">.</span><span class="n">send_folder</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">local_job_dir</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">devcloud_dir</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="n">ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Running qsub </span><span class="si">{}</span><span class="s2">/qsub_script&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">devcloud_dir</span><span class="p">)):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">job_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ssh</span><span class="o">.</span><span class="n">send_command</span><span class="p">(</span><span class="s1">&#39;qsub </span><span class="si">{}</span><span class="s1">/qsub_script&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">devcloud_dir</span><span class="p">))</span>
+
+            <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="o">.</span><span class="n">major</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">job_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_id</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">job</span><span class="o">.</span><span class="n">job_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_id</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">job</span></div>
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+    <span class="k">def</span> <span class="nf">_result</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A method&#39;s docstring with parameters and return value.</span>
+<span class="sd">        </span>
+<span class="sd">        Use all the cool Sphinx capabilities in this description, e.g. to give</span>
+<span class="sd">        usage examples ...</span>
+<span class="sd">        </span>
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; another_class.foo(&#39;&#39;, AClass())        </span>
+<span class="sd">        </span>
+<span class="sd">        :param arg1: first argument</span>
+<span class="sd">        :type arg1: string</span>
+<span class="sd">        :param arg2: second argument</span>
+<span class="sd">        :type arg2: :class:`module.AClass`</span>
+<span class="sd">        :return: something</span>
+<span class="sd">        :rtype: string</span>
+<span class="sd">        :raises: TypeError</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Get the serialized result file res.pkl from the DevCloud</span>
+
+<span class="sd">        Runs qstat to look for the job id but then</span>
+<span class="sd">        </span>
+<span class="sd">        Input:  None</span>
+<span class="sd">        Output: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">jobs</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">complete</span> <span class="o">=</span> <span class="p">[</span><span class="kc">False</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">jobs</span><span class="p">]</span>
+
+        <span class="n">result_index</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">jobs</span><span class="p">)))))</span>
+
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">result_index</span><span class="p">:</span>
+                <span class="n">local_result_file</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">/res</span><span class="si">{}</span><span class="s2">.pkl&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">local_job_dir</span><span class="p">,</span><span class="n">i</span><span class="p">)</span>
+                <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">/res</span><span class="si">{}</span><span class="s2">.pkl&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">devcloud_dir</span><span class="p">,</span><span class="n">i</span><span class="p">)</span>
+
+                <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span>
+                    <span class="s1">&#39;ssh colfax [ -f </span><span class="si">{}</span><span class="s1"> ] &amp;&amp; echo &quot;1&quot; || echo &quot;0&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">path</span><span class="p">),</span><span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">STDOUT</span><span class="p">,</span><span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span> <span class="o">==</span> <span class="mi">49</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="n">ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Fetching results&quot;</span><span class="p">):</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">ssh</span><span class="o">.</span><span class="n">recieve_file</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="n">local_result_file</span><span class="p">)</span>
+                    <span class="n">result_index</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+                    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">local_result_file</span><span class="p">,</span><span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span> <span class="o">=</span> <span class="n">dill</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">complete</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">True</span>
+
+                    <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">([</span><span class="s1">&#39;rm&#39;</span><span class="p">,</span><span class="n">local_result_file</span><span class="p">])</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">result_index</span><span class="p">):</span>
+                <span class="k">break</span>
+
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wait_time</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">all_complete</span> <span class="o">=</span> <span class="kc">True</span>
+        
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">remove_dir</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cleanup_devcloud</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cleanup_local</span><span class="p">()</span>
+            
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="QSession.fetch_result"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.session.QSession.fetch_result">[docs]</a>    <span class="k">def</span> <span class="nf">fetch_result</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A method&#39;s docstring with parameters and return value.</span>
+<span class="sd">        </span>
+<span class="sd">        Use all the cool Sphinx capabilities in this description, e.g. to give</span>
+<span class="sd">        usage examples ...</span>
+<span class="sd">        </span>
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; another_class.foo(&#39;&#39;, AClass())        </span>
+<span class="sd">        </span>
+<span class="sd">        :param arg1: first argument</span>
+<span class="sd">        :type arg1: string</span>
+<span class="sd">        :param arg2: second argument</span>
+<span class="sd">        :type arg2: :class:`module.AClass`</span>
+<span class="sd">        :return: something</span>
+<span class="sd">        :rtype: string</span>
+<span class="sd">        :raises: TypeError</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fetch_thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_result</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fetch_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span></div></div>
+
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Stephen Offer
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>  
+
+  <style>
+    /* Sidebar header (and topbar for mobile) */
+    .wy-side-nav-search, .wy-nav-top {
+      background: #2e6784;
+    }
+    /* Sidebar */
+    .wy-nav-side {
+      background: #262525;
+    }
+  </style>
+
+
+</body>
+</html>

@@ -1,0 +1,7 @@
+README.md
+cweb/__init__.py
+cweb.egg-info/PKG-INFO
+cweb.egg-info/SOURCES.txt
+cweb.egg-info/dependency_links.txt
+cweb.egg-info/not-zip-safe
+cweb.egg-info/top_level.txt
