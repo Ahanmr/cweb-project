@@ -311,7 +311,7 @@ class Qstat():
     def process_id(self,job_id):
         jobs = self.process_full_qstat()
         for n in jobs:
-            if n.job_id = job_id:
+            if n.job_id == job_id:
                 return n
 
 def main():
