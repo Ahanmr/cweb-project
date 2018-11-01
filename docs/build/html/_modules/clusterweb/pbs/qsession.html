@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>cweb.pbs.qsession &mdash; clusterweb 0.0.1 documentation</title>
+  <title>clusterweb.pbs.qsession &mdash; clusterweb 0.0.1 documentation</title>
   
 
   
@@ -77,7 +77,7 @@
               
             
             
-              <p class="caption"><span class="caption-text">About CWeb</span></p>
+              <p class="caption"><span class="caption-text">About ClusterWeb</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../why.html">Why to Use CWeb</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../about.html">Getting Started</a></li>
@@ -89,7 +89,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../advanced.html">Advanced Usage Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../cpu.html">CPU Optimization Techniques</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Portable Batch System</span></p>
+<p class="caption"><span class="caption-text">Portable Batch Systems (PBS)</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../qsub.html">Qsub: Single Function Submission</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../qsession.html">QSession: Running Multiple Jobs</a></li>
@@ -97,7 +97,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../qstat.html">Qstat: View PBS Job Status</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../resources.html">Resource Configuration</a></li>
 </ul>
-<p class="caption"><span class="caption-text">SSH System</span></p>
+<p class="caption"><span class="caption-text">Secure Shell Systems (SSH)</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../sub.html">Sub: Single Function Submission</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../session.html">Session: Running Multiple Jobs</a></li>
@@ -150,7 +150,7 @@
         
           <li><a href="../../index.html">Module code</a> &raquo;</li>
         
-      <li>cweb.pbs.qsession</li>
+      <li>clusterweb.pbs.qsession</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -165,7 +165,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for cweb.pbs.qsession</h1><div class="highlight"><pre>
+  <h1>Source code for clusterweb.pbs.qsession</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/bin/env/python3</span>
 <span class="c1">#-*- encdoing: utf-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;</span>
@@ -190,9 +190,9 @@
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">re</span>
 
-<span class="kn">from</span> <span class="nn">cweb.interfaces</span> <span class="k">import</span> <span class="n">ssh</span>
-<span class="kn">from</span> <span class="nn">cweb.pbs</span> <span class="k">import</span> <span class="n">scripts</span>
-<span class="kn">from</span> <span class="nn">cweb.pbs</span> <span class="k">import</span> <span class="n">config</span>
+<span class="kn">from</span> <span class="nn">clusterweb.interfaces</span> <span class="k">import</span> <span class="n">ssh</span>
+<span class="kn">from</span> <span class="nn">clusterweb.pbs</span> <span class="k">import</span> <span class="n">scripts</span>
+<span class="kn">from</span> <span class="nn">clusterweb.pbs</span> <span class="k">import</span> <span class="n">config</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;Stephen Offer&quot;</span>
 
@@ -202,9 +202,9 @@
 <span class="sd">===============================================================================</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="QSession"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.qsession.QSession">[docs]</a><span class="k">class</span> <span class="nc">QSession</span><span class="p">():</span>
+<div class="viewcode-block" id="QSession"><a class="viewcode-back" href="../../../qsession.html#clusterweb.pbs.qsession.QSession">[docs]</a><span class="k">class</span> <span class="nc">QSession</span><span class="p">():</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+<div class="viewcode-block" id="QSession.__init__"><a class="viewcode-back" href="../../../qsession.html#clusterweb.pbs.qsession.QSession.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
             <span class="n">n_nodes</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">DEFAULT_NODES</span><span class="p">,</span>
             <span class="n">n_cores</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">DEFAULT_CORES</span><span class="p">,</span>
             <span class="n">set_walltime</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">DEFAULT_WALLTIME</span><span class="p">,</span>
@@ -271,9 +271,11 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">__type__</span> <span class="o">=</span> <span class="s2">&quot;qsession&quot;</span></div>
+
     <span class="c1">#--------------------------------------------------------------------------</span>
 
-    <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="QSession.__len__"><a class="viewcode-back" href="../../../qsession.html#clusterweb.pbs.qsession.QSession.__len__">[docs]</a>    <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A method&#39;s docstring with parameters and return value.</span>
 <span class="sd">        </span>
@@ -293,11 +295,11 @@
 <span class="sd">        :raises: TypeError</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Return </span>
-        <span class="k">pass</span>
+        <span class="k">pass</span></div>
 
     <span class="c1">#--------------------------------------------------------------------------</span>
 
-    <span class="k">def</span> <span class="nf">__mul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>
+<div class="viewcode-block" id="QSession.__mul__"><a class="viewcode-back" href="../../../qsession.html#clusterweb.pbs.qsession.QSession.__mul__">[docs]</a>    <span class="k">def</span> <span class="nf">__mul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A method&#39;s docstring with parameters and return value.</span>
 <span class="sd">        </span>
@@ -317,11 +319,11 @@
 <span class="sd">        :raises: TypeError</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Return multiple qsub submissions job objects</span>
-        <span class="k">pass</span>
+        <span class="k">pass</span></div>
 
     <span class="c1">#--------------------------------------------------------------------------</span>
 
-    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>
+<div class="viewcode-block" id="QSession.__eq__"><a class="viewcode-back" href="../../../qsession.html#clusterweb.pbs.qsession.QSession.__eq__">[docs]</a>    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A method&#39;s docstring with parameters and return value.</span>
 <span class="sd">        </span>
@@ -345,11 +347,11 @@
 <span class="sd">        </span>
 <span class="sd">        Input</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">pass</span>
+        <span class="k">pass</span></div>
 
     <span class="c1">#--------------------------------------------------------------------------</span>
 
-    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>
+<div class="viewcode-block" id="QSession.__ne__"><a class="viewcode-back" href="../../../qsession.html#clusterweb.pbs.qsession.QSession.__ne__">[docs]</a>    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A method&#39;s docstring with parameters and return value.</span>
 <span class="sd">        </span>
@@ -369,11 +371,11 @@
 <span class="sd">        :raises: TypeError</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="sd">&quot;&quot;&quot;Return false if both jobs are the same function else true&quot;&quot;&quot;</span>
-        <span class="k">pass</span>
+        <span class="k">pass</span></div>
 
     <span class="c1">#--------------------------------------------------------------------------</span>
 
-    <span class="k">def</span> <span class="nf">__ge__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>
+<div class="viewcode-block" id="QSession.__ge__"><a class="viewcode-back" href="../../../qsession.html#clusterweb.pbs.qsession.QSession.__ge__">[docs]</a>    <span class="k">def</span> <span class="nf">__ge__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A method&#39;s docstring with parameters and return value.</span>
 <span class="sd">        </span>
@@ -397,11 +399,11 @@
 <span class="sd">        </span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">pass</span>
+        <span class="k">pass</span></div>
 
     <span class="c1">#--------------------------------------------------------------------------</span>
 
-    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">key</span><span class="p">):</span>
+<div class="viewcode-block" id="QSession.__getitem__"><a class="viewcode-back" href="../../../qsession.html#clusterweb.pbs.qsession.QSession.__getitem__">[docs]</a>    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">key</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A method&#39;s docstring with parameters and return value.</span>
 <span class="sd">        </span>
@@ -421,11 +423,11 @@
 <span class="sd">        :raises: TypeError</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="sd">&quot;&quot;&quot;Return the item by the index key if a multitask job object&quot;&quot;&quot;</span>
-        <span class="k">pass</span>
+        <span class="k">pass</span></div>
 
     <span class="c1">#--------------------------------------------------------------------------</span>
 
-    <span class="k">def</span> <span class="nf">__gt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>
+<div class="viewcode-block" id="QSession.__gt__"><a class="viewcode-back" href="../../../qsession.html#clusterweb.pbs.qsession.QSession.__gt__">[docs]</a>    <span class="k">def</span> <span class="nf">__gt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A method&#39;s docstring with parameters and return value.</span>
 <span class="sd">        </span>
@@ -449,12 +451,12 @@
 <span class="sd">        </span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">pass</span>
+        <span class="k">pass</span></div>
 
 
     <span class="c1">#--------------------------------------------------------------------------</span>
 
-    <span class="k">def</span> <span class="nf">__le__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>
+<div class="viewcode-block" id="QSession.__le__"><a class="viewcode-back" href="../../../qsession.html#clusterweb.pbs.qsession.QSession.__le__">[docs]</a>    <span class="k">def</span> <span class="nf">__le__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A method&#39;s docstring with parameters and return value.</span>
 <span class="sd">        </span>
@@ -478,11 +480,11 @@
 <span class="sd">        </span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">pass</span>
+        <span class="k">pass</span></div>
 
     <span class="c1">#--------------------------------------------------------------------------</span>
 
-    <span class="k">def</span> <span class="nf">__lt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>
+<div class="viewcode-block" id="QSession.__lt__"><a class="viewcode-back" href="../../../qsession.html#clusterweb.pbs.qsession.QSession.__lt__">[docs]</a>    <span class="k">def</span> <span class="nf">__lt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A method&#39;s docstring with parameters and return value.</span>
 <span class="sd">        </span>
@@ -506,11 +508,11 @@
 <span class="sd">        </span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">pass</span>
+        <span class="k">pass</span></div>
 
     <span class="c1">#--------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="QSession.index"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.qsession.QSession.index">[docs]</a>    <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>
+<div class="viewcode-block" id="QSession.index"><a class="viewcode-back" href="../../../qsession.html#clusterweb.pbs.qsession.QSession.index">[docs]</a>    <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A method&#39;s docstring with parameters and return value.</span>
 <span class="sd">        </span>
@@ -535,7 +537,7 @@
 
     <span class="c1">#--------------------------------------------------------------------------</span>
 
-    <span class="k">def</span> <span class="nf">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="QSession.__del__"><a class="viewcode-back" href="../../../qsession.html#clusterweb.pbs.qsession.QSession.__del__">[docs]</a>    <span class="k">def</span> <span class="nf">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A method&#39;s docstring with parameters and return value.</span>
 <span class="sd">        </span>
@@ -554,11 +556,11 @@
 <span class="sd">        :rtype: string</span>
 <span class="sd">        :raises: TypeError</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">pass</span>
+        <span class="k">pass</span></div>
 
     <span class="c1">#--------------------------------------------------------------------------</span>
 
-    <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="QSession.__enter__"><a class="viewcode-back" href="../../../qsession.html#clusterweb.pbs.qsession.QSession.__enter__">[docs]</a>    <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A method&#39;s docstring with parameters and return value.</span>
 <span class="sd">        </span>
@@ -577,11 +579,11 @@
 <span class="sd">        :rtype: string</span>
 <span class="sd">        :raises: TypeError</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
 
     <span class="c1">#--------------------------------------------------------------------------</span>
 
-    <span class="k">def</span> <span class="nf">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
+<div class="viewcode-block" id="QSession.__exit__"><a class="viewcode-back" href="../../../qsession.html#clusterweb.pbs.qsession.QSession.__exit__">[docs]</a>    <span class="k">def</span> <span class="nf">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A method&#39;s docstring with parameters and return value.</span>
 <span class="sd">        </span>
@@ -601,11 +603,11 @@
 <span class="sd">        :raises: TypeError</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1">#Exception handling here</span>
-        <span class="k">return</span>
+        <span class="k">return</span></div>
 
     <span class="c1">#--------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="QSession.allocate_nodes"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.qsession.QSession.allocate_nodes">[docs]</a>    <span class="k">def</span> <span class="nf">allocate_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">n_nodes</span><span class="p">):</span>
+<div class="viewcode-block" id="QSession.allocate_nodes"><a class="viewcode-back" href="../../../qsession.html#clusterweb.pbs.qsession.QSession.allocate_nodes">[docs]</a>    <span class="k">def</span> <span class="nf">allocate_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">n_nodes</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A method&#39;s docstring with parameters and return value.</span>
 <span class="sd">        </span>
@@ -645,7 +647,7 @@
 
     <span class="c1">#--------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="QSession.allocate_cpu_time"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.qsession.QSession.allocate_cpu_time">[docs]</a>    <span class="k">def</span> <span class="nf">allocate_cpu_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">cpu_time</span><span class="p">):</span>
+<div class="viewcode-block" id="QSession.allocate_cpu_time"><a class="viewcode-back" href="../../../qsession.html#clusterweb.pbs.qsession.QSession.allocate_cpu_time">[docs]</a>    <span class="k">def</span> <span class="nf">allocate_cpu_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">cpu_time</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A method&#39;s docstring with parameters and return value.</span>
 <span class="sd">        </span>
@@ -690,7 +692,7 @@
 
     <span class="c1">#--------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="QSession.allocate_walltime"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.qsession.QSession.allocate_walltime">[docs]</a>    <span class="k">def</span> <span class="nf">allocate_walltime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">walltime</span><span class="p">):</span>
+<div class="viewcode-block" id="QSession.allocate_walltime"><a class="viewcode-back" href="../../../qsession.html#clusterweb.pbs.qsession.QSession.allocate_walltime">[docs]</a>    <span class="k">def</span> <span class="nf">allocate_walltime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">walltime</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A method&#39;s docstring with parameters and return value.</span>
 <span class="sd">        </span>
@@ -735,7 +737,7 @@
 
     <span class="c1">#--------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="QSession.allocate_cores"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.qsession.QSession.allocate_cores">[docs]</a>    <span class="k">def</span> <span class="nf">allocate_cores</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">n_cores</span><span class="p">):</span>
+<div class="viewcode-block" id="QSession.allocate_cores"><a class="viewcode-back" href="../../../qsession.html#clusterweb.pbs.qsession.QSession.allocate_cores">[docs]</a>    <span class="k">def</span> <span class="nf">allocate_cores</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">n_cores</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A method&#39;s docstring with parameters and return value.</span>
 <span class="sd">        </span>
@@ -773,7 +775,7 @@
 
     <span class="c1">#--------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="QSession.allocate_memory"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.qsession.QSession.allocate_memory">[docs]</a>    <span class="k">def</span> <span class="nf">allocate_memory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">memory</span><span class="p">):</span>
+<div class="viewcode-block" id="QSession.allocate_memory"><a class="viewcode-back" href="../../../qsession.html#clusterweb.pbs.qsession.QSession.allocate_memory">[docs]</a>    <span class="k">def</span> <span class="nf">allocate_memory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">memory</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A method&#39;s docstring with parameters and return value.</span>
 <span class="sd">        </span>
@@ -850,7 +852,7 @@
 
     <span class="c1">#--------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="QSession.generate_qsub_script"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.qsession.QSession.generate_qsub_script">[docs]</a>    <span class="k">def</span> <span class="nf">generate_qsub_script</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="QSession.generate_qsub_script"><a class="viewcode-back" href="../../../qsession.html#clusterweb.pbs.qsession.QSession.generate_qsub_script">[docs]</a>    <span class="k">def</span> <span class="nf">generate_qsub_script</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A method&#39;s docstring with parameters and return value.</span>
 <span class="sd">        </span>
@@ -880,7 +882,7 @@
 
     <span class="c1">#--------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="QSession.data_dump"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.qsession.QSession.data_dump">[docs]</a>    <span class="k">def</span> <span class="nf">data_dump</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">data</span><span class="p">,</span><span class="n">path</span><span class="p">):</span>
+<div class="viewcode-block" id="QSession.data_dump"><a class="viewcode-back" href="../../../qsession.html#clusterweb.pbs.qsession.QSession.data_dump">[docs]</a>    <span class="k">def</span> <span class="nf">data_dump</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">data</span><span class="p">,</span><span class="n">path</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A method&#39;s docstring with parameters and return value.</span>
 <span class="sd">        </span>
@@ -909,7 +911,7 @@
 
     <span class="c1">#--------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="QSession.write_script"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.qsession.QSession.write_script">[docs]</a>    <span class="k">def</span> <span class="nf">write_script</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">script</span><span class="p">,</span><span class="n">path</span><span class="p">,</span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="QSession.write_script"><a class="viewcode-back" href="../../../qsession.html#clusterweb.pbs.qsession.QSession.write_script">[docs]</a>    <span class="k">def</span> <span class="nf">write_script</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">script</span><span class="p">,</span><span class="n">path</span><span class="p">,</span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A method&#39;s docstring with parameters and return value.</span>
 <span class="sd">        </span>
@@ -977,7 +979,7 @@
 
     <span class="c1">#--------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="QSession.load"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.qsession.QSession.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">target</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="QSession.load"><a class="viewcode-back" href="../../../qsession.html#clusterweb.pbs.qsession.QSession.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">target</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A method&#39;s docstring with parameters and return value.</span>
 <span class="sd">        </span>
@@ -1001,7 +1003,7 @@
 
     <span class="c1">#--------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="QSession.push"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.qsession.QSession.push">[docs]</a>    <span class="k">def</span> <span class="nf">push</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="QSession.push"><a class="viewcode-back" href="../../../qsession.html#clusterweb.pbs.qsession.QSession.push">[docs]</a>    <span class="k">def</span> <span class="nf">push</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_dir</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">fnc</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">jobs</span><span class="p">):</span>
@@ -1028,7 +1030,7 @@
 
     <span class="c1">#--------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="QSession.fetch_result"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.qsession.QSession.fetch_result">[docs]</a>    <span class="k">def</span> <span class="nf">fetch_result</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="QSession.fetch_result"><a class="viewcode-back" href="../../../qsession.html#clusterweb.pbs.qsession.QSession.fetch_result">[docs]</a>    <span class="k">def</span> <span class="nf">fetch_result</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">jobs</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">complete</span> <span class="o">=</span> <span class="p">[</span><span class="kc">False</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">jobs</span><span class="p">]</span>
@@ -1069,7 +1071,7 @@
             
     <span class="c1">#--------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="QSession.pull"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.qsession.QSession.pull">[docs]</a>    <span class="k">def</span> <span class="nf">pull</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="QSession.pull"><a class="viewcode-back" href="../../../qsession.html#clusterweb.pbs.qsession.QSession.pull">[docs]</a>    <span class="k">def</span> <span class="nf">pull</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">result_thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fetch_result</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="p">())</span>
         <span class="n">result_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span></div></div>
 

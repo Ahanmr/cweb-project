@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>cweb.pbs.qstat &mdash; clusterweb 0.0.1 documentation</title>
+  <title>clusterweb.pbs.qstat &mdash; clusterweb 0.0.1 documentation</title>
   
 
   
@@ -77,7 +77,7 @@
               
             
             
-              <p class="caption"><span class="caption-text">About CWeb</span></p>
+              <p class="caption"><span class="caption-text">About ClusterWeb</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../why.html">Why to Use CWeb</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../about.html">Getting Started</a></li>
@@ -89,7 +89,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../advanced.html">Advanced Usage Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../cpu.html">CPU Optimization Techniques</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Portable Batch System</span></p>
+<p class="caption"><span class="caption-text">Portable Batch Systems (PBS)</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../qsub.html">Qsub: Single Function Submission</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../qsession.html">QSession: Running Multiple Jobs</a></li>
@@ -97,7 +97,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../qstat.html">Qstat: View PBS Job Status</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../resources.html">Resource Configuration</a></li>
 </ul>
-<p class="caption"><span class="caption-text">SSH System</span></p>
+<p class="caption"><span class="caption-text">Secure Shell Systems (SSH)</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../sub.html">Sub: Single Function Submission</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../session.html">Session: Running Multiple Jobs</a></li>
@@ -150,7 +150,7 @@
         
           <li><a href="../../index.html">Module code</a> &raquo;</li>
         
-      <li>cweb.pbs.qstat</li>
+      <li>clusterweb.pbs.qstat</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -165,7 +165,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for cweb.pbs.qstat</h1><div class="highlight"><pre>
+  <h1>Source code for clusterweb.pbs.qstat</h1><div class="highlight"><pre>
 <span></span> <span class="c1">#!/bin/env/python3</span>
 <span class="c1">#-*- encdoing: utf-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;</span>
@@ -181,8 +181,8 @@
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">os</span>
 
-<span class="kn">from</span> <span class="nn">cweb.interfaces</span> <span class="k">import</span> <span class="n">ssh</span>
-<span class="kn">from</span> <span class="nn">cweb.pbs</span> <span class="k">import</span> <span class="n">config</span>
+<span class="kn">from</span> <span class="nn">clusterweb.interfaces</span> <span class="k">import</span> <span class="n">ssh</span>
+<span class="kn">from</span> <span class="nn">clusterweb.pbs</span> <span class="k">import</span> <span class="n">config</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;Stephen Offer&quot;</span>
 
@@ -245,6 +245,7 @@
     <span class="s2">&quot;start_count&quot;</span>                   <span class="p">:</span>   <span class="s2">&quot;start_count&quot;</span><span class="p">,</span>  
     <span class="s2">&quot;fault_tolerant&quot;</span>                <span class="p">:</span>   <span class="s2">&quot;fault_tolerant&quot;</span><span class="p">,</span>  
     <span class="s2">&quot;job_radix&quot;</span>                     <span class="p">:</span>   <span class="s2">&quot;job_radix&quot;</span><span class="p">,</span> 
+    <span class="s2">&quot;exit_status&quot;</span>                   <span class="p">:</span>   <span class="s2">&quot;exit_status&quot;</span><span class="p">,</span>
     <span class="s2">&quot;submit_host&quot;</span>                   <span class="p">:</span>   <span class="s2">&quot;submit_host&quot;</span>
 <span class="p">}</span>
 
@@ -254,7 +255,7 @@
 <span class="sd">===============================================================================</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="QstatData"><a class="viewcode-back" href="../../../qstat.html#cweb.pbs.qstat.QstatData">[docs]</a><span class="k">class</span> <span class="nc">QstatData</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="QstatData"><a class="viewcode-back" href="../../../qstat.html#clusterweb.pbs.qstat.QstatData">[docs]</a><span class="k">class</span> <span class="nc">QstatData</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">job_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">user</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">time_use</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">queue</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -323,14 +324,22 @@
 <span class="sd">===============================================================================</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="Qstat"><a class="viewcode-back" href="../../../qstat.html#cweb.pbs.qstat.Qstat">[docs]</a><span class="k">class</span> <span class="nc">Qstat</span><span class="p">():</span>
+<div class="viewcode-block" id="Qstat"><a class="viewcode-back" href="../../../qstat.html#clusterweb.pbs.qstat.Qstat">[docs]</a><span class="k">class</span> <span class="nc">Qstat</span><span class="p">():</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ssh_interface</span> <span class="o">=</span> <span class="n">ssh</span><span class="o">.</span><span class="n">SSH</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">USERNAME</span><span class="p">)</span>
 
     <span class="c1">#--------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="Qstat.process_simple_qstat"><a class="viewcode-back" href="../../../qstat.html#cweb.pbs.qstat.Qstat.process_simple_qstat">[docs]</a>    <span class="k">def</span> <span class="nf">process_simple_qstat</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Qstat.login"><a class="viewcode-back" href="../../../qstat.html#clusterweb.pbs.qstat.Qstat.login">[docs]</a>    <span class="k">def</span> <span class="nf">login</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">address</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">address</span><span class="p">,</span><span class="nb">str</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">UserWarning</span><span class="p">(</span><span class="s2">&quot;Invalid address arg type: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="nb">type</span><span class="p">(</span><span class="n">address</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ssh_interface</span> <span class="o">=</span> <span class="n">ssh</span><span class="o">.</span><span class="n">SSH</span><span class="p">(</span><span class="n">address</span><span class="p">)</span></div>
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="Qstat.process_simple_qstat"><a class="viewcode-back" href="../../../qstat.html#clusterweb.pbs.qstat.Qstat.process_simple_qstat">[docs]</a>    <span class="k">def</span> <span class="nf">process_simple_qstat</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">jobs</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">qstat_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ssh_interface</span><span class="o">.</span><span class="n">send_command</span><span class="p">(</span><span class="s1">&#39;qstat&#39;</span><span class="p">)</span>
 
@@ -351,14 +360,14 @@
 
     <span class="c1">#--------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="Qstat.cvrt_time"><a class="viewcode-back" href="../../../qstat.html#cweb.pbs.qstat.Qstat.cvrt_time">[docs]</a>    <span class="k">def</span> <span class="nf">cvrt_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">data</span><span class="p">):</span>
+<div class="viewcode-block" id="Qstat.cvrt_time"><a class="viewcode-back" href="../../../qstat.html#clusterweb.pbs.qstat.Qstat.cvrt_time">[docs]</a>    <span class="k">def</span> <span class="nf">cvrt_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">data</span><span class="p">):</span>
         <span class="n">c</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3600</span><span class="p">,</span><span class="mi">60</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
         <span class="k">return</span> <span class="nb">sum</span><span class="p">([</span><span class="nb">int</span><span class="p">(</span><span class="n">A</span><span class="p">)</span><span class="o">*</span><span class="nb">int</span><span class="p">(</span><span class="n">B</span><span class="p">)</span> <span class="k">for</span> <span class="n">A</span><span class="p">,</span><span class="n">B</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">),</span><span class="n">c</span><span class="p">)])</span></div>
 
 
     <span class="c1">#--------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="Qstat.cvrt_datetime"><a class="viewcode-back" href="../../../qstat.html#cweb.pbs.qstat.Qstat.cvrt_datetime">[docs]</a>    <span class="k">def</span> <span class="nf">cvrt_datetime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">data</span><span class="p">):</span>
+<div class="viewcode-block" id="Qstat.cvrt_datetime"><a class="viewcode-back" href="../../../qstat.html#clusterweb.pbs.qstat.Qstat.cvrt_datetime">[docs]</a>    <span class="k">def</span> <span class="nf">cvrt_datetime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">data</span><span class="p">):</span>
         <span class="n">day</span>   <span class="o">=</span> <span class="n">data</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span>
         <span class="n">month</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">6</span><span class="p">]</span>
         <span class="n">date</span>  <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">6</span><span class="p">:</span><span class="mi">8</span><span class="p">]</span>
@@ -375,7 +384,7 @@
 
     <span class="c1">#--------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="Qstat.process_full_qstat"><a class="viewcode-back" href="../../../qstat.html#cweb.pbs.qstat.Qstat.process_full_qstat">[docs]</a>    <span class="k">def</span> <span class="nf">process_full_qstat</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Qstat.process_full_qstat"><a class="viewcode-back" href="../../../qstat.html#clusterweb.pbs.qstat.Qstat.process_full_qstat">[docs]</a>    <span class="k">def</span> <span class="nf">process_full_qstat</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">jobs</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">qstat_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ssh_interface</span><span class="o">.</span><span class="n">send_command</span><span class="p">(</span><span class="s1">&#39;qstat -f&#39;</span><span class="p">)</span>
 
@@ -471,18 +480,23 @@
             <span class="n">job</span><span class="o">.</span><span class="n">start_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cvrt_datetime</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">start_time</span><span class="p">)</span>
 
             <span class="n">job</span><span class="o">.</span><span class="n">time_use</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">resources_used_walltime</span>
+
+            <span class="n">jobs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">job</span><span class="p">)</span>
             
         <span class="k">return</span> <span class="n">jobs</span></div>
 
     <span class="c1">#--------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="Qstat.process_id"><a class="viewcode-back" href="../../../qstat.html#cweb.pbs.qstat.Qstat.process_id">[docs]</a>    <span class="k">def</span> <span class="nf">process_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">job_id</span><span class="p">):</span>
+<div class="viewcode-block" id="Qstat.process_id"><a class="viewcode-back" href="../../../qstat.html#clusterweb.pbs.qstat.Qstat.process_id">[docs]</a>    <span class="k">def</span> <span class="nf">process_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">job_id</span><span class="p">):</span>
         <span class="n">jobs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">process_full_qstat</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">jobs</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">jobs</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">job_id</span><span class="p">,</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span><span class="n">job_id</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">n</span><span class="o">.</span><span class="n">job_id</span> <span class="o">==</span> <span class="n">job_id</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">n</span></div></div>
+                <span class="k">return</span> <span class="n">n</span>
+        <span class="k">return</span> <span class="kc">None</span></div></div>
 
-<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../../qstat.html#cweb.pbs.qstat.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../../qstat.html#clusterweb.pbs.qstat.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
     <span class="n">q</span> <span class="o">=</span> <span class="n">Qstat</span><span class="p">()</span>
     <span class="n">jobs</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">process_full_qstat</span><span class="p">()</span></div>
     <span class="c1">#q.cvrt_datetime(&#39;WedOct3114:01:092018&#39;)</span>

@@ -6,7 +6,7 @@ from clusterweb.pbs.qsession import QSession
 test_arg = 1e5
 
 def job(arg):
-	a,b = 1,1
+	a,b = 0,1
 	for _ in range(int(arg)):
 		a,b = b,a+b
 	return a 

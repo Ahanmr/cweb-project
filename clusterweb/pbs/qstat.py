@@ -77,6 +77,7 @@ exchange = {
     "start_count"                   :   "start_count",  
     "fault_tolerant"                :   "fault_tolerant",  
     "job_radix"                     :   "job_radix", 
+    "exit_status"                   :   "exit_status",
     "submit_host"                   :   "submit_host"
 }
 
@@ -311,6 +312,8 @@ class Qstat():
             job.start_time = self.cvrt_datetime(job.start_time)
 
             job.time_use = job.resources_used_walltime
+
+            jobs.append(job)
             
         return jobs
 
@@ -318,9 +321,12 @@ class Qstat():
 
     def process_id(self,job_id):
         jobs = self.process_full_qstat()
+        print(jobs)
         for n in jobs:
+            print(n.job_id,'\t',job_id)
             if n.job_id == job_id:
                 return n
+        return None
 
 def main():
     q = Qstat()

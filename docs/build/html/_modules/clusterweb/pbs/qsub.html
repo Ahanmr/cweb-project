@@ -1,0 +1,1183 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>clusterweb.pbs.qsub &mdash; clusterweb 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="author" title="About these documents" href="../../../about.html" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html">
+          
+
+          
+            
+            <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">About ClusterWeb</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../why.html">Why to Use CWeb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../about.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developer Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../beginner.html">Beginner Usage Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced.html">Advanced Usage Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cpu.html">CPU Optimization Techniques</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Portable Batch Systems (PBS)</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../qsub.html">Qsub: Single Function Submission</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../qsession.html">QSession: Running Multiple Jobs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../qdel.html">Qdel: Remove Running Jobs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../qstat.html">Qstat: View PBS Job Status</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../resources.html">Resource Configuration</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Secure Shell Systems (SSH)</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../sub.html">Sub: Single Function Submission</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../session.html">Session: Running Multiple Jobs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../del.html">Del: Remove Running Jobs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../stat.html">Stat: View Job Status</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">clusterweb</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>clusterweb.pbs.qsub</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for clusterweb.pbs.qsub</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/bin/env/python</span>
+<span class="c1">#-*- encoding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">cloudpickle</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="kn">from</span> <span class="nn">clusterweb.interfaces</span> <span class="k">import</span> <span class="n">ssh</span>
+<span class="kn">from</span> <span class="nn">clusterweb.pbs</span> <span class="k">import</span> <span class="n">scripts</span>
+<span class="kn">from</span> <span class="nn">clusterweb.pbs</span> <span class="k">import</span> <span class="n">config</span>
+<span class="kn">from</span> <span class="nn">clusterweb.pbs</span> <span class="k">import</span> <span class="n">qstat</span>
+<span class="kn">from</span> <span class="nn">clusterweb.pbs</span> <span class="k">import</span> <span class="n">qdel</span>
+<span class="kn">from</span> <span class="nn">clusterweb.pbs</span> <span class="k">import</span> <span class="n">qsession</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">===============================================================================</span>
+
+<span class="sd">===============================================================================</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Qsub"><a class="viewcode-back" href="../../../qsub.html#clusterweb.pbs.qsub.Qsub">[docs]</a><span class="k">class</span> <span class="nc">Qsub</span><span class="p">():</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">target</span><span class="p">,</span><span class="n">args</span><span class="p">,</span>
+            <span class="n">n_nodes</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">DEFAULT_NODES</span><span class="p">,</span>
+            <span class="n">n_cores</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">DEFAULT_CORES</span><span class="p">,</span>
+            <span class="n">set_walltime</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">DEFAULT_WALLTIME</span><span class="p">,</span>
+            <span class="n">set_memory</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">DEFAULT_MEMORY</span><span class="p">,</span>
+            <span class="n">set_cpu</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">DEFAULT_CPU</span><span class="p">,</span>
+            <span class="n">wait_time</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">DEFAULT_WAIT_TIME</span><span class="p">,</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">username</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">USERNAME</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ssh</span> <span class="o">=</span> <span class="n">ssh</span><span class="o">.</span><span class="n">SSH</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">username</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">qdel</span> <span class="o">=</span> <span class="n">qdel</span><span class="o">.</span><span class="n">QDel</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="n">target</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="n">args</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">temp_dir</span> <span class="o">=</span> <span class="s1">&#39;temp_</span><span class="si">{}{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)),</span>
+            <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span><span class="mi">10000</span><span class="p">))</span>
+
+        <span class="c1"># FIX: Allocate resource functions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_nodes</span>        <span class="o">=</span> <span class="n">n_nodes</span>
+        <span class="c1"># Qsub script placeholder for number of cores</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_cores</span>        <span class="o">=</span> <span class="n">n_cores</span>
+        <span class="c1"># Qsub script placeholder for the walltime allocated</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_walltime</span>   <span class="o">=</span> <span class="n">set_walltime</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">allocate_walltime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">set_walltime</span><span class="p">)</span>
+
+        <span class="c1"># Qsub script placeholder for memory allocated</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_memory</span>     <span class="o">=</span> <span class="n">set_memory</span>
+        <span class="c1"># Qsub script placeholder for cpu time allocated</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_cpu</span>        <span class="o">=</span> <span class="n">set_cpu</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">wait_time</span> <span class="o">=</span> <span class="n">wait_time</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">complete</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">job_id</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_use</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">user_quit</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_time</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">timer</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">flags</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_qstat_on_comparison</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__type__</span> <span class="o">=</span> <span class="s2">&quot;qsub&quot;</span>
+
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="Qsub.__contains__"><a class="viewcode-back" href="../../../qsub.html#clusterweb.pbs.qsub.Qsub.__contains__">[docs]</a>    <span class="k">def</span> <span class="nf">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">fnc</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Boolean function for whether a function is contained within a job</span>
+
+<span class="sd">        :param fnc: function to find</span>
+<span class="sd">        :type fnc: Python function</span>
+
+<span class="sd">        :returns: True or False</span>
+
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; q = Qsub(job,arg)</span>
+<span class="sd">        &gt;&gt;&gt; job in q</span>
+<span class="sd">        True</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">)</span> <span class="o">==</span> <span class="n">fnc</span></div>
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="Qsub.quit"><a class="viewcode-back" href="../../../qsub.html#clusterweb.pbs.qsub.Qsub.quit">[docs]</a>    <span class="k">def</span> <span class="nf">quit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">qdel</span><span class="o">.</span><span class="n">address</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">username</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">qdel</span><span class="o">.</span><span class="n">login</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">username</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_id</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">qdel</span><span class="o">.</span><span class="n">rm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">job_id</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">user_quit</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+    <span class="k">def</span> <span class="nf">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="fm">__del__</span><span class="p">()</span>
+
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="Qsub.__and__"><a class="viewcode-back" href="../../../qsub.html#clusterweb.pbs.qsub.Qsub.__and__">[docs]</a>    <span class="k">def</span> <span class="nf">__and__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">job</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Adds two jobs together to create a QSession job</span>
+
+<span class="sd">        :param job: Job to be compared to</span>
+<span class="sd">        :type job: clusterweb.pbs.qsub.Qsub</span>
+
+<span class="sd">        :returns: True or False</span>
+
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; sess = Qsub(job,arg)</span>
+<span class="sd">        &gt;&gt;&gt; q = Qsub(job,arg)</span>
+<span class="sd">        &gt;&gt;&gt; sess += q</span>
+
+<span class="sd">        .. note:: Equivalent to `__add__` or `q1 + q2`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">complete</span> <span class="ow">and</span> <span class="n">job</span><span class="o">.</span><span class="n">complete</span></div>
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="Qsub.__or__"><a class="viewcode-back" href="../../../qsub.html#clusterweb.pbs.qsub.Qsub.__or__">[docs]</a>    <span class="k">def</span> <span class="nf">__or__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">job</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Adds two jobs together to create a QSession job</span>
+
+<span class="sd">        :param job: Job to be compared to</span>
+<span class="sd">        :type job: clusterweb.pbs.qsub.Qsub</span>
+
+<span class="sd">        :returns: True or False</span>
+
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; sess = Qsub(job,arg)</span>
+<span class="sd">        &gt;&gt;&gt; q = Qsub(job,arg)</span>
+<span class="sd">        &gt;&gt;&gt; sess += q</span>
+
+<span class="sd">        .. note:: Equivalent to `__add__` or `q1 + q2`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">complete</span> <span class="ow">or</span> <span class="n">job</span><span class="o">.</span><span class="n">complete</span></div>
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="Qsub.__ior__"><a class="viewcode-back" href="../../../qsub.html#clusterweb.pbs.qsub.Qsub.__ior__">[docs]</a>    <span class="k">def</span> <span class="nf">__ior__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">job</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Adds two jobs together to create a QSession job</span>
+
+<span class="sd">        :param job: Job to be compared to</span>
+<span class="sd">        :type job: clusterweb.pbs.qsub.Qsub</span>
+
+<span class="sd">        :returns: True or False</span>
+
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; sess = Qsub(job,arg)</span>
+<span class="sd">        &gt;&gt;&gt; q = Qsub(job,arg)</span>
+<span class="sd">        &gt;&gt;&gt; sess += q</span>
+
+<span class="sd">        .. note:: Equivalent to `__add__` or `q1 + q2`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__or__</span><span class="p">(</span><span class="n">job</span><span class="p">)</span></div>
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="Qsub.__add__"><a class="viewcode-back" href="../../../qsub.html#clusterweb.pbs.qsub.Qsub.__add__">[docs]</a>    <span class="k">def</span> <span class="nf">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">job</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Adds two jobs together to create a QSession job</span>
+
+<span class="sd">        :param job: Job to be compared to</span>
+<span class="sd">        :type job: clusterweb.pbs.qsub.Qsub</span>
+
+<span class="sd">        :returns: True or False</span>
+
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; q1 = Qsub(job,arg)</span>
+<span class="sd">        &gt;&gt;&gt; q2 = Qsub(job,arg)</span>
+<span class="sd">        &gt;&gt;&gt; sess = q1 + q2</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">job</span><span class="o">.</span><span class="n">__type__</span> <span class="o">==</span> <span class="s1">&#39;qsub&#39;</span><span class="p">:</span>
+            <span class="n">sess</span> <span class="o">=</span> <span class="n">qsession</span><span class="o">.</span><span class="n">QSession</span><span class="p">()</span>
+            <span class="n">sess</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">)</span>
+            <span class="n">sess</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">target</span><span class="p">,</span><span class="n">job</span><span class="o">.</span><span class="n">args</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">sess</span>
+
+        <span class="k">elif</span> <span class="n">job</span><span class="o">.</span><span class="n">__type__</span> <span class="o">==</span> <span class="s1">&#39;qsession&#39;</span><span class="p">:</span>
+            <span class="n">job</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">job</span> 
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Incorrect job arg: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="nb">type</span><span class="p">(</span><span class="n">job</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span></div>
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="Qsub.__iadd__"><a class="viewcode-back" href="../../../qsub.html#clusterweb.pbs.qsub.Qsub.__iadd__">[docs]</a>    <span class="k">def</span> <span class="nf">__iadd__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">job</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Adds two jobs together to create a QSession job</span>
+
+<span class="sd">        :param job: Job to be compared to</span>
+<span class="sd">        :type job: clusterweb.pbs.qsub.Qsub</span>
+
+<span class="sd">        :returns: True or False</span>
+
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; sess = Qsub(job,arg)</span>
+<span class="sd">        &gt;&gt;&gt; q = Qsub(job,arg)</span>
+<span class="sd">        &gt;&gt;&gt; sess += q</span>
+
+<span class="sd">        .. note:: Equivalent to `__add__` or `q1 + q2`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__add__</span><span class="p">(</span><span class="n">job</span><span class="p">)</span></div>
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="Qsub.__mul__"><a class="viewcode-back" href="../../../qsub.html#clusterweb.pbs.qsub.Qsub.__mul__">[docs]</a>    <span class="k">def</span> <span class="nf">__mul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">n</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates a QSession of multiple instances of the target function </span>
+<span class="sd">        and args.</span>
+
+<span class="sd">        :param n: The number of instances</span>
+<span class="sd">        :type n: int</span>
+
+<span class="sd">        :returns: clusterweb.pbs.qsession.QSession</span>
+
+<span class="sd">        :Example:</span>
+<span class="sd">        </span>
+<span class="sd">        &gt;&gt;&gt; job = lambda z: meaning_to_life(z)</span>
+<span class="sd">        &gt;&gt;&gt; q = Qsub(job,arg)</span>
+<span class="sd">        &gt;&gt;&gt; sess = q * 5</span>
+<span class="sd">        &gt;&gt;&gt; sess.push()</span>
+<span class="sd">        &gt;&gt;&gt; sess.pull()</span>
+<span class="sd">        &gt;&gt;&gt; sess.results</span>
+<span class="sd">        [42,42,42,42,42]</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="nb">int</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Arg n not type int: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">UserWarning</span><span class="p">(</span><span class="s2">&quot;Arg n must be greater than 0: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+        <span class="n">sess</span> <span class="o">=</span> <span class="n">qsession</span><span class="o">.</span><span class="n">QSession</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            <span class="n">sess</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">sess</span></div>
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="Qsub.__lt__"><a class="viewcode-back" href="../../../qsub.html#clusterweb.pbs.qsub.Qsub.__lt__">[docs]</a>    <span class="k">def</span> <span class="nf">__lt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">job</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns whether the job&#39;s walltime is less than the other job&#39;s</span>
+<span class="sd">        walltime</span>
+
+<span class="sd">        :param job: Job to be compared to</span>
+<span class="sd">        :type job: clusterweb.pbs.qsub.Qsub</span>
+
+<span class="sd">        :returns: True or False</span>
+
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; q1 = Qsub(job,arg)</span>
+<span class="sd">        &gt;&gt;&gt; q2 = Qsub(job,arg)</span>
+<span class="sd">        &gt;&gt;&gt; q1 &lt; q2</span>
+
+<span class="sd">        .. note:: It will take almost a second to run when </span>
+<span class="sd">            `update_qstat_on_comparison` is True since it checks and parses </span>
+<span class="sd">            qstat -f. To make this run faster based on a previous qstat </span>
+<span class="sd">            update, set `update_qstat_on_comparison` to False.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">submitted</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">UserWarning</span><span class="p">(</span><span class="s2">&quot;Job not submitted yet&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_qstat_on_comparison</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_qstat</span><span class="p">()</span>
+            <span class="n">job</span><span class="o">.</span><span class="n">update_qstat</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="s1">&#39;resources_used_walltime&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">:</span>
+            <span class="k">pass</span> <span class="c1"># FIX</span>
+        <span class="k">else</span><span class="p">:</span>           
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">resources_used_walltime</span> <span class="o">&lt;</span> <span class="n">job</span><span class="o">.</span><span class="n">resources_used_walltime</span></div>
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="Qsub.__le__"><a class="viewcode-back" href="../../../qsub.html#clusterweb.pbs.qsub.Qsub.__le__">[docs]</a>    <span class="k">def</span> <span class="nf">__le__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">job</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns whether the job&#39;s walltime is less than the other job&#39;s</span>
+<span class="sd">        walltime</span>
+
+<span class="sd">        :param job: Job to be compared to</span>
+<span class="sd">        :type job: clusterweb.pbs.qsub.Qsub</span>
+
+<span class="sd">        :returns: True or False</span>
+
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; q1 = Qsub(job,arg)</span>
+<span class="sd">        &gt;&gt;&gt; q2 = Qsub(job,arg)</span>
+<span class="sd">        &gt;&gt;&gt; q1 &lt;= q2</span>
+<span class="sd">        </span>
+<span class="sd">        .. note:: It will take almost a second to run when </span>
+<span class="sd">            `update_qstat_on_comparison` is True since it checks and parses </span>
+<span class="sd">            qstat -f. To make this run faster based on a previous qstat </span>
+<span class="sd">            update, set `update_qstat_on_comparison` to False.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">submitted</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">UserWarning</span><span class="p">(</span><span class="s2">&quot;Job not submitted yet&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_qstat_on_comparison</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_qstat</span><span class="p">()</span>
+            <span class="n">job</span><span class="o">.</span><span class="n">update_qstat</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="s1">&#39;resources_used_walltime&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">:</span>
+            <span class="k">pass</span> <span class="c1"># FIX</span>
+        <span class="k">else</span><span class="p">:</span>           
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">resources_used_walltime</span> <span class="o">&lt;=</span> <span class="n">job</span><span class="o">.</span><span class="n">resources_used_walltime</span></div>
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="Qsub.__gt__"><a class="viewcode-back" href="../../../qsub.html#clusterweb.pbs.qsub.Qsub.__gt__">[docs]</a>    <span class="k">def</span> <span class="nf">__gt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">job</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns whether the job&#39;s walltime is greater than the </span>
+<span class="sd">        other job&#39;s walltime</span>
+
+<span class="sd">        :param job: Job to be compared to</span>
+<span class="sd">        :type job: clusterweb.pbs.qsub.Qsub</span>
+
+<span class="sd">        :returns: True or False</span>
+
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; q1 = Qsub(job,arg)</span>
+<span class="sd">        &gt;&gt;&gt; q2 = Qsub(job,arg)</span>
+<span class="sd">        &gt;&gt;&gt; q1 &gt; q2</span>
+
+<span class="sd">        .. note:: It will take almost a second to run when </span>
+<span class="sd">            `update_qstat_on_comparison` is True since it checks and parses </span>
+<span class="sd">            qstat -f. To make this run faster based on a previous qstat </span>
+<span class="sd">            update, set `update_qstat_on_comparison` to False.</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">submitted</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">UserWarning</span><span class="p">(</span><span class="s2">&quot;Job not submitted yet&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_qstat_on_comparison</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_qstat</span><span class="p">()</span>
+            <span class="n">job</span><span class="o">.</span><span class="n">update_qstat</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="s1">&#39;resources_used_walltime&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">:</span>
+            <span class="k">pass</span> <span class="c1"># FIX</span>
+        <span class="k">else</span><span class="p">:</span>           
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">resources_used_walltime</span> <span class="o">&gt;</span> <span class="n">job</span><span class="o">.</span><span class="n">resources_used_walltime</span></div>
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="Qsub.__ge__"><a class="viewcode-back" href="../../../qsub.html#clusterweb.pbs.qsub.Qsub.__ge__">[docs]</a>    <span class="k">def</span> <span class="nf">__ge__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">job</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns whether the job&#39;s walltime is greater than or equal to the </span>
+<span class="sd">        other job&#39;s walltime</span>
+
+<span class="sd">        :param job: Job to be compared to</span>
+<span class="sd">        :type job: clusterweb.pbs.qsub.Qsub</span>
+
+<span class="sd">        :returns: True or False</span>
+
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; q1 = Qsub(job,arg)</span>
+<span class="sd">        &gt;&gt;&gt; q2 = Qsub(job,arg)</span>
+<span class="sd">        &gt;&gt;&gt; q1 &gt;= q2</span>
+
+<span class="sd">        .. note:: It will take almost a second to run when </span>
+<span class="sd">            `update_qstat_on_comparison` is True since it checks and parses </span>
+<span class="sd">            qstat -f. To make this run faster based on a previous qstat </span>
+<span class="sd">            update, set `update_qstat_on_comparison` to False.</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">submitted</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">UserWarning</span><span class="p">(</span><span class="s2">&quot;Job not submitted yet&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_qstat_on_comparison</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_qstat</span><span class="p">()</span>
+            <span class="n">job</span><span class="o">.</span><span class="n">update_qstat</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="s1">&#39;resources_used_walltime&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">:</span>
+            <span class="k">pass</span> <span class="c1"># FIX</span>
+        <span class="k">else</span><span class="p">:</span>           
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">resources_used_walltime</span> <span class="o">&gt;=</span> <span class="n">job</span><span class="o">.</span><span class="n">resources_used_walltime</span></div>
+
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="Qsub.__eq__"><a class="viewcode-back" href="../../../qsub.html#clusterweb.pbs.qsub.Qsub.__eq__">[docs]</a>    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">job</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns whether the job&#39;s walltime is equal to the </span>
+<span class="sd">        other job&#39;s walltime</span>
+
+<span class="sd">        :param job: Job to be compared to</span>
+<span class="sd">        :type job: clusterweb.pbs.qsub.Qsub</span>
+
+<span class="sd">        :returns: True or False</span>
+
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; q1 = Qsub(job,arg)</span>
+<span class="sd">        &gt;&gt;&gt; q2 = Qsub(job,arg)</span>
+<span class="sd">        &gt;&gt;&gt; q1 == q2</span>
+
+<span class="sd">        .. note:: It will take almost a second to run when </span>
+<span class="sd">            `update_qstat_on_comparison` is True since it checks and parses </span>
+<span class="sd">            qstat -f. To make this run faster based on a previous qstat </span>
+<span class="sd">            update, set `update_qstat_on_comparison` to False.</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">)</span> <span class="o">==</span> <span class="nb">id</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">target</span><span class="p">)</span></div>
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="Qsub.is_"><a class="viewcode-back" href="../../../qsub.html#clusterweb.pbs.qsub.Qsub.is_">[docs]</a>    <span class="k">def</span> <span class="nf">is_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">job</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns whether the job&#39;s walltime is equal to the </span>
+<span class="sd">        other job&#39;s walltime</span>
+
+<span class="sd">        :param job: Job to be compared to</span>
+<span class="sd">        :type job: clusterweb.pbs.qsub.Qsub</span>
+
+<span class="sd">        :returns: True or False</span>
+
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; q1 = Qsub(job,arg)</span>
+<span class="sd">        &gt;&gt;&gt; q2 = Qsub(job,arg)</span>
+<span class="sd">        &gt;&gt;&gt; q1 is q2</span>
+<span class="sd">        True</span>
+
+<span class="sd">        .. note:: Equivalent to `__eq_-`</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">)</span> <span class="o">==</span> <span class="nb">id</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">target</span><span class="p">)</span></div>
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="Qsub.is_not"><a class="viewcode-back" href="../../../qsub.html#clusterweb.pbs.qsub.Qsub.is_not">[docs]</a>    <span class="k">def</span> <span class="nf">is_not</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">job</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns whether the job&#39;s function is not equal to the function of </span>
+<span class="sd">        another job.</span>
+
+<span class="sd">        :param job: Job to be compared to</span>
+<span class="sd">        :type job: clusterweb.pbs.qsub.Qsub</span>
+
+<span class="sd">        :returns: True or False</span>
+
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; q1 = Qsub(job,arg)</span>
+<span class="sd">        &gt;&gt;&gt; q2 = Qsub(job,arg)</span>
+<span class="sd">        &gt;&gt;&gt; q1 is not q2</span>
+<span class="sd">        False</span>
+<span class="sd">        &gt;&gt;&gt; q3 = Qsub(job2,arg)</span>
+<span class="sd">        &gt;&gt;&gt; q1 is not q3</span>
+<span class="sd">        True</span>
+
+<span class="sd">        .. note:: Equivalent to `__ne__`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">id</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">target</span><span class="p">)</span></div>
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="Qsub.__ne__"><a class="viewcode-back" href="../../../qsub.html#clusterweb.pbs.qsub.Qsub.__ne__">[docs]</a>    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">job</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns whether the job&#39;s function is not equal to the function of </span>
+<span class="sd">        another job.</span>
+
+<span class="sd">        :param job: Job to be compared to</span>
+<span class="sd">        :type job: clusterweb.pbs.qsub.Qsub</span>
+
+<span class="sd">        :returns: True or False</span>
+
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; q1 = Qsub(job,arg)</span>
+<span class="sd">        &gt;&gt;&gt; q2 = Qsub(job,arg)</span>
+<span class="sd">        &gt;&gt;&gt; q1 == q2</span>
+<span class="sd">        False</span>
+<span class="sd">        &gt;&gt;&gt; q3 = Qsub(job2,arg)</span>
+<span class="sd">        &gt;&gt;&gt; q1 != q3</span>
+<span class="sd">        True</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">id</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">target</span><span class="p">)</span></div>
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="Qsub.update_qstat"><a class="viewcode-back" href="../../../qsub.html#clusterweb.pbs.qsub.Qsub.update_qstat">[docs]</a>    <span class="k">def</span> <span class="nf">update_qstat</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the current data about a job from qstat</span>
+
+<span class="sd">        :param job_id: The job id given by qsub</span>
+<span class="sd">        :type job_id: str</span>
+
+<span class="sd">        :param user: The user id</span>
+<span class="sd">        :type user: str</span>
+
+<span class="sd">        :returns: None</span>
+
+<span class="sd">        .. note:: Must be run after a job is submitted as qstat will only </span>
+<span class="sd">            report data if it is in the queue</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">complete</span><span class="p">:</span>
+            <span class="c1"># Job no longer exists</span>
+            <span class="k">pass</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">submitted</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">UserWarning</span><span class="p">(</span><span class="s2">&quot;Job not submitted&quot;</span><span class="p">)</span>
+
+        <span class="n">data</span> <span class="o">=</span> <span class="n">qstat</span><span class="o">.</span><span class="n">Qstat</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">username</span> <span class="o">!=</span> <span class="n">config</span><span class="o">.</span><span class="n">USERNAME</span><span class="p">:</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">login</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">username</span><span class="p">)</span>
+
+        <span class="n">job</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">process_id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">job_id</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">job</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">job</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">:</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Job no longer exists</span>
+            <span class="k">pass</span></div>
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="Qsub.login"><a class="viewcode-back" href="../../../qsub.html#clusterweb.pbs.qsub.Qsub.login">[docs]</a>    <span class="k">def</span> <span class="nf">login</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">address</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates an SSH interface object with the address specified </span>
+
+<span class="sd">        :param address: Address or name for ssh to</span>
+<span class="sd">        :type address: str</span>
+
+<span class="sd">        :returns: None</span>
+
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; q = Qsub(job,arg)</span>
+<span class="sd">        &gt;&gt;&gt; q.login(&#39;192.168.1.42&#39;)</span>
+
+<span class="sd">        .. note:: The default address is contained in </span>
+<span class="sd">            clusterweb/pbs/username.txt and can be adjusted with </span>
+<span class="sd">            `change_default_address`</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">address</span><span class="p">,</span><span class="nb">str</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">UserWarning</span><span class="p">(</span><span class="s2">&quot;Invalid address arg type: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="nb">type</span><span class="p">(</span><span class="n">address</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ssh_interface</span> <span class="o">=</span> <span class="n">ssh</span><span class="o">.</span><span class="n">SSH</span><span class="p">(</span><span class="n">address</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">username</span> <span class="o">=</span> <span class="n">address</span></div>
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="Qsub.change_default_address"><a class="viewcode-back" href="../../../qsub.html#clusterweb.pbs.qsub.Qsub.change_default_address">[docs]</a>    <span class="k">def</span> <span class="nf">change_default_address</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">address</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Change the default SSH address stored in username.txt which Qsub</span>
+<span class="sd">        automatically sets itself to unless `qsub.login` is used.</span>
+
+<span class="sd">        :param address: Address or name for ssh to</span>
+<span class="sd">        :type address: str</span>
+
+<span class="sd">        :returns: None</span>
+
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; q = Qsub(job,arg)</span>
+<span class="sd">        &gt;&gt;&gt; q.change_default_address(&#39;192.168.1.24&#39;)</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">address</span><span class="p">,</span><span class="nb">str</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">UserWarning</span><span class="p">(</span><span class="s2">&quot;Invalid address arg type: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="nb">type</span><span class="p">(</span><span class="n">address</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)),</span><span class="s1">&#39;username.txt&#39;</span><span class="p">),</span><span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">address</span><span class="p">)</span></div>
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="Qsub.generate_qsub_script"><a class="viewcode-back" href="../../../qsub.html#clusterweb.pbs.qsub.Qsub.generate_qsub_script">[docs]</a>    <span class="k">def</span> <span class="nf">generate_qsub_script</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the PBS submission script from the specified resource</span>
+<span class="sd">        allocations.</span>
+
+<span class="sd">        :returns: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">scripts</span><span class="o">.</span><span class="n">qscript</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">n_nodes</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">n_cores</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_walltime</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_memory</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_cpu</span><span class="p">,</span>
+            <span class="s1">&#39;python </span><span class="si">{}</span><span class="s1">/pyscript.py&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_dir</span><span class="p">))</span></div>
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="Qsub.allocate_walltime"><a class="viewcode-back" href="../../../qsub.html#clusterweb.pbs.qsub.Qsub.allocate_walltime">[docs]</a>    <span class="k">def</span> <span class="nf">allocate_walltime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">walltime</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Sets the amount of walltime</span>
+
+<span class="sd">        Will raise exception if str argument is not in the form hr:min:sec</span>
+
+<span class="sd">        :param walltime: amount of walltime in seconds</span>
+<span class="sd">        :type walltime: str, int, float</span>
+
+<span class="sd">        :returns: None</span>
+
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; q.allocate_walltime(&#39;0:05:00&#39;) # Five minutes</span>
+<span class="sd">        &gt;&gt;&gt; q.allocate_walltime(600) # Ten minutes</span>
+<span class="sd">        &gt;&gt;&gt; q.allocate_walltime(599.6) # Rounds to ten minutes</span>
+
+<span class="sd">        .. note:: The walltime configuration can be adjusted by admins in </span>
+<span class="sd">            `clusterweb/pbs/config.py`.</span>
+
+<span class="sd">        .. warning:: If users adjust `clusterweb/pbs/config.py` to</span>
+<span class="sd">            settings not authorized by cluster admins, it will raise</span>
+<span class="sd">            errors on the cluster and the job will not be submitted.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">walltime</span><span class="p">,(</span><span class="nb">int</span><span class="p">,</span><span class="nb">float</span><span class="p">)):</span>
+            <span class="n">walltime</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">walltime</span><span class="p">))</span>
+
+        <span class="k">def</span> <span class="nf">intable</span><span class="p">(</span><span class="n">z</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="nb">int</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">True</span> 
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">walltime</span><span class="p">,</span><span class="nb">str</span><span class="p">):</span>
+            <span class="n">split_exp</span> <span class="o">=</span> <span class="n">walltime</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">intable</span><span class="p">,</span><span class="n">split_exp</span><span class="p">)))</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">split_exp</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="c1"># TODO: Add config check</span>
+                <span class="k">pass</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Invalid walltime arg: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">walltime</span><span class="p">))</span>
+
+        <span class="n">c</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3600</span><span class="p">,</span><span class="mi">60</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_walltime</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="nb">int</span><span class="p">(</span><span class="n">A</span><span class="p">)</span><span class="o">*</span><span class="nb">int</span><span class="p">(</span><span class="n">B</span><span class="p">)</span> <span class="k">for</span> <span class="n">A</span><span class="p">,</span><span class="n">B</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+            <span class="n">walltime</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">),</span><span class="n">c</span><span class="p">)])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_walltime</span> <span class="o">=</span> <span class="n">walltime</span></div>
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="Qsub.allocate_memory"><a class="viewcode-back" href="../../../qsub.html#clusterweb.pbs.qsub.Qsub.allocate_memory">[docs]</a>    <span class="k">def</span> <span class="nf">allocate_memory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">memory</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set the amount of memory for the job</span>
+
+<span class="sd">        :param memory: string in format &#39;10GB&#39; or &#39;500MB&#39; or number of MB</span>
+<span class="sd">        :type memory: str, int, float</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">        &gt;&gt;&gt; # Use three GB</span>
+<span class="sd">        &gt;&gt;&gt; qsub_job.allocate_memory(&#39;3GB&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; qsub_job.allocate_memory(3000)</span>
+<span class="sd">        &gt;&gt;&gt; </span>
+<span class="sd">        &gt;&gt;&gt; qsub_job.start()</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">memory</span><span class="p">,</span><span class="nb">int</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">memory</span> <span class="o">&gt;</span> <span class="n">config</span><span class="o">.</span><span class="n">MAX_MEMORY</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Max memory arg </span><span class="si">{}</span><span class="s2"> exceeded: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">config</span><span class="o">.</span><span class="n">MAX_MEMORY</span><span class="p">,</span><span class="n">memory</span><span class="p">))</span>
+
+            <span class="k">if</span> <span class="n">memory</span> <span class="o">&lt;</span> <span class="n">config</span><span class="o">.</span><span class="n">MIN_MEMORY</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Lower than min memory </span><span class="si">{}</span><span class="s2"> arg: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">config</span><span class="o">.</span><span class="n">MIN_MEMORY</span><span class="p">,</span><span class="n">memory</span><span class="p">))</span>
+
+            <span class="n">memory</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">MB&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">memory</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">memory</span><span class="p">,</span><span class="nb">str</span><span class="p">):</span>
+            <span class="n">valid</span> <span class="o">=</span> <span class="kc">True</span>
+
+            <span class="k">if</span> <span class="n">memory</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">((</span><span class="s1">&#39;GB&#39;</span><span class="p">,</span><span class="s1">&#39;MB&#39;</span><span class="p">)):</span>
+                <span class="k">try</span><span class="p">:</span>
+
+                    <span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">memory</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span>
+
+                    <span class="k">if</span> <span class="s1">&#39;G&#39;</span> <span class="ow">in</span> <span class="n">memory</span><span class="o">.</span><span class="n">upper</span><span class="p">():</span>
+                        <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="nb">int</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">MAX_MEMORY</span><span class="o">/</span><span class="mi">1000</span><span class="p">):</span>
+                            <span class="n">valid</span> <span class="o">=</span> <span class="kc">False</span>
+
+                        <span class="k">elif</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="nb">int</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">MIN_MEMORY</span><span class="o">/</span><span class="mi">1000</span><span class="p">):</span>
+                            <span class="n">valid</span> <span class="o">=</span> <span class="kc">False</span>
+
+                    <span class="k">elif</span> <span class="s1">&#39;M&#39;</span> <span class="ow">in</span> <span class="n">memory</span><span class="o">.</span><span class="n">upper</span><span class="p">():</span>
+                        <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="n">config</span><span class="o">.</span><span class="n">MAX_MEMORY</span><span class="p">:</span>
+                            <span class="n">valid</span> <span class="o">=</span> <span class="kc">False</span>
+
+                        <span class="k">elif</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="n">config</span><span class="o">.</span><span class="n">MIN_MEMORY</span><span class="p">:</span>
+                            <span class="n">valid</span> <span class="o">=</span> <span class="kc">False</span>
+
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="n">valid</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">valid</span> <span class="o">=</span> <span class="kc">False</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">valid</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Invalid memory arg: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">memory</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid memory arg type: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="nb">type</span><span class="p">(</span><span class="n">memory</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_memory</span> <span class="o">=</span> <span class="n">memory</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">job</span><span class="o">.</span><span class="n">set_memory</span> <span class="o">=</span> <span class="n">memory</span></div>
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="Qsub.allocate_cores"><a class="viewcode-back" href="../../../qsub.html#clusterweb.pbs.qsub.Qsub.allocate_cores">[docs]</a>    <span class="k">def</span> <span class="nf">allocate_cores</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">n_cores</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n_cores</span><span class="p">,(</span><span class="nb">float</span><span class="p">,</span><span class="nb">int</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">UserWarning</span><span class="p">(</span><span class="s2">&quot;Invalid type for arg n_cores: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="nb">type</span><span class="p">(</span><span class="n">n_cores</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span>
+        <span class="n">n_cores</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">n_cores</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">n_cores</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">n_cores</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_cores</span> <span class="o">=</span> <span class="n">n_cores</span></div>
+
+
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="Qsub.set_priority"><a class="viewcode-back" href="../../../qsub.html#clusterweb.pbs.qsub.Qsub.set_priority">[docs]</a>    <span class="k">def</span> <span class="nf">set_priority</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">priority</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set the priority of the job, default is 0</span>
+
+<span class="sd">        :param priority: The level of priority</span>
+<span class="sd">        :type priority: int (-1024,1023)</span>
+
+<span class="sd">        :returns: None</span>
+
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; q1 = Qsub(important_job,args)</span>
+<span class="sd">        &gt;&gt;&gt; q1.set_priority(1000)</span>
+<span class="sd">        &gt;&gt;&gt; </span>
+<span class="sd">        &gt;&gt;&gt; q2 = Qsub(not_so_important_job,args)</span>
+<span class="sd">        &gt;&gt;&gt; q2.set_priority(-100)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">priority</span><span class="p">,</span><span class="nb">int</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">priority</span> <span class="o">&lt;</span> <span class="mi">1023</span> <span class="ow">and</span> <span class="n">priority</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1024</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">flags</span> <span class="o">+=</span> <span class="s1">&#39; -p </span><span class="si">{}</span><span class="s1"> &#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">priority</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">UserWarning</span><span class="p">(</span><span class="s2">&quot;Invalid priority arg for range </span><span class="se">\</span>
+<span class="s2">                    (-1024,1023): </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">priority</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Invalid priority arg type: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="nb">type</span><span class="p">(</span><span class="n">priority</span><span class="p">)</span><span class="o">.</span><span class="n">___name__</span><span class="p">))</span></div>
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="Qsub.create_timer"><a class="viewcode-back" href="../../../qsub.html#clusterweb.pbs.qsub.Qsub.create_timer">[docs]</a>    <span class="k">def</span> <span class="nf">create_timer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">n_seconds</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a timer that terminates the job if it exceeds the max time</span>
+
+<span class="sd">        :param n_seconds: The number of seconds for the timer, (n_seconds) &gt; 0</span>
+<span class="sd">        :type n_seconds: int, float </span>
+
+<span class="sd">        :returns: None</span>
+
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; q = Qsub(job,args)</span>
+<span class="sd">        &gt;&gt;&gt; q.create_timer(600)</span>
+
+<span class="sd">        .. note:: This is a timer for the time since it was submitted,</span>
+<span class="sd">            not for walltime.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n_seconds</span><span class="p">,</span><span class="nb">int</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Invalid n_seconds arg type: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="nb">type</span><span class="p">(</span><span class="n">n_seconds</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">n_seconds</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">UserWarning</span><span class="p">(</span><span class="s2">&quot;n_seconds cannot be less than 1: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">n_seconds</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">timer</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_time</span> <span class="o">=</span> <span class="n">n_seconds</span></div>
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="Qsub.cleanup"><a class="viewcode-back" href="../../../qsub.html#clusterweb.pbs.qsub.Qsub.cleanup">[docs]</a>    <span class="k">def</span> <span class="nf">cleanup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Remove the temprorary folder that holds the compressed data and</span>
+<span class="sd">        scripts that are sent to the cluster</span>
+
+<span class="sd">        :returns: None</span>
+
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; q = Qsub(job,args)</span>
+<span class="sd">        &gt;&gt;&gt; q.cleanup()</span>
+
+<span class="sd">        .. note:: This is automatically run and is not required to be run</span>
+<span class="sd">             by the user.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ssh</span><span class="o">.</span><span class="n">send_command</span><span class="p">(</span><span class="s1">&#39;rm -rf </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_dir</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ssh</span><span class="o">.</span><span class="n">send_command</span><span class="p">(</span><span class="s1">&#39;rm qsub_script.*</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">job_id</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_dir</span><span class="p">)</span></div>
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="Qsub.push"><a class="viewcode-back" href="../../../qsub.html#clusterweb.pbs.qsub.Qsub.push">[docs]</a>    <span class="k">def</span> <span class="nf">push</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Push the job to the remote cluster</span>
+
+<span class="sd">        Serializes the function, arguments, and send the generated scripts</span>
+<span class="sd">        to the server. It automatically sends the PBS commands so this is </span>
+<span class="sd">        the only command required to start the job on the cluster.</span>
+
+<span class="sd">        Resource allocation must occur before `push` is called.</span>
+
+<span class="sd">        :returns: None</span>
+
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; q = Qsub(job,args)</span>
+<span class="sd">        &gt;&gt;&gt; q.push()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">fnc</span> <span class="o">=</span> <span class="n">cloudpickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">)</span>
+
+        <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_dir</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_dir</span><span class="p">,</span><span class="s1">&#39;fnc.pkl&#39;</span><span class="p">),</span><span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fnc</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_dir</span><span class="p">,</span><span class="s1">&#39;args.pkl&#39;</span><span class="p">),</span><span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_dir</span><span class="p">,</span><span class="s1">&#39;pyscript.py&#39;</span><span class="p">),</span><span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">scripts</span><span class="o">.</span><span class="n">pyscript</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="o">.</span><span class="n">major</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_dir</span><span class="p">))</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_dir</span><span class="p">,</span><span class="s1">&#39;qscript&#39;</span><span class="p">),</span><span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">generate_qsub_script</span><span class="p">())</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ssh</span><span class="o">.</span><span class="n">send_folder</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_dir</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_dir</span><span class="p">)</span>
+
+        <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">job_id</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ssh</span><span class="o">.</span><span class="n">send_command</span><span class="p">(</span><span class="s1">&#39;qsub </span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">flags</span><span class="p">,</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_dir</span><span class="p">,</span><span class="s1">&#39;qscript&#39;</span><span class="p">)))</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">timer</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">job_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_id</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">submitted</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="Qsub.fetch_result"><a class="viewcode-back" href="../../../qsub.html#clusterweb.pbs.qsub.Qsub.fetch_result">[docs]</a>    <span class="k">def</span> <span class="nf">fetch_result</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the result of the job from the remote cluster synchronously</span>
+<span class="sd">        with the main script.</span>
+
+<span class="sd">        Will continually check to see if the result file exists given a </span>
+<span class="sd">        time interval `self.wait_time`. If it is a longer job, increase the </span>
+<span class="sd">        wait time so as to not needless be calling SSH too many times.</span>
+
+<span class="sd">        :returns: None</span>
+
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; q = Qsub(job,args)</span>
+<span class="sd">        &gt;&gt;&gt; q.push()</span>
+<span class="sd">        &gt;&gt;&gt; q.fetch_result()</span>
+
+<span class="sd">        .. note:: This is equivalent to `pull(thread=False)`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">result_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_dir</span><span class="p">,</span><span class="s1">&#39;result.pkl&#39;</span><span class="p">)</span>
+        <span class="n">finished</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">timer</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_time</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">user_quit</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_quit</span><span class="p">:</span>
+                <span class="k">break</span>
+
+            <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span>
+                <span class="s1">&#39;ssh colfax [ -f </span><span class="si">{}</span><span class="s1"> ] &amp;&amp; echo &quot;1&quot; || echo &quot;0&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">result_path</span><span class="p">),</span><span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">STDOUT</span><span class="p">,</span><span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span> <span class="o">==</span> <span class="mi">49</span><span class="p">:</span>
+                <span class="n">finished</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">break</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wait_time</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">finished</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ssh</span><span class="o">.</span><span class="n">recieve_file</span><span class="p">(</span><span class="n">result_path</span><span class="p">,</span><span class="n">result_path</span><span class="p">)</span>
+
+            <span class="nb">print</span><span class="p">(</span><span class="n">result_path</span><span class="p">)</span>
+
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">result_path</span><span class="p">,</span><span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+
+        <span class="k">elif</span> <span class="p">(</span><span class="ow">not</span> <span class="n">finished</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">timer</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;Timer exceeded&#39;</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">complete</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cleanup</span><span class="p">()</span></div>
+        
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="Qsub.pull"><a class="viewcode-back" href="../../../qsub.html#clusterweb.pbs.qsub.Qsub.pull">[docs]</a>    <span class="k">def</span> <span class="nf">pull</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">thread</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">daemon</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the result of the job from the remote cluster asynchronously</span>
+<span class="sd">        with the main script.</span>
+
+<span class="sd">        Will continually check to see if the result file exists given a </span>
+<span class="sd">        time interval `self.wait_time`. If it is a longer job, increase the </span>
+<span class="sd">        wait time so as to not needless be calling SSH too many times.</span>
+
+<span class="sd">        :returns: None</span>
+
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; q = Qsub(job,args)</span>
+<span class="sd">        &gt;&gt;&gt; q.push()</span>
+<span class="sd">        &gt;&gt;&gt; q.fetch_result()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">thread</span><span class="p">:</span>
+            <span class="n">result_thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fetch_result</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="p">())</span>
+            <span class="n">result_thread</span><span class="o">.</span><span class="n">daemon</span> <span class="o">=</span> <span class="n">daemon</span>
+            <span class="n">result_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fetch_result</span><span class="p">()</span></div></div>
+
+
+
+
+
+
+
+
+
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Stephen Offer
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>  
+
+  <style>
+    /* Sidebar header (and topbar for mobile) */
+    .wy-side-nav-search, .wy-nav-top {
+      background: #2e6784;
+    }
+    /* Sidebar */
+    .wy-nav-side {
+      background: #262525;
+    }
+  </style>
+
+
+</body>
+</html>

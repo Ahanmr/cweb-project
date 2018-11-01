@@ -1,0 +1,440 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>clusterweb.pbs.qdel &mdash; clusterweb 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="author" title="About these documents" href="../../../about.html" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html">
+          
+
+          
+            
+            <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">About ClusterWeb</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../why.html">Why to Use CWeb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../about.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developer Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../beginner.html">Beginner Usage Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced.html">Advanced Usage Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cpu.html">CPU Optimization Techniques</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Portable Batch Systems (PBS)</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../qsub.html">Qsub: Single Function Submission</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../qsession.html">QSession: Running Multiple Jobs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../qdel.html">Qdel: Remove Running Jobs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../qstat.html">Qstat: View PBS Job Status</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../resources.html">Resource Configuration</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Secure Shell Systems (SSH)</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../sub.html">Sub: Single Function Submission</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../session.html">Session: Running Multiple Jobs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../del.html">Del: Remove Running Jobs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../stat.html">Stat: View Job Status</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">clusterweb</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>clusterweb.pbs.qdel</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for clusterweb.pbs.qdel</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/bin/env/python</span>
+<span class="c1">#-*- encoding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">clusterweb.interfaces</span> <span class="k">import</span> <span class="n">ssh</span>
+<span class="kn">from</span> <span class="nn">clusterweb.pbs</span> <span class="k">import</span> <span class="n">config</span>
+<span class="kn">from</span> <span class="nn">clusterweb.pbs</span> <span class="k">import</span> <span class="n">qstat</span>
+
+
+<div class="viewcode-block" id="QDel"><a class="viewcode-back" href="../../../qdel.html#clusterweb.pbs.qdel.QDel">[docs]</a><span class="k">class</span> <span class="nc">QDel</span><span class="p">():</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">USERNAME</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ssh</span> <span class="o">=</span> <span class="n">ssh</span><span class="o">.</span><span class="n">SSH</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">qstat</span> <span class="o">=</span> <span class="n">qstat</span><span class="o">.</span><span class="n">Qstat</span><span class="p">()</span>
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="QDel.login"><a class="viewcode-back" href="../../../qdel.html#clusterweb.pbs.qdel.QDel.login">[docs]</a>    <span class="k">def</span> <span class="nf">login</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">address</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates an SSH interface object with the address specified </span>
+
+<span class="sd">        :param address: Address or name for ssh to</span>
+<span class="sd">        :type address: str</span>
+
+<span class="sd">        :returns: None</span>
+
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; q = Qsub(job,arg)</span>
+<span class="sd">        &gt;&gt;&gt; q.login(&#39;192.168.1.42&#39;)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">address</span><span class="p">,</span><span class="nb">str</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">UserWarning</span><span class="p">(</span><span class="s2">&quot;Invalid address arg type: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="nb">type</span><span class="p">(</span><span class="n">address</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ssh</span> <span class="o">=</span> <span class="n">ssh</span><span class="o">.</span><span class="n">SSH</span><span class="p">(</span><span class="n">address</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">username</span> <span class="o">=</span> <span class="n">address</span></div>
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="QDel.rm_all"><a class="viewcode-back" href="../../../qdel.html#clusterweb.pbs.qdel.QDel.rm_all">[docs]</a>    <span class="k">def</span> <span class="nf">rm_all</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates an SSH interface object with the address specified </span>
+
+<span class="sd">        :param address: Address or name for ssh to</span>
+<span class="sd">        :type address: str</span>
+
+<span class="sd">        :returns: None</span>
+
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; q = Qsub(job,arg)</span>
+<span class="sd">        &gt;&gt;&gt; q.login(&#39;192.168.1.42&#39;)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">jobs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qstat</span><span class="o">.</span><span class="n">process_simple_qstat</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">jobs</span><span class="p">):</span>
+            <span class="n">job_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">j</span><span class="o">.</span><span class="n">job_id</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">jobs</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">job_ids</span><span class="p">:</span>
+                <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ssh</span><span class="o">.</span><span class="n">send_command</span><span class="p">(</span><span class="s1">&#39;qdel </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="n">output</span></div>
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="QDel.rm"><a class="viewcode-back" href="../../../qdel.html#clusterweb.pbs.qdel.QDel.rm">[docs]</a>    <span class="k">def</span> <span class="nf">rm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">job_id</span><span class="p">,</span><span class="n">flags</span><span class="o">=</span><span class="p">[]):</span>
+        <span class="sd">&quot;&quot;&quot;Creates an SSH interface object with the address specified </span>
+
+<span class="sd">        :param address: Address or name for ssh to</span>
+<span class="sd">        :type address: str</span>
+
+<span class="sd">        :returns: None</span>
+
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; q = Qsub(job,arg)</span>
+<span class="sd">        &gt;&gt;&gt; q.login(&#39;192.168.1.42&#39;)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">flags</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span><span class="n">flags</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ssh</span><span class="o">.</span><span class="n">send_command</span><span class="p">(</span><span class="s1">&#39;qdel </span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">flags</span><span class="p">,</span><span class="n">job_id</span><span class="p">))</span></div>
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="QDel.rm_a"><a class="viewcode-back" href="../../../qdel.html#clusterweb.pbs.qdel.QDel.rm_a">[docs]</a>    <span class="k">def</span> <span class="nf">rm_a</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">job_id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Request the job(s) be deleted asynchronously, which for a Running </span>
+<span class="sd">        job means that the reply will return before the MOM is requested to </span>
+<span class="sd">        delete the job.</span>
+
+<span class="sd">        :param address: Address or name for ssh to</span>
+<span class="sd">        :type address: str</span>
+
+<span class="sd">        :returns: None</span>
+
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; q = Qsub(job,arg)</span>
+<span class="sd">        &gt;&gt;&gt; q.login(&#39;192.168.1.42&#39;)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ssh</span><span class="o">.</span><span class="n">send_command</span><span class="p">(</span><span class="s1">&#39;qdel -a </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">flags</span><span class="p">,</span><span class="n">job_id</span><span class="p">))</span></div>
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="QDel.purge"><a class="viewcode-back" href="../../../qdel.html#clusterweb.pbs.qdel.QDel.purge">[docs]</a>    <span class="k">def</span> <span class="nf">purge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">job_id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Forcibly  purge  the  job  from the server.  This should only be </span>
+<span class="sd">        used if a running job will not exit because its allocated  nodes are </span>
+<span class="sd">        unreachable. The admin should make every attempt at resolving the problem </span>
+<span class="sd">        on the nodes. If a job&#39;s mother superior recovers after purging the job,</span>
+<span class="sd">        any epilogue scripts may still run.  This option is only available </span>
+<span class="sd">        to a batch operator or the batch administrator.</span>
+
+<span class="sd">        :param address: Address or name for ssh to</span>
+<span class="sd">        :type address: str</span>
+
+<span class="sd">        :returns: None</span>
+
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; q = Qsub(job,arg)</span>
+<span class="sd">        &gt;&gt;&gt; q.login(&#39;192.168.1.42&#39;)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ssh</span><span class="o">.</span><span class="n">send_command</span><span class="p">(</span><span class="s1">&#39;qdel -p </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">job_id</span><span class="p">))</span></div>
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="QDel.clean"><a class="viewcode-back" href="../../../qdel.html#clusterweb.pbs.qdel.QDel.clean">[docs]</a>    <span class="k">def</span> <span class="nf">clean</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+        
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="QDel.rm_message"><a class="viewcode-back" href="../../../qdel.html#clusterweb.pbs.qdel.QDel.rm_message">[docs]</a>    <span class="k">def</span> <span class="nf">rm_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">job_id</span><span class="p">,</span><span class="n">message</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates an SSH interface object with the address specified </span>
+
+<span class="sd">        :param address: Address or name for ssh to</span>
+<span class="sd">        :type address: str</span>
+
+<span class="sd">        :returns: None</span>
+
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; q = Qsub(job,arg)</span>
+<span class="sd">        &gt;&gt;&gt; q.login(&#39;192.168.1.42&#39;)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ssh</span><span class="o">.</span><span class="n">send_command</span><span class="p">(</span><span class="s1">&#39;qdel -m &quot;</span><span class="si">{}</span><span class="s1">&quot; </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">message</span><span class="p">,</span><span class="n">job_id</span><span class="p">))</span></div>
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="QDel.rm_delay"><a class="viewcode-back" href="../../../qdel.html#clusterweb.pbs.qdel.QDel.rm_delay">[docs]</a>    <span class="k">def</span> <span class="nf">rm_delay</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">job_id</span><span class="p">,</span><span class="n">delay</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Specify the delay between the sending of the SIGTERM and SIGKILL </span>
+<span class="sd">        signals. The argument delay specifies a unsigned integer number of </span>
+<span class="sd">        seconds.</span>
+
+<span class="sd">        :param address: Address or name for ssh to</span>
+<span class="sd">        :type address: str</span>
+
+<span class="sd">        :returns: None</span>
+
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; q = Qsub(job,arg)</span>
+<span class="sd">        &gt;&gt;&gt; q.login(&#39;192.168.1.42&#39;)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="nb">int</span><span class="p">(</span><span class="n">delay</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">UserWarning</span><span class="p">(</span><span class="s2">&quot;Invalid delay arg: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">delay</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ssh</span><span class="o">.</span><span class="n">send_command</span><span class="p">(</span><span class="s1">&#39;qdel -W </span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">delay</span><span class="p">,</span><span class="n">job_id</span><span class="p">))</span></div>
+
+    <span class="c1">#--------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="QDel.rm_range"><a class="viewcode-back" href="../../../qdel.html#clusterweb.pbs.qdel.QDel.rm_range">[docs]</a>    <span class="k">def</span> <span class="nf">rm_range</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">id_range</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The  array_range argument is an integer id or a range of integers. </span>
+<span class="sd">        Multiple ids or id ranges can be combined in a comma delimted list </span>
+<span class="sd">        (examples:   -t  1-100  or  -t 1,10,50-100). </span>
+
+<span class="sd">        The command acts on the array (or  specified range of the array) </span>
+<span class="sd">        just as it would on an individual job.</span>
+
+<span class="sd">        :param address: Address or name for ssh to</span>
+<span class="sd">        :type address: str</span>
+
+<span class="sd">        :returns: None</span>
+
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; q = Qsub(job,arg)</span>
+<span class="sd">        &gt;&gt;&gt; q.login(&#39;192.168.1.42&#39;)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">#TODO: User error parsing</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ssh</span><span class="o">.</span><span class="n">send_command</span><span class="p">(</span><span class="s1">&#39;qdel -t </span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">id_range</span><span class="p">,</span><span class="n">job_id</span><span class="p">))</span></div></div>
+
+
+
+
+
+
+
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Stephen Offer
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>  
+
+  <style>
+    /* Sidebar header (and topbar for mobile) */
+    .wy-side-nav-search, .wy-nav-top {
+      background: #2e6784;
+    }
+    /* Sidebar */
+    .wy-nav-side {
+      background: #262525;
+    }
+  </style>
+
+
+</body>
+</html>

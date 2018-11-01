@@ -79,7 +79,7 @@
               
             
             
-              <p class="caption"><span class="caption-text">About CWeb</span></p>
+              <p class="caption"><span class="caption-text">About ClusterWeb</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="why.html">Why to Use CWeb</a></li>
 <li class="toctree-l1"><a class="reference internal" href="about.html">Getting Started</a></li>
@@ -91,7 +91,7 @@
 <li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced Usage Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cpu.html">CPU Optimization Techniques</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Portable Batch System</span></p>
+<p class="caption"><span class="caption-text">Portable Batch Systems (PBS)</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="qsub.html">Qsub: Single Function Submission</a></li>
 <li class="toctree-l1"><a class="reference internal" href="qsession.html">QSession: Running Multiple Jobs</a></li>
@@ -99,7 +99,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Qstat: View PBS Job Status</a></li>
 <li class="toctree-l1"><a class="reference internal" href="resources.html">Resource Configuration</a></li>
 </ul>
-<p class="caption"><span class="caption-text">SSH System</span></p>
+<p class="caption"><span class="caption-text">Secure Shell Systems (SSH)</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="sub.html">Sub: Single Function Submission</a></li>
 <li class="toctree-l1"><a class="reference internal" href="session.html">Session: Running Multiple Jobs</a></li>
@@ -169,8 +169,60 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="qstat-view-pbs-job-status">
-<h1>Qstat: View PBS Job Status<a class="headerlink" href="#qstat-view-pbs-job-status" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-clusterweb.pbs.qstat">
+<span id="qstat-view-pbs-job-status"></span><h1>Qstat: View PBS Job Status<a class="headerlink" href="#module-clusterweb.pbs.qstat" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="clusterweb.pbs.qstat.Qstat">
+<em class="property">class </em><code class="descclassname">clusterweb.pbs.qstat.</code><code class="descname">Qstat</code><a class="reference internal" href="_modules/clusterweb/pbs/qstat.html#Qstat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#clusterweb.pbs.qstat.Qstat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="method">
+<dt id="clusterweb.pbs.qstat.Qstat.cvrt_datetime">
+<code class="descname">cvrt_datetime</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/clusterweb/pbs/qstat.html#Qstat.cvrt_datetime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#clusterweb.pbs.qstat.Qstat.cvrt_datetime" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="clusterweb.pbs.qstat.Qstat.cvrt_time">
+<code class="descname">cvrt_time</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/clusterweb/pbs/qstat.html#Qstat.cvrt_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#clusterweb.pbs.qstat.Qstat.cvrt_time" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="clusterweb.pbs.qstat.Qstat.login">
+<code class="descname">login</code><span class="sig-paren">(</span><em>address</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/clusterweb/pbs/qstat.html#Qstat.login"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#clusterweb.pbs.qstat.Qstat.login" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="clusterweb.pbs.qstat.Qstat.process_full_qstat">
+<code class="descname">process_full_qstat</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/clusterweb/pbs/qstat.html#Qstat.process_full_qstat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#clusterweb.pbs.qstat.Qstat.process_full_qstat" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="clusterweb.pbs.qstat.Qstat.process_id">
+<code class="descname">process_id</code><span class="sig-paren">(</span><em>job_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/clusterweb/pbs/qstat.html#Qstat.process_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#clusterweb.pbs.qstat.Qstat.process_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="clusterweb.pbs.qstat.Qstat.process_simple_qstat">
+<code class="descname">process_simple_qstat</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/clusterweb/pbs/qstat.html#Qstat.process_simple_qstat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#clusterweb.pbs.qstat.Qstat.process_simple_qstat" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="clusterweb.pbs.qstat.QstatData">
+<em class="property">class </em><code class="descclassname">clusterweb.pbs.qstat.</code><code class="descname">QstatData</code><span class="sig-paren">(</span><em>job_id=None</em>, <em>name=None</em>, <em>user=None</em>, <em>time_use=None</em>, <em>state=None</em>, <em>queue=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/clusterweb/pbs/qstat.html#QstatData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#clusterweb.pbs.qstat.QstatData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+</dd></dl>
+
+<dl class="data">
+<dt id="clusterweb.pbs.qstat.exchange">
+<code class="descclassname">clusterweb.pbs.qstat.</code><code class="descname">exchange</code><em class="property"> = {'Checkpoint': 'checkpoint', 'Error_Path': 'error_path', 'Hold_Types': 'hold_types', 'Job Id': 'job_id', 'Job_Name': 'name', 'Job_Owner': 'user', 'Join_Path': 'join_path', 'Keep_Files': 'keep_files', 'Mail_Points': 'mail_points', 'Output_Path': 'output_path', 'PBS_O_HOME': 'PBS_O_HOME', 'PBS_O_HOST': 'PBS_O_HOST', 'PBS_O_LANG': 'PBS_O_LANG', 'PBS_O_LOGNAME': 'PBS_O_LOGNAME', 'PBS_O_MAIL': 'PBS_O_MAIL', 'PBS_O_PATH': 'PBS_O_PATH', 'PBS_O_QUEUE': 'PBS_O_QUEUE', 'PBS_O_SERVER': 'PBS_O_SERVER', 'PBS_O_SHELL': 'PBS_O_MAIL', 'PBS_O_SUBMIT_FILTER': 'PBS_O_SUBMIT_FILTER', 'PBS_O_WORKDIR': 'PBS_O_WORKDIR', 'Priority': 'priority', 'Rerunable': 'rerunable', 'Resource_List.cput': 'resource_list_cput', 'Resource_List.mem': 'resource_list_mem', 'Resource_List.nodect': 'resource_list_nodect', 'Resource_List.nodes': 'resource_list_nodes', 'Resource_List.vmem': 'resource_list_vmem', 'Resource_List.walltime': 'resource_list_walltime', 'Walltime.Remaining': 'walltime_remaining', 'ctime': 'ctime', 'egroup': 'egroup', 'etime': 'etime', 'euser': 'euser', 'exec_host': 'exec_host', 'exit_status': 'exit_status', 'fault_tolerant': 'fault_tolerant', 'job_radix': 'job_radix', 'job_state': 'job_state', 'mtime': 'mtime', 'qtime': 'qtime', 'queue': 'queue', 'queue_type': 'queue_type', 'resources_used.cput': 'resources_used_cput', 'resources_used.energy_used': 'resources_used_energy_used', 'resources_used.mem': 'resources_used_mem', 'resources_used.vmem': 'resources_used_vmem', 'resources_used.walltime': 'resources_used_walltime', 'server': 'server', 'session_id': 'session_id', 'start_count': 'start_count', 'start_time': 'start_time', 'submit_args': 'submit_hostargs', 'submit_host': 'submit_host'}</em><a class="headerlink" href="#clusterweb.pbs.qstat.exchange" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="clusterweb.pbs.qstat.main">
+<code class="descclassname">clusterweb.pbs.qstat.</code><code class="descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/clusterweb/pbs/qstat.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#clusterweb.pbs.qstat.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </div>
 
 

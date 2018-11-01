@@ -103,6 +103,8 @@ class QSession():
 
         self.verbose = verbose
 
+        self.__type__ = "qsession"
+
     #--------------------------------------------------------------------------
 
     def __len__(self):

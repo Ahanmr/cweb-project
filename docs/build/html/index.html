@@ -78,7 +78,7 @@
               
             
             
-              <p class="caption"><span class="caption-text">About CWeb</span></p>
+              <p class="caption"><span class="caption-text">About ClusterWeb</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="why.html">Why to Use CWeb</a></li>
 <li class="toctree-l1"><a class="reference internal" href="about.html">Getting Started</a></li>
@@ -90,7 +90,7 @@
 <li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced Usage Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cpu.html">CPU Optimization Techniques</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Portable Batch System</span></p>
+<p class="caption"><span class="caption-text">Portable Batch Systems (PBS)</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="qsub.html">Qsub: Single Function Submission</a></li>
 <li class="toctree-l1"><a class="reference internal" href="qsession.html">QSession: Running Multiple Jobs</a></li>
@@ -98,7 +98,7 @@
 <li class="toctree-l1"><a class="reference internal" href="qstat.html">Qstat: View PBS Job Status</a></li>
 <li class="toctree-l1"><a class="reference internal" href="resources.html">Resource Configuration</a></li>
 </ul>
-<p class="caption"><span class="caption-text">SSH System</span></p>
+<p class="caption"><span class="caption-text">Secure Shell Systems (SSH)</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="sub.html">Sub: Single Function Submission</a></li>
 <li class="toctree-l1"><a class="reference internal" href="session.html">Session: Running Multiple Jobs</a></li>
@@ -170,6 +170,10 @@
             
   <div class="section" id="cluster-web-documentation">
 <h1>Cluster Web Documentation<a class="headerlink" href="#cluster-web-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">ClusterWeb is currently in Beta, only the PBS API is available</p>
+</div>
 <p>Cluster Web is a Python library for creating wireless clusters of any devices that use SSH. This allows users to send jobs across a network of different kinds of devices. An example is a system that is made up of a laptop, CPU cluster, and a GPU workstation. Different jobs can be sent to each device all from the laptop and the results sent back to the laptop asynchronously.</p>
 <div class="section" id="compatiable-devices">
 <h2>Compatiable Devices<a class="headerlink" href="#compatiable-devices" title="Permalink to this headline">¶</a></h2>
@@ -225,7 +229,7 @@
 <div class="section" id="cweb-documentation">
 <h1>CWeb Documentation<a class="headerlink" href="#cweb-documentation" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">About CWeb</span></p>
+<p class="caption"><span class="caption-text">About ClusterWeb</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="why.html">Why to Use CWeb</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="why.html#faster-development-time">Faster Development Time</a></li>
@@ -241,13 +245,20 @@
 <div class="toctree-wrapper compound">
 <p class="caption"><span class="caption-text">Developer Resources</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="beginner.html">Beginner Usage Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="beginner.html">Beginner Usage Tutorials</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="beginner.html#submitting-a-single-job-with-qsub">Submitting a Single Job with Qsub</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beginner.html#running-multiple-jobs-on-multiple-nodes">Running Multiple Jobs on Multiple Nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beginner.html#using-qsession-to-run-multiple-jobs-on-one-node">Using QSession to Run Multiple Jobs On One Node</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beginner.html#using-to-create-a-qsession-from-qsub-jobs">Using * to Create a QSession from QSub Jobs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beginner.html#deleting-a-job-while-running-with-a-timer">Deleting a Job While Running With a Timer</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced Usage Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cpu.html">CPU Optimization Techniques</a></li>
 </ul>
 </div>
 <div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">Portable Batch System</span></p>
+<p class="caption"><span class="caption-text">Portable Batch Systems (PBS)</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="qsub.html">Qsub: Single Function Submission</a></li>
 <li class="toctree-l1"><a class="reference internal" href="qsession.html">QSession: Running Multiple Jobs</a></li>
@@ -257,7 +268,7 @@
 </ul>
 </div>
 <div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">SSH System</span></p>
+<p class="caption"><span class="caption-text">Secure Shell Systems (SSH)</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="sub.html">Sub: Single Function Submission</a></li>
 <li class="toctree-l1"><a class="reference internal" href="session.html">Session: Running Multiple Jobs</a></li>
@@ -265,14 +276,6 @@
 <li class="toctree-l1"><a class="reference internal" href="stat.html">Stat: View Job Status</a></li>
 </ul>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">github_url:</th><td class="field-body"><a class="reference external" href="https://github.com/gndctrl2mjrtm/cweb">https://github.com/gndctrl2mjrtm/cweb</a></td>
-</tr>
-</tbody>
-</table>
 </div>
 
 

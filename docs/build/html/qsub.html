@@ -79,7 +79,7 @@
               
             
             
-              <p class="caption"><span class="caption-text">About CWeb</span></p>
+              <p class="caption"><span class="caption-text">About ClusterWeb</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="why.html">Why to Use CWeb</a></li>
 <li class="toctree-l1"><a class="reference internal" href="about.html">Getting Started</a></li>
@@ -91,7 +91,7 @@
 <li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced Usage Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cpu.html">CPU Optimization Techniques</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Portable Batch System</span></p>
+<p class="caption"><span class="caption-text">Portable Batch Systems (PBS)</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Qsub: Single Function Submission</a></li>
 <li class="toctree-l1"><a class="reference internal" href="qsession.html">QSession: Running Multiple Jobs</a></li>
@@ -99,7 +99,7 @@
 <li class="toctree-l1"><a class="reference internal" href="qstat.html">Qstat: View PBS Job Status</a></li>
 <li class="toctree-l1"><a class="reference internal" href="resources.html">Resource Configuration</a></li>
 </ul>
-<p class="caption"><span class="caption-text">SSH System</span></p>
+<p class="caption"><span class="caption-text">Secure Shell Systems (SSH)</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="sub.html">Sub: Single Function Submission</a></li>
 <li class="toctree-l1"><a class="reference internal" href="session.html">Session: Running Multiple Jobs</a></li>
@@ -169,8 +169,753 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="qsub-single-function-submission">
-<h1>Qsub: Single Function Submission<a class="headerlink" href="#qsub-single-function-submission" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-clusterweb.pbs.qsub">
+<span id="qsub-single-function-submission"></span><h1>Qsub: Single Function Submission<a class="headerlink" href="#module-clusterweb.pbs.qsub" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="clusterweb.pbs.qsub.Qsub">
+<em class="property">class </em><code class="descclassname">clusterweb.pbs.qsub.</code><code class="descname">Qsub</code><span class="sig-paren">(</span><em>target</em>, <em>args</em>, <em>n_nodes=1</em>, <em>n_cores=1</em>, <em>set_walltime='1:00:00'</em>, <em>set_memory='8GB'</em>, <em>set_cpu='1:00:00'</em>, <em>wait_time=1</em>, <em>verbose=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/clusterweb/pbs/qsub.html#Qsub"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#clusterweb.pbs.qsub.Qsub" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="method">
+<dt id="clusterweb.pbs.qsub.Qsub.__add__">
+<code class="descname">__add__</code><span class="sig-paren">(</span><em>job</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/clusterweb/pbs/qsub.html#Qsub.__add__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#clusterweb.pbs.qsub.Qsub.__add__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds two jobs together to create a QSession job</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>job</strong> (<a class="reference internal" href="#clusterweb.pbs.qsub.Qsub" title="clusterweb.pbs.qsub.Qsub"><em>clusterweb.pbs.qsub.Qsub</em></a>) – Job to be compared to</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True or False</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">q1</span> <span class="o">=</span> <span class="n">Qsub</span><span class="p">(</span><span class="n">job</span><span class="p">,</span><span class="n">arg</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q2</span> <span class="o">=</span> <span class="n">Qsub</span><span class="p">(</span><span class="n">job</span><span class="p">,</span><span class="n">arg</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">q1</span> <span class="o">+</span> <span class="n">q2</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="clusterweb.pbs.qsub.Qsub.__and__">
+<code class="descname">__and__</code><span class="sig-paren">(</span><em>job</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/clusterweb/pbs/qsub.html#Qsub.__and__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#clusterweb.pbs.qsub.Qsub.__and__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds two jobs together to create a QSession job</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>job</strong> (<a class="reference internal" href="#clusterweb.pbs.qsub.Qsub" title="clusterweb.pbs.qsub.Qsub"><em>clusterweb.pbs.qsub.Qsub</em></a>) – Job to be compared to</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True or False</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">Qsub</span><span class="p">(</span><span class="n">job</span><span class="p">,</span><span class="n">arg</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span> <span class="o">=</span> <span class="n">Qsub</span><span class="p">(</span><span class="n">job</span><span class="p">,</span><span class="n">arg</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">+=</span> <span class="n">q</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Equivalent to <cite>__add__</cite> or <cite>q1 + q2</cite></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="clusterweb.pbs.qsub.Qsub.__contains__">
+<code class="descname">__contains__</code><span class="sig-paren">(</span><em>fnc</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/clusterweb/pbs/qsub.html#Qsub.__contains__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#clusterweb.pbs.qsub.Qsub.__contains__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Boolean function for whether a function is contained within a job</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>fnc</strong> (<em>Python function</em>) – function to find</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True or False</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">q</span> <span class="o">=</span> <span class="n">Qsub</span><span class="p">(</span><span class="n">job</span><span class="p">,</span><span class="n">arg</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span> <span class="ow">in</span> <span class="n">q</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="clusterweb.pbs.qsub.Qsub.__eq__">
+<code class="descname">__eq__</code><span class="sig-paren">(</span><em>job</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/clusterweb/pbs/qsub.html#Qsub.__eq__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#clusterweb.pbs.qsub.Qsub.__eq__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns whether the job’s walltime is equal to the 
+other job’s walltime</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>job</strong> (<a class="reference internal" href="#clusterweb.pbs.qsub.Qsub" title="clusterweb.pbs.qsub.Qsub"><em>clusterweb.pbs.qsub.Qsub</em></a>) – Job to be compared to</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True or False</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">q1</span> <span class="o">=</span> <span class="n">Qsub</span><span class="p">(</span><span class="n">job</span><span class="p">,</span><span class="n">arg</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q2</span> <span class="o">=</span> <span class="n">Qsub</span><span class="p">(</span><span class="n">job</span><span class="p">,</span><span class="n">arg</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q1</span> <span class="o">==</span> <span class="n">q2</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It will take almost a second to run when 
+<cite>update_qstat_on_comparison</cite> is True since it checks and parses 
+qstat -f. To make this run faster based on a previous qstat 
+update, set <cite>update_qstat_on_comparison</cite> to False.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="clusterweb.pbs.qsub.Qsub.__ge__">
+<code class="descname">__ge__</code><span class="sig-paren">(</span><em>job</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/clusterweb/pbs/qsub.html#Qsub.__ge__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#clusterweb.pbs.qsub.Qsub.__ge__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns whether the job’s walltime is greater than or equal to the 
+other job’s walltime</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>job</strong> (<a class="reference internal" href="#clusterweb.pbs.qsub.Qsub" title="clusterweb.pbs.qsub.Qsub"><em>clusterweb.pbs.qsub.Qsub</em></a>) – Job to be compared to</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True or False</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">q1</span> <span class="o">=</span> <span class="n">Qsub</span><span class="p">(</span><span class="n">job</span><span class="p">,</span><span class="n">arg</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q2</span> <span class="o">=</span> <span class="n">Qsub</span><span class="p">(</span><span class="n">job</span><span class="p">,</span><span class="n">arg</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q1</span> <span class="o">&gt;=</span> <span class="n">q2</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It will take almost a second to run when 
+<cite>update_qstat_on_comparison</cite> is True since it checks and parses 
+qstat -f. To make this run faster based on a previous qstat 
+update, set <cite>update_qstat_on_comparison</cite> to False.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="clusterweb.pbs.qsub.Qsub.__gt__">
+<code class="descname">__gt__</code><span class="sig-paren">(</span><em>job</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/clusterweb/pbs/qsub.html#Qsub.__gt__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#clusterweb.pbs.qsub.Qsub.__gt__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns whether the job’s walltime is greater than the 
+other job’s walltime</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>job</strong> (<a class="reference internal" href="#clusterweb.pbs.qsub.Qsub" title="clusterweb.pbs.qsub.Qsub"><em>clusterweb.pbs.qsub.Qsub</em></a>) – Job to be compared to</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True or False</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">q1</span> <span class="o">=</span> <span class="n">Qsub</span><span class="p">(</span><span class="n">job</span><span class="p">,</span><span class="n">arg</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q2</span> <span class="o">=</span> <span class="n">Qsub</span><span class="p">(</span><span class="n">job</span><span class="p">,</span><span class="n">arg</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q1</span> <span class="o">&gt;</span> <span class="n">q2</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It will take almost a second to run when 
+<cite>update_qstat_on_comparison</cite> is True since it checks and parses 
+qstat -f. To make this run faster based on a previous qstat 
+update, set <cite>update_qstat_on_comparison</cite> to False.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="clusterweb.pbs.qsub.Qsub.__iadd__">
+<code class="descname">__iadd__</code><span class="sig-paren">(</span><em>job</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/clusterweb/pbs/qsub.html#Qsub.__iadd__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#clusterweb.pbs.qsub.Qsub.__iadd__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds two jobs together to create a QSession job</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>job</strong> (<a class="reference internal" href="#clusterweb.pbs.qsub.Qsub" title="clusterweb.pbs.qsub.Qsub"><em>clusterweb.pbs.qsub.Qsub</em></a>) – Job to be compared to</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True or False</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">Qsub</span><span class="p">(</span><span class="n">job</span><span class="p">,</span><span class="n">arg</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span> <span class="o">=</span> <span class="n">Qsub</span><span class="p">(</span><span class="n">job</span><span class="p">,</span><span class="n">arg</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">+=</span> <span class="n">q</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Equivalent to <cite>__add__</cite> or <cite>q1 + q2</cite></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="clusterweb.pbs.qsub.Qsub.__ior__">
+<code class="descname">__ior__</code><span class="sig-paren">(</span><em>job</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/clusterweb/pbs/qsub.html#Qsub.__ior__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#clusterweb.pbs.qsub.Qsub.__ior__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds two jobs together to create a QSession job</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>job</strong> (<a class="reference internal" href="#clusterweb.pbs.qsub.Qsub" title="clusterweb.pbs.qsub.Qsub"><em>clusterweb.pbs.qsub.Qsub</em></a>) – Job to be compared to</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True or False</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">Qsub</span><span class="p">(</span><span class="n">job</span><span class="p">,</span><span class="n">arg</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span> <span class="o">=</span> <span class="n">Qsub</span><span class="p">(</span><span class="n">job</span><span class="p">,</span><span class="n">arg</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">+=</span> <span class="n">q</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Equivalent to <cite>__add__</cite> or <cite>q1 + q2</cite></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="clusterweb.pbs.qsub.Qsub.__le__">
+<code class="descname">__le__</code><span class="sig-paren">(</span><em>job</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/clusterweb/pbs/qsub.html#Qsub.__le__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#clusterweb.pbs.qsub.Qsub.__le__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns whether the job’s walltime is less than the other job’s
+walltime</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>job</strong> (<a class="reference internal" href="#clusterweb.pbs.qsub.Qsub" title="clusterweb.pbs.qsub.Qsub"><em>clusterweb.pbs.qsub.Qsub</em></a>) – Job to be compared to</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True or False</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">q1</span> <span class="o">=</span> <span class="n">Qsub</span><span class="p">(</span><span class="n">job</span><span class="p">,</span><span class="n">arg</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q2</span> <span class="o">=</span> <span class="n">Qsub</span><span class="p">(</span><span class="n">job</span><span class="p">,</span><span class="n">arg</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q1</span> <span class="o">&lt;=</span> <span class="n">q2</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It will take almost a second to run when 
+<cite>update_qstat_on_comparison</cite> is True since it checks and parses 
+qstat -f. To make this run faster based on a previous qstat 
+update, set <cite>update_qstat_on_comparison</cite> to False.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="clusterweb.pbs.qsub.Qsub.__lt__">
+<code class="descname">__lt__</code><span class="sig-paren">(</span><em>job</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/clusterweb/pbs/qsub.html#Qsub.__lt__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#clusterweb.pbs.qsub.Qsub.__lt__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns whether the job’s walltime is less than the other job’s
+walltime</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>job</strong> (<a class="reference internal" href="#clusterweb.pbs.qsub.Qsub" title="clusterweb.pbs.qsub.Qsub"><em>clusterweb.pbs.qsub.Qsub</em></a>) – Job to be compared to</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True or False</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">q1</span> <span class="o">=</span> <span class="n">Qsub</span><span class="p">(</span><span class="n">job</span><span class="p">,</span><span class="n">arg</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q2</span> <span class="o">=</span> <span class="n">Qsub</span><span class="p">(</span><span class="n">job</span><span class="p">,</span><span class="n">arg</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q1</span> <span class="o">&lt;</span> <span class="n">q2</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It will take almost a second to run when 
+<cite>update_qstat_on_comparison</cite> is True since it checks and parses 
+qstat -f. To make this run faster based on a previous qstat 
+update, set <cite>update_qstat_on_comparison</cite> to False.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="clusterweb.pbs.qsub.Qsub.__mul__">
+<code class="descname">__mul__</code><span class="sig-paren">(</span><em>n</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/clusterweb/pbs/qsub.html#Qsub.__mul__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#clusterweb.pbs.qsub.Qsub.__mul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a QSession of multiple instances of the target function 
+and args.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>n</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The number of instances</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">clusterweb.pbs.qsession.QSession</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">job</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="n">meaning_to_life</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span> <span class="o">=</span> <span class="n">Qsub</span><span class="p">(</span><span class="n">job</span><span class="p">,</span><span class="n">arg</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">q</span> <span class="o">*</span> <span class="mi">5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">push</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">pull</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span><span class="o">.</span><span class="n">results</span>
+<span class="go">[42,42,42,42,42]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="clusterweb.pbs.qsub.Qsub.__ne__">
+<code class="descname">__ne__</code><span class="sig-paren">(</span><em>job</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/clusterweb/pbs/qsub.html#Qsub.__ne__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#clusterweb.pbs.qsub.Qsub.__ne__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns whether the job’s function is not equal to the function of 
+another job.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>job</strong> (<a class="reference internal" href="#clusterweb.pbs.qsub.Qsub" title="clusterweb.pbs.qsub.Qsub"><em>clusterweb.pbs.qsub.Qsub</em></a>) – Job to be compared to</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True or False</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">q1</span> <span class="o">=</span> <span class="n">Qsub</span><span class="p">(</span><span class="n">job</span><span class="p">,</span><span class="n">arg</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q2</span> <span class="o">=</span> <span class="n">Qsub</span><span class="p">(</span><span class="n">job</span><span class="p">,</span><span class="n">arg</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q1</span> <span class="o">==</span> <span class="n">q2</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q3</span> <span class="o">=</span> <span class="n">Qsub</span><span class="p">(</span><span class="n">job2</span><span class="p">,</span><span class="n">arg</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q1</span> <span class="o">!=</span> <span class="n">q3</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="clusterweb.pbs.qsub.Qsub.__or__">
+<code class="descname">__or__</code><span class="sig-paren">(</span><em>job</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/clusterweb/pbs/qsub.html#Qsub.__or__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#clusterweb.pbs.qsub.Qsub.__or__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds two jobs together to create a QSession job</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>job</strong> (<a class="reference internal" href="#clusterweb.pbs.qsub.Qsub" title="clusterweb.pbs.qsub.Qsub"><em>clusterweb.pbs.qsub.Qsub</em></a>) – Job to be compared to</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True or False</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">=</span> <span class="n">Qsub</span><span class="p">(</span><span class="n">job</span><span class="p">,</span><span class="n">arg</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span> <span class="o">=</span> <span class="n">Qsub</span><span class="p">(</span><span class="n">job</span><span class="p">,</span><span class="n">arg</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sess</span> <span class="o">+=</span> <span class="n">q</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Equivalent to <cite>__add__</cite> or <cite>q1 + q2</cite></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="clusterweb.pbs.qsub.Qsub.allocate_cores">
+<code class="descname">allocate_cores</code><span class="sig-paren">(</span><em>n_cores</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/clusterweb/pbs/qsub.html#Qsub.allocate_cores"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#clusterweb.pbs.qsub.Qsub.allocate_cores" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="clusterweb.pbs.qsub.Qsub.allocate_memory">
+<code class="descname">allocate_memory</code><span class="sig-paren">(</span><em>memory</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/clusterweb/pbs/qsub.html#Qsub.allocate_memory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#clusterweb.pbs.qsub.Qsub.allocate_memory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the amount of memory for the job</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>memory</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – string in format ‘10GB’ or ‘500MB’ or number of MB</td>
+</tr>
+</tbody>
+</table>
+<p>Example:
+&gt;&gt;&gt; # Use three GB
+&gt;&gt;&gt; qsub_job.allocate_memory(‘3GB’)
+&gt;&gt;&gt; qsub_job.allocate_memory(3000)
+&gt;&gt;&gt; 
+&gt;&gt;&gt; qsub_job.start()</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="clusterweb.pbs.qsub.Qsub.allocate_walltime">
+<code class="descname">allocate_walltime</code><span class="sig-paren">(</span><em>walltime</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/clusterweb/pbs/qsub.html#Qsub.allocate_walltime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#clusterweb.pbs.qsub.Qsub.allocate_walltime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the amount of walltime</p>
+<p>Will raise exception if str argument is not in the form hr:min:sec</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>walltime</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – amount of walltime in seconds</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">q</span><span class="o">.</span><span class="n">allocate_walltime</span><span class="p">(</span><span class="s1">&#39;0:05:00&#39;</span><span class="p">)</span> <span class="c1"># Five minutes</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span><span class="o">.</span><span class="n">allocate_walltime</span><span class="p">(</span><span class="mi">600</span><span class="p">)</span> <span class="c1"># Ten minutes</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span><span class="o">.</span><span class="n">allocate_walltime</span><span class="p">(</span><span class="mf">599.6</span><span class="p">)</span> <span class="c1"># Rounds to ten minutes</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The walltime configuration can be adjusted by admins in 
+<cite>clusterweb/pbs/config.py</cite>.</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">If users adjust <cite>clusterweb/pbs/config.py</cite> to
+settings not authorized by cluster admins, it will raise
+errors on the cluster and the job will not be submitted.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="clusterweb.pbs.qsub.Qsub.change_default_address">
+<code class="descname">change_default_address</code><span class="sig-paren">(</span><em>address</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/clusterweb/pbs/qsub.html#Qsub.change_default_address"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#clusterweb.pbs.qsub.Qsub.change_default_address" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change the default SSH address stored in username.txt which Qsub
+automatically sets itself to unless <cite>qsub.login</cite> is used.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>address</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Address or name for ssh to</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">q</span> <span class="o">=</span> <span class="n">Qsub</span><span class="p">(</span><span class="n">job</span><span class="p">,</span><span class="n">arg</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span><span class="o">.</span><span class="n">change_default_address</span><span class="p">(</span><span class="s1">&#39;192.168.1.24&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="clusterweb.pbs.qsub.Qsub.cleanup">
+<code class="descname">cleanup</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/clusterweb/pbs/qsub.html#Qsub.cleanup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#clusterweb.pbs.qsub.Qsub.cleanup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove the temprorary folder that holds the compressed data and
+scripts that are sent to the cluster</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">q</span> <span class="o">=</span> <span class="n">Qsub</span><span class="p">(</span><span class="n">job</span><span class="p">,</span><span class="n">args</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span><span class="o">.</span><span class="n">cleanup</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This is automatically run and is not required to be run
+by the user.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="clusterweb.pbs.qsub.Qsub.create_timer">
+<code class="descname">create_timer</code><span class="sig-paren">(</span><em>n_seconds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/clusterweb/pbs/qsub.html#Qsub.create_timer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#clusterweb.pbs.qsub.Qsub.create_timer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a timer that terminates the job if it exceeds the max time</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>n_seconds</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The number of seconds for the timer, (n_seconds) &gt; 0</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">q</span> <span class="o">=</span> <span class="n">Qsub</span><span class="p">(</span><span class="n">job</span><span class="p">,</span><span class="n">args</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span><span class="o">.</span><span class="n">create_timer</span><span class="p">(</span><span class="mi">600</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This is a timer for the time since it was submitted,
+not for walltime.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="clusterweb.pbs.qsub.Qsub.fetch_result">
+<code class="descname">fetch_result</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/clusterweb/pbs/qsub.html#Qsub.fetch_result"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#clusterweb.pbs.qsub.Qsub.fetch_result" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the result of the job from the remote cluster synchronously
+with the main script.</p>
+<p>Will continually check to see if the result file exists given a 
+time interval <cite>self.wait_time</cite>. If it is a longer job, increase the 
+wait time so as to not needless be calling SSH too many times.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">q</span> <span class="o">=</span> <span class="n">Qsub</span><span class="p">(</span><span class="n">job</span><span class="p">,</span><span class="n">args</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span><span class="o">.</span><span class="n">push</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span><span class="o">.</span><span class="n">fetch_result</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This is equivalent to <cite>pull(thread=False)</cite></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="clusterweb.pbs.qsub.Qsub.generate_qsub_script">
+<code class="descname">generate_qsub_script</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/clusterweb/pbs/qsub.html#Qsub.generate_qsub_script"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#clusterweb.pbs.qsub.Qsub.generate_qsub_script" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the PBS submission script from the specified resource
+allocations.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="clusterweb.pbs.qsub.Qsub.is_">
+<code class="descname">is_</code><span class="sig-paren">(</span><em>job</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/clusterweb/pbs/qsub.html#Qsub.is_"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#clusterweb.pbs.qsub.Qsub.is_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns whether the job’s walltime is equal to the 
+other job’s walltime</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>job</strong> (<a class="reference internal" href="#clusterweb.pbs.qsub.Qsub" title="clusterweb.pbs.qsub.Qsub"><em>clusterweb.pbs.qsub.Qsub</em></a>) – Job to be compared to</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True or False</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">q1</span> <span class="o">=</span> <span class="n">Qsub</span><span class="p">(</span><span class="n">job</span><span class="p">,</span><span class="n">arg</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q2</span> <span class="o">=</span> <span class="n">Qsub</span><span class="p">(</span><span class="n">job</span><span class="p">,</span><span class="n">arg</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q1</span> <span class="ow">is</span> <span class="n">q2</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Equivalent to <cite>__eq_-</cite></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="clusterweb.pbs.qsub.Qsub.is_not">
+<code class="descname">is_not</code><span class="sig-paren">(</span><em>job</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/clusterweb/pbs/qsub.html#Qsub.is_not"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#clusterweb.pbs.qsub.Qsub.is_not" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns whether the job’s function is not equal to the function of 
+another job.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>job</strong> (<a class="reference internal" href="#clusterweb.pbs.qsub.Qsub" title="clusterweb.pbs.qsub.Qsub"><em>clusterweb.pbs.qsub.Qsub</em></a>) – Job to be compared to</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True or False</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">q1</span> <span class="o">=</span> <span class="n">Qsub</span><span class="p">(</span><span class="n">job</span><span class="p">,</span><span class="n">arg</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q2</span> <span class="o">=</span> <span class="n">Qsub</span><span class="p">(</span><span class="n">job</span><span class="p">,</span><span class="n">arg</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q1</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">q2</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q3</span> <span class="o">=</span> <span class="n">Qsub</span><span class="p">(</span><span class="n">job2</span><span class="p">,</span><span class="n">arg</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q1</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">q3</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Equivalent to <cite>__ne__</cite></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="clusterweb.pbs.qsub.Qsub.login">
+<code class="descname">login</code><span class="sig-paren">(</span><em>address</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/clusterweb/pbs/qsub.html#Qsub.login"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#clusterweb.pbs.qsub.Qsub.login" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an SSH interface object with the address specified</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>address</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Address or name for ssh to</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">q</span> <span class="o">=</span> <span class="n">Qsub</span><span class="p">(</span><span class="n">job</span><span class="p">,</span><span class="n">arg</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span><span class="o">.</span><span class="n">login</span><span class="p">(</span><span class="s1">&#39;192.168.1.42&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The default address is contained in 
+clusterweb/pbs/username.txt and can be adjusted with 
+<cite>change_default_address</cite></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="clusterweb.pbs.qsub.Qsub.pull">
+<code class="descname">pull</code><span class="sig-paren">(</span><em>thread=True</em>, <em>daemon=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/clusterweb/pbs/qsub.html#Qsub.pull"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#clusterweb.pbs.qsub.Qsub.pull" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the result of the job from the remote cluster asynchronously
+with the main script.</p>
+<p>Will continually check to see if the result file exists given a 
+time interval <cite>self.wait_time</cite>. If it is a longer job, increase the 
+wait time so as to not needless be calling SSH too many times.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">q</span> <span class="o">=</span> <span class="n">Qsub</span><span class="p">(</span><span class="n">job</span><span class="p">,</span><span class="n">args</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span><span class="o">.</span><span class="n">push</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span><span class="o">.</span><span class="n">fetch_result</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="clusterweb.pbs.qsub.Qsub.push">
+<code class="descname">push</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/clusterweb/pbs/qsub.html#Qsub.push"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#clusterweb.pbs.qsub.Qsub.push" title="Permalink to this definition">¶</a></dt>
+<dd><p>Push the job to the remote cluster</p>
+<p>Serializes the function, arguments, and send the generated scripts
+to the server. It automatically sends the PBS commands so this is 
+the only command required to start the job on the cluster.</p>
+<p>Resource allocation must occur before <cite>push</cite> is called.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">q</span> <span class="o">=</span> <span class="n">Qsub</span><span class="p">(</span><span class="n">job</span><span class="p">,</span><span class="n">args</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span><span class="o">.</span><span class="n">push</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="clusterweb.pbs.qsub.Qsub.quit">
+<code class="descname">quit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/clusterweb/pbs/qsub.html#Qsub.quit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#clusterweb.pbs.qsub.Qsub.quit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="clusterweb.pbs.qsub.Qsub.set_priority">
+<code class="descname">set_priority</code><span class="sig-paren">(</span><em>priority</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/clusterweb/pbs/qsub.html#Qsub.set_priority"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#clusterweb.pbs.qsub.Qsub.set_priority" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the priority of the job, default is 0</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>priority</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em> (</em><em>-1024</em><em>,</em><em>1023</em><em>)</em>) – The level of priority</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">q1</span> <span class="o">=</span> <span class="n">Qsub</span><span class="p">(</span><span class="n">important_job</span><span class="p">,</span><span class="n">args</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q1</span><span class="o">.</span><span class="n">set_priority</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q2</span> <span class="o">=</span> <span class="n">Qsub</span><span class="p">(</span><span class="n">not_so_important_job</span><span class="p">,</span><span class="n">args</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q2</span><span class="o">.</span><span class="n">set_priority</span><span class="p">(</span><span class="o">-</span><span class="mi">100</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="clusterweb.pbs.qsub.Qsub.update_qstat">
+<code class="descname">update_qstat</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/clusterweb/pbs/qsub.html#Qsub.update_qstat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#clusterweb.pbs.qsub.Qsub.update_qstat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the current data about a job from qstat</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>job_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The job id given by qsub</li>
+<li><strong>user</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The user id</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Must be run after a job is submitted as qstat will only 
+report data if it is in the queue</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 
 

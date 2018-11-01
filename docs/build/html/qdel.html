@@ -79,7 +79,7 @@
               
             
             
-              <p class="caption"><span class="caption-text">About CWeb</span></p>
+              <p class="caption"><span class="caption-text">About ClusterWeb</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="why.html">Why to Use CWeb</a></li>
 <li class="toctree-l1"><a class="reference internal" href="about.html">Getting Started</a></li>
@@ -91,7 +91,7 @@
 <li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced Usage Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cpu.html">CPU Optimization Techniques</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Portable Batch System</span></p>
+<p class="caption"><span class="caption-text">Portable Batch Systems (PBS)</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="qsub.html">Qsub: Single Function Submission</a></li>
 <li class="toctree-l1"><a class="reference internal" href="qsession.html">QSession: Running Multiple Jobs</a></li>
@@ -99,7 +99,7 @@
 <li class="toctree-l1"><a class="reference internal" href="qstat.html">Qstat: View PBS Job Status</a></li>
 <li class="toctree-l1"><a class="reference internal" href="resources.html">Resource Configuration</a></li>
 </ul>
-<p class="caption"><span class="caption-text">SSH System</span></p>
+<p class="caption"><span class="caption-text">Secure Shell Systems (SSH)</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="sub.html">Sub: Single Function Submission</a></li>
 <li class="toctree-l1"><a class="reference internal" href="session.html">Session: Running Multiple Jobs</a></li>
@@ -171,6 +171,206 @@
             
   <div class="section" id="module-clusterweb.pbs.qdel">
 <span id="qdel-remove-running-jobs"></span><h1>Qdel: Remove Running Jobs<a class="headerlink" href="#module-clusterweb.pbs.qdel" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="clusterweb.pbs.qdel.QDel">
+<em class="property">class </em><code class="descclassname">clusterweb.pbs.qdel.</code><code class="descname">QDel</code><a class="reference internal" href="_modules/clusterweb/pbs/qdel.html#QDel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#clusterweb.pbs.qdel.QDel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="method">
+<dt id="clusterweb.pbs.qdel.QDel.clean">
+<code class="descname">clean</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/clusterweb/pbs/qdel.html#QDel.clean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#clusterweb.pbs.qdel.QDel.clean" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="clusterweb.pbs.qdel.QDel.login">
+<code class="descname">login</code><span class="sig-paren">(</span><em>address</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/clusterweb/pbs/qdel.html#QDel.login"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#clusterweb.pbs.qdel.QDel.login" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an SSH interface object with the address specified</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>address</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Address or name for ssh to</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">q</span> <span class="o">=</span> <span class="n">Qsub</span><span class="p">(</span><span class="n">job</span><span class="p">,</span><span class="n">arg</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span><span class="o">.</span><span class="n">login</span><span class="p">(</span><span class="s1">&#39;192.168.1.42&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="clusterweb.pbs.qdel.QDel.purge">
+<code class="descname">purge</code><span class="sig-paren">(</span><em>job_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/clusterweb/pbs/qdel.html#QDel.purge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#clusterweb.pbs.qdel.QDel.purge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Forcibly  purge  the  job  from the server.  This should only be 
+used if a running job will not exit because its allocated  nodes are 
+unreachable. The admin should make every attempt at resolving the problem 
+on the nodes. If a job’s mother superior recovers after purging the job,
+any epilogue scripts may still run.  This option is only available 
+to a batch operator or the batch administrator.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>address</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Address or name for ssh to</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">q</span> <span class="o">=</span> <span class="n">Qsub</span><span class="p">(</span><span class="n">job</span><span class="p">,</span><span class="n">arg</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span><span class="o">.</span><span class="n">login</span><span class="p">(</span><span class="s1">&#39;192.168.1.42&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="clusterweb.pbs.qdel.QDel.rm">
+<code class="descname">rm</code><span class="sig-paren">(</span><em>job_id</em>, <em>flags=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/clusterweb/pbs/qdel.html#QDel.rm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#clusterweb.pbs.qdel.QDel.rm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an SSH interface object with the address specified</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>address</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Address or name for ssh to</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">q</span> <span class="o">=</span> <span class="n">Qsub</span><span class="p">(</span><span class="n">job</span><span class="p">,</span><span class="n">arg</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span><span class="o">.</span><span class="n">login</span><span class="p">(</span><span class="s1">&#39;192.168.1.42&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="clusterweb.pbs.qdel.QDel.rm_a">
+<code class="descname">rm_a</code><span class="sig-paren">(</span><em>job_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/clusterweb/pbs/qdel.html#QDel.rm_a"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#clusterweb.pbs.qdel.QDel.rm_a" title="Permalink to this definition">¶</a></dt>
+<dd><p>Request the job(s) be deleted asynchronously, which for a Running 
+job means that the reply will return before the MOM is requested to 
+delete the job.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>address</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Address or name for ssh to</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">q</span> <span class="o">=</span> <span class="n">Qsub</span><span class="p">(</span><span class="n">job</span><span class="p">,</span><span class="n">arg</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span><span class="o">.</span><span class="n">login</span><span class="p">(</span><span class="s1">&#39;192.168.1.42&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="clusterweb.pbs.qdel.QDel.rm_all">
+<code class="descname">rm_all</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/clusterweb/pbs/qdel.html#QDel.rm_all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#clusterweb.pbs.qdel.QDel.rm_all" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an SSH interface object with the address specified</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>address</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Address or name for ssh to</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">q</span> <span class="o">=</span> <span class="n">Qsub</span><span class="p">(</span><span class="n">job</span><span class="p">,</span><span class="n">arg</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span><span class="o">.</span><span class="n">login</span><span class="p">(</span><span class="s1">&#39;192.168.1.42&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="clusterweb.pbs.qdel.QDel.rm_delay">
+<code class="descname">rm_delay</code><span class="sig-paren">(</span><em>job_id</em>, <em>delay</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/clusterweb/pbs/qdel.html#QDel.rm_delay"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#clusterweb.pbs.qdel.QDel.rm_delay" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specify the delay between the sending of the SIGTERM and SIGKILL 
+signals. The argument delay specifies a unsigned integer number of 
+seconds.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>address</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Address or name for ssh to</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">q</span> <span class="o">=</span> <span class="n">Qsub</span><span class="p">(</span><span class="n">job</span><span class="p">,</span><span class="n">arg</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span><span class="o">.</span><span class="n">login</span><span class="p">(</span><span class="s1">&#39;192.168.1.42&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="clusterweb.pbs.qdel.QDel.rm_message">
+<code class="descname">rm_message</code><span class="sig-paren">(</span><em>job_id</em>, <em>message</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/clusterweb/pbs/qdel.html#QDel.rm_message"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#clusterweb.pbs.qdel.QDel.rm_message" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an SSH interface object with the address specified</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>address</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Address or name for ssh to</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">q</span> <span class="o">=</span> <span class="n">Qsub</span><span class="p">(</span><span class="n">job</span><span class="p">,</span><span class="n">arg</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span><span class="o">.</span><span class="n">login</span><span class="p">(</span><span class="s1">&#39;192.168.1.42&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="clusterweb.pbs.qdel.QDel.rm_range">
+<code class="descname">rm_range</code><span class="sig-paren">(</span><em>id_range</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/clusterweb/pbs/qdel.html#QDel.rm_range"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#clusterweb.pbs.qdel.QDel.rm_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>The  array_range argument is an integer id or a range of integers. 
+Multiple ids or id ranges can be combined in a comma delimted list 
+(examples:   -t  1-100  or  -t 1,10,50-100).</p>
+<p>The command acts on the array (or  specified range of the array) 
+just as it would on an individual job.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>address</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Address or name for ssh to</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">q</span> <span class="o">=</span> <span class="n">Qsub</span><span class="p">(</span><span class="n">job</span><span class="p">,</span><span class="n">arg</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span><span class="o">.</span><span class="n">login</span><span class="p">(</span><span class="s1">&#39;192.168.1.42&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 
 

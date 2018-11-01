@@ -1,6 +1,8 @@
 Cluster Web Documentation
 *************************
 
+.. note:: ClusterWeb is currently in Beta, only the PBS API is available
+
 Cluster Web is a Python library for creating wireless clusters of any devices that use SSH. This allows users to send jobs across a network of different kinds of devices. An example is a system that is made up of a laptop, CPU cluster, and a GPU workstation. Different jobs can be sent to each device all from the laptop and the results sent back to the laptop asynchronously.
 
 Compatiable Devices
@@ -58,7 +60,7 @@ CWeb Documentation
 
 .. toctree::
    :maxdepth: 6
-   :caption: About CWeb
+   :caption: About ClusterWeb
 
    why
 
@@ -78,7 +80,7 @@ CWeb Documentation
 
 .. toctree::
    :maxdepth: 6
-   :caption: Portable Batch System
+   :caption: Portable Batch Systems (PBS)
 
    qsub
 
@@ -92,7 +94,7 @@ CWeb Documentation
 
 .. toctree::
    :maxdepth: 6
-   :caption: SSH System
+   :caption: Secure Shell Systems (SSH)
 
    sub
 
@@ -101,5 +103,3 @@ CWeb Documentation
    del
 
    stat
-
-:github_url: https://github.com/gndctrl2mjrtm/cweb
