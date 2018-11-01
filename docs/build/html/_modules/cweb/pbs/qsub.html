@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>cweb.pbs.qsub &mdash; cweb 0.0.1 documentation</title>
+  <title>cweb.pbs.qsub &mdash; clusterweb 0.0.1 documentation</title>
   
 
   
@@ -79,7 +79,7 @@
             
               <p class="caption"><span class="caption-text">About CWeb</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../why.html">Why to Use Cweb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../why.html">Why to Use CWeb</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../about.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation</a></li>
 </ul>
@@ -117,7 +117,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../../index.html">cweb</a>
+          <a href="../../../index.html">clusterweb</a>
         
       </nav>
 
@@ -185,7 +185,9 @@
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">re</span>
 
-
+<span class="kn">from</span> <span class="nn">cweb.interfaces</span> <span class="k">import</span> <span class="n">ssh</span>
+<span class="kn">from</span> <span class="nn">cweb.pbs</span> <span class="k">import</span> <span class="n">scripts</span>
+<span class="kn">from</span> <span class="nn">cweb.pbs</span> <span class="k">import</span> <span class="n">config</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">===============================================================================</span>
@@ -196,22 +198,25 @@
 <div class="viewcode-block" id="Qsub"><a class="viewcode-back" href="../../../qsub.html#cweb.pbs.qsub.Qsub">[docs]</a><span class="k">class</span> <span class="nc">Qsub</span><span class="p">():</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">target</span><span class="p">,</span><span class="n">args</span><span class="p">,</span>
-            <span class="n">n_nodes</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-            <span class="n">n_cores</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-            <span class="n">set_walltime</span><span class="o">=</span><span class="s1">&#39;1:00:00&#39;</span><span class="p">,</span>
-            <span class="n">set_memory</span><span class="o">=</span><span class="s1">&#39;8GB&#39;</span><span class="p">,</span>
-            <span class="n">set_cpu</span><span class="o">=</span><span class="s1">&#39;1:00:00&#39;</span><span class="p">,</span>
-            <span class="n">wait_time</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">n_nodes</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">DEFAULT_NODES</span><span class="p">,</span>
+            <span class="n">n_cores</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">DEFAULT_CORES</span><span class="p">,</span>
+            <span class="n">set_walltime</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">DEFAULT_WALLTIME</span><span class="p">,</span>
+            <span class="n">set_memory</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">DEFAULT_MEMORY</span><span class="p">,</span>
+            <span class="n">set_cpu</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">DEFAULT_CPU</span><span class="p">,</span>
+            <span class="n">wait_time</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">DEFAULT_WAIT_TIME</span><span class="p">,</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="n">target</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="n">args</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">ssh</span> <span class="o">=</span> <span class="n">SSH</span><span class="p">(</span><span class="s1">&#39;colfax&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ssh</span> <span class="o">=</span> <span class="n">ssh</span><span class="o">.</span><span class="n">SSH</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">USERNAME</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">fnc</span> <span class="o">=</span> <span class="n">cloudpickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">temp_dir</span> <span class="o">=</span> <span class="s1">&#39;temp_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">10000</span><span class="p">,</span><span class="mi">100000</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">temp_dir</span> <span class="o">=</span> <span class="s1">&#39;temp_</span><span class="si">{}{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)),</span>
+            <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">10000</span><span class="p">,</span><span class="mi">100000</span><span class="p">))</span>
 
         <span class="c1"># FIX: Allocate resource functions</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_nodes</span>        <span class="o">=</span> <span class="n">n_nodes</span>
@@ -229,6 +234,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">wait_time</span> <span class="o">=</span> <span class="n">wait_time</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">complete</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
+
 
     <span class="c1">#--------------------------------------------------------------------------</span>
 
@@ -296,6 +304,7 @@
     <span class="c1">#--------------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="Qsub.push"><a class="viewcode-back" href="../../../qsub.html#cweb.pbs.qsub.Qsub.push">[docs]</a>    <span class="k">def</span> <span class="nf">push</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
         <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_dir</span><span class="p">)</span>
 
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_dir</span><span class="p">,</span><span class="s1">&#39;fnc.pkl&#39;</span><span class="p">),</span><span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
@@ -305,14 +314,14 @@
             <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">)</span>
 
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_dir</span><span class="p">,</span><span class="s1">&#39;pyscript.py&#39;</span><span class="p">),</span><span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">script</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="o">.</span><span class="n">major</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_dir</span><span class="p">))</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">scripts</span><span class="o">.</span><span class="n">pyscript</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="o">.</span><span class="n">major</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_dir</span><span class="p">))</span>
 
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_dir</span><span class="p">,</span><span class="s1">&#39;qscript&#39;</span><span class="p">),</span><span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">generate_qsub_script</span><span class="p">())</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">ssh</span><span class="o">.</span><span class="n">send_folder</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_dir</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_dir</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">ssh</span><span class="o">.</span><span class="n">send_command</span><span class="p">(</span><span class="s1">&#39;qsub </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">job_id</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ssh</span><span class="o">.</span><span class="n">send_command</span><span class="p">(</span><span class="s1">&#39;qsub </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">temp_dir</span><span class="p">,</span><span class="s1">&#39;qscript&#39;</span><span class="p">)))</span></div>
 
     <span class="c1">#--------------------------------------------------------------------------</span>
@@ -333,11 +342,14 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">ssh</span><span class="o">.</span><span class="n">recieve_file</span><span class="p">(</span><span class="n">result_path</span><span class="p">,</span><span class="n">result_path</span><span class="p">)</span>
 
+        <span class="nb">print</span><span class="p">(</span><span class="n">result_path</span><span class="p">)</span>
+
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">result_path</span><span class="p">,</span><span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">result</span>   <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">complete</span> <span class="o">=</span> <span class="kc">True</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">ssh</span><span class="o">.</span><span class="n">send_command</span><span class="p">(</span><span class="s1">&#39;rm -rf </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_dir</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ssh</span><span class="o">.</span><span class="n">send_command</span><span class="p">(</span><span class="s1">&#39;rm qsub_script.*</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">job_id</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]))</span>
         <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_dir</span><span class="p">)</span></div>
         
         

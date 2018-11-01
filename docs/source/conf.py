@@ -22,7 +22,7 @@ extensions = ['sphinx.ext.autodoc', 'sphinx.ext.doctest', 'sphinx.ext.viewcode']
 
 # -- Project information -----------------------------------------------------
 
-project = 'cweb'
+project = 'clusterweb'
 copyright = '2018, Stephen Offer'
 author = 'Stephen Offer'
 

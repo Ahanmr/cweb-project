@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>cweb.pbs.session &mdash; cweb 0.0.1 documentation</title>
+  <title>cweb.pbs.qsession &mdash; clusterweb 0.0.1 documentation</title>
   
 
   
@@ -117,7 +117,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../../index.html">cweb</a>
+          <a href="../../../index.html">clusterweb</a>
         
       </nav>
 
@@ -150,7 +150,7 @@
         
           <li><a href="../../index.html">Module code</a> &raquo;</li>
         
-      <li>cweb.pbs.session</li>
+      <li>cweb.pbs.qsession</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -165,30 +165,34 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for cweb.pbs.session</h1><div class="highlight"><pre>
+  <h1>Source code for cweb.pbs.qsession</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/bin/env/python3</span>
 <span class="c1">#-*- encdoing: utf-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">===============================================================================</span>
-
-<span class="sd">===============================================================================</span>
 
 
-<span class="sd">-------------------------------------------------------------------------------</span>
+
+
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">cloudpickle</span>
 <span class="kn">import</span> <span class="nn">subprocess</span>
 <span class="kn">import</span> <span class="nn">threading</span>
-<span class="kn">import</span> <span class="nn">importlib</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
 <span class="kn">import</span> <span class="nn">pickle</span>
+<span class="kn">import</span> <span class="nn">random</span>
 <span class="kn">import</span> <span class="nn">shutil</span>
 <span class="kn">import</span> <span class="nn">dill</span>
 <span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">import</span> <span class="nn">tqdm</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">re</span>
+
+<span class="kn">from</span> <span class="nn">cweb.interfaces</span> <span class="k">import</span> <span class="n">ssh</span>
+<span class="kn">from</span> <span class="nn">cweb.pbs</span> <span class="k">import</span> <span class="n">scripts</span>
+<span class="kn">from</span> <span class="nn">cweb.pbs</span> <span class="k">import</span> <span class="n">config</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;Stephen Offer&quot;</span>
 
@@ -198,10 +202,16 @@
 <span class="sd">===============================================================================</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
+<div class="viewcode-block" id="QSession"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.qsession.QSession">[docs]</a><span class="k">class</span> <span class="nc">QSession</span><span class="p">():</span>
 
-<div class="viewcode-block" id="QSession"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.session.QSession">[docs]</a><span class="k">class</span> <span class="nc">QSession</span><span class="p">():</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">n_nodes</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">DEFAULT_NODES</span><span class="p">,</span>
+            <span class="n">n_cores</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">DEFAULT_CORES</span><span class="p">,</span>
+            <span class="n">set_walltime</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">DEFAULT_WALLTIME</span><span class="p">,</span>
+            <span class="n">set_memory</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">DEFAULT_MEMORY</span><span class="p">,</span>
+            <span class="n">set_cpu</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">DEFAULT_CPU</span><span class="p">,</span>
+            <span class="n">wait_time</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">DEFAULT_WAIT_TIME</span><span class="p">,</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A method&#39;s docstring with parameters and return value.</span>
 <span class="sd">        </span>
@@ -224,71 +234,42 @@
 <span class="sd">        Multi-job control of qsub submissions</span>
 
 <span class="sd">        Multi-job Usage:</span>
-
 <span class="sd">            &gt;&gt; with devcloud.Session() as sess:</span>
 <span class="sd">            &gt;&gt;     sess.load(job1)</span>
 <span class="sd">            &gt;&gt;     sess.load(job2)</span>
 <span class="sd">            &gt;&gt;     sess.load(job3)</span>
 <span class="sd">            &gt;&gt;     sess.run()</span>
 <span class="sd">            &gt;&gt;     [output1,output2,output3] = sess.output</span>
-<span class="sd">            </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">jobs</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="nb">print</span><span class="p">(</span><span class="nb">locals</span><span class="p">())</span>
-        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span>
 
-        <span class="c1"># State a type variable for comparison debugging</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__type__</span>       <span class="o">=</span> <span class="s2">&quot;__session__&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ssh</span> <span class="o">=</span> <span class="n">ssh</span><span class="o">.</span><span class="n">SSH</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">USERNAME</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">time_id</span>        <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">temp_dir</span> <span class="o">=</span> <span class="s1">&#39;temp_</span><span class="si">{}{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)),</span>
+            <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">10000</span><span class="p">,</span><span class="mi">100000</span><span class="p">))</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">devcloud_dir</span>   <span class="o">=</span> <span class="s2">&quot;job_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time_id</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">job</span>            <span class="o">=</span> <span class="n">devcloud_functions</span><span class="o">.</span><span class="n">DevCloudJob</span><span class="p">()</span>
-
-        <span class="c1"># Boolean value for debugging mode</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">debug</span>          <span class="o">=</span> <span class="kc">True</span>
-        <span class="c1"># Boolean value for verbose mode</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span>        <span class="o">=</span> <span class="kc">True</span>
-        <span class="c1"># Qsub script placeholder for number of nodes</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">n_nodes</span>        <span class="o">=</span> <span class="mi">1</span>
+        <span class="c1"># FIX: Allocate resource functions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_nodes</span>        <span class="o">=</span> <span class="n">n_nodes</span>
         <span class="c1"># Qsub script placeholder for number of cores</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">n_cores</span>        <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_cores</span>        <span class="o">=</span> <span class="n">n_cores</span>
         <span class="c1"># Qsub script placeholder for the walltime allocated</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_walltime</span>   <span class="o">=</span> <span class="s1">&#39;1:00:00&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_walltime</span>   <span class="o">=</span> <span class="n">set_walltime</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">allocate_walltime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">set_walltime</span><span class="p">)</span>
+
         <span class="c1"># Qsub script placeholder for memory allocated</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_memory</span>     <span class="o">=</span> <span class="s1">&#39;4GB&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_memory</span>     <span class="o">=</span> <span class="n">set_memory</span>
         <span class="c1"># Qsub script placeholder for cpu time allocated</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_cpu</span>        <span class="o">=</span> <span class="s1">&#39;1:00:00&#39;</span>
-        <span class="c1"># Qsub script placeholder for the output file</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">output_file</span>    <span class="o">=</span> <span class="kc">None</span>
-        <span class="c1"># Qsub script placeholder for the error file</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">error_file</span>     <span class="o">=</span> <span class="kc">None</span>
-        <span class="c1"># Qsub script placeholder for python script string</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">python_script</span>  <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_cpu</span>        <span class="o">=</span> <span class="n">set_cpu</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">walltime</span>       <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wait_time</span> <span class="o">=</span> <span class="n">wait_time</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">default</span>        <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">all_complete</span> <span class="o">=</span> <span class="kc">False</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">ssh</span>            <span class="o">=</span> <span class="n">ssh_interface</span><span class="o">.</span><span class="n">DevCloudInterface</span><span class="p">(</span>
-                                <span class="n">devcloud_config</span><span class="o">.</span><span class="n">USERNAME</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">qstat</span>          <span class="o">=</span> <span class="n">qstat_functions</span><span class="o">.</span><span class="n">Qstat</span><span class="p">(</span><span class="n">devcloud_config</span><span class="o">.</span><span class="n">USERNAME</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">remove_dir</span>     <span class="o">=</span> <span class="kc">False</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">wait_time</span>      <span class="o">=</span> <span class="mf">0.5</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">result</span>         <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">all_complete</span>   <span class="o">=</span> <span class="kc">False</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">mh</span>             <span class="o">=</span> <span class="kc">None</span>
-
+        <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
 
     <span class="c1">#--------------------------------------------------------------------------</span>
 
@@ -529,7 +510,7 @@
 
     <span class="c1">#--------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="QSession.index"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.session.QSession.index">[docs]</a>    <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>
+<div class="viewcode-block" id="QSession.index"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.qsession.QSession.index">[docs]</a>    <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A method&#39;s docstring with parameters and return value.</span>
 <span class="sd">        </span>
@@ -624,39 +605,7 @@
 
     <span class="c1">#--------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="QSession.login"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.session.QSession.login">[docs]</a>    <span class="k">def</span> <span class="nf">login</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">username</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        A method&#39;s docstring with parameters and return value.</span>
-<span class="sd">        </span>
-<span class="sd">        Use all the cool Sphinx capabilities in this description, e.g. to give</span>
-<span class="sd">        usage examples ...</span>
-<span class="sd">        </span>
-<span class="sd">        :Example:</span>
-
-<span class="sd">        &gt;&gt;&gt; another_class.foo(&#39;&#39;, AClass())        </span>
-<span class="sd">        </span>
-<span class="sd">        :param arg1: first argument</span>
-<span class="sd">        :type arg1: string</span>
-<span class="sd">        :param arg2: second argument</span>
-<span class="sd">        :type arg2: :class:`module.AClass`</span>
-<span class="sd">        :return: something</span>
-<span class="sd">        :rtype: string</span>
-<span class="sd">        :raises: TypeError</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">username</span><span class="p">,</span><span class="nb">str</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Incorrect username arg type: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="nb">type</span><span class="p">(</span><span class="n">username</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span>
-        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">username</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">string</span><span class="o">.</span><span class="n">ascii_letters</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Invalid char </span><span class="si">{}</span><span class="s2"> in username arg&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)),</span><span class="s1">&#39;username.txt&#39;</span><span class="p">),</span><span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">username</span><span class="p">)</span></div>
-
-
-    <span class="c1">#--------------------------------------------------------------------------</span>
-
-<div class="viewcode-block" id="QSession.allocate_nodes"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.session.QSession.allocate_nodes">[docs]</a>    <span class="k">def</span> <span class="nf">allocate_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">n_nodes</span><span class="p">):</span>
+<div class="viewcode-block" id="QSession.allocate_nodes"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.qsession.QSession.allocate_nodes">[docs]</a>    <span class="k">def</span> <span class="nf">allocate_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">n_nodes</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A method&#39;s docstring with parameters and return value.</span>
 <span class="sd">        </span>
@@ -685,16 +634,18 @@
 <span class="sd">            &gt;&gt; qsub_job.start()</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n_nodes</span><span class="p">,(</span><span class="nb">float</span><span class="p">,</span><span class="nb">int</span><span class="p">)):</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Invalid type for arg n_nodes: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="k">raise</span> <span class="ne">UserWarning</span><span class="p">(</span><span class="s2">&quot;Invalid type for arg n_nodes: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                 <span class="nb">type</span><span class="p">(</span><span class="n">n_nodes</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span>
+
         <span class="n">n_nodes</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">n_nodes</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">n_nodes</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">n_nodes</span> <span class="o">=</span> <span class="mi">1</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">n_nodes</span> <span class="o">=</span> <span class="n">n_nodes</span></div>
 
     <span class="c1">#--------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="QSession.allocate_cpu_time"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.session.QSession.allocate_cpu_time">[docs]</a>    <span class="k">def</span> <span class="nf">allocate_cpu_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">cpu_time</span><span class="p">):</span>
+<div class="viewcode-block" id="QSession.allocate_cpu_time"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.qsession.QSession.allocate_cpu_time">[docs]</a>    <span class="k">def</span> <span class="nf">allocate_cpu_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">cpu_time</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A method&#39;s docstring with parameters and return value.</span>
 <span class="sd">        </span>
@@ -713,11 +664,33 @@
 <span class="sd">        :rtype: string</span>
 <span class="sd">        :raises: TypeError</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cpu_time</span><span class="p">,(</span><span class="nb">int</span><span class="p">,</span><span class="nb">float</span><span class="p">)):</span>
+            <span class="n">cpu_time</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">cpu_time</span><span class="p">))</span>
+
+        <span class="k">def</span> <span class="nf">intable</span><span class="p">(</span><span class="n">z</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="nb">int</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">True</span> 
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cpu_time</span><span class="p">,</span><span class="nb">str</span><span class="p">):</span>
+            <span class="n">split_exp</span> <span class="o">=</span> <span class="n">cpu_time</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">intable</span><span class="p">,</span><span class="n">split_exp</span><span class="p">)))</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">split_exp</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="c1"># TODO: Add config check</span>
+                <span class="k">pass</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Invalid CPU time arg: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cpu_time</span><span class="p">))</span>
+
+        <span class="n">c</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3600</span><span class="p">,</span><span class="mi">60</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_cpu</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="nb">int</span><span class="p">(</span><span class="n">A</span><span class="p">)</span><span class="o">*</span><span class="nb">int</span><span class="p">(</span><span class="n">B</span><span class="p">)</span> <span class="k">for</span> <span class="n">A</span><span class="p">,</span><span class="n">B</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+            <span class="n">cpu_time</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">),</span><span class="n">c</span><span class="p">)])</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">set_cpu</span> <span class="o">=</span> <span class="n">cpu_time</span></div>
 
     <span class="c1">#--------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="QSession.allocate_walltime"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.session.QSession.allocate_walltime">[docs]</a>    <span class="k">def</span> <span class="nf">allocate_walltime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">walltime</span><span class="p">):</span>
+<div class="viewcode-block" id="QSession.allocate_walltime"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.qsession.QSession.allocate_walltime">[docs]</a>    <span class="k">def</span> <span class="nf">allocate_walltime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">walltime</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A method&#39;s docstring with parameters and return value.</span>
 <span class="sd">        </span>
@@ -736,11 +709,33 @@
 <span class="sd">        :rtype: string</span>
 <span class="sd">        :raises: TypeError</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">walltime</span><span class="p">,(</span><span class="nb">int</span><span class="p">,</span><span class="nb">float</span><span class="p">)):</span>
+            <span class="n">walltime</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">walltime</span><span class="p">))</span>
+
+        <span class="k">def</span> <span class="nf">intable</span><span class="p">(</span><span class="n">z</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="nb">int</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">True</span> 
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">walltime</span><span class="p">,</span><span class="nb">str</span><span class="p">):</span>
+            <span class="n">split_exp</span> <span class="o">=</span> <span class="n">walltime</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">intable</span><span class="p">,</span><span class="n">split_exp</span><span class="p">)))</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">split_exp</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="c1"># TODO: Add config check</span>
+                <span class="k">pass</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Invalid walltime arg: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">walltime</span><span class="p">))</span>
+
+        <span class="n">c</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3600</span><span class="p">,</span><span class="mi">60</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_walltime</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="nb">int</span><span class="p">(</span><span class="n">A</span><span class="p">)</span><span class="o">*</span><span class="nb">int</span><span class="p">(</span><span class="n">B</span><span class="p">)</span> <span class="k">for</span> <span class="n">A</span><span class="p">,</span><span class="n">B</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+            <span class="n">walltime</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">),</span><span class="n">c</span><span class="p">)])</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">set_walltime</span> <span class="o">=</span> <span class="n">walltime</span></div>
 
     <span class="c1">#--------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="QSession.allocate_cores"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.session.QSession.allocate_cores">[docs]</a>    <span class="k">def</span> <span class="nf">allocate_cores</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">n_cores</span><span class="p">):</span>
+<div class="viewcode-block" id="QSession.allocate_cores"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.qsession.QSession.allocate_cores">[docs]</a>    <span class="k">def</span> <span class="nf">allocate_cores</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">n_cores</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A method&#39;s docstring with parameters and return value.</span>
 <span class="sd">        </span>
@@ -769,7 +764,7 @@
 <span class="sd">            &gt;&gt; qsub_job.start()</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n_cores</span><span class="p">,(</span><span class="nb">float</span><span class="p">,</span><span class="nb">int</span><span class="p">)):</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Invalid type for arg n_cores: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="k">raise</span> <span class="ne">UserWarning</span><span class="p">(</span><span class="s2">&quot;Invalid type for arg n_cores: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                 <span class="nb">type</span><span class="p">(</span><span class="n">n_cores</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span>
         <span class="n">n_cores</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">n_cores</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">n_cores</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
@@ -778,7 +773,7 @@
 
     <span class="c1">#--------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="QSession.allocate_memory"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.session.QSession.allocate_memory">[docs]</a>    <span class="k">def</span> <span class="nf">allocate_memory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">memory</span><span class="p">):</span>
+<div class="viewcode-block" id="QSession.allocate_memory"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.qsession.QSession.allocate_memory">[docs]</a>    <span class="k">def</span> <span class="nf">allocate_memory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">memory</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A method&#39;s docstring with parameters and return value.</span>
 <span class="sd">        </span>
@@ -807,13 +802,13 @@
 <span class="sd">            &gt;&gt; qsub_job.start()</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">memory</span><span class="p">,</span><span class="nb">int</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">memory</span> <span class="o">&gt;</span> <span class="n">devcloud_config</span><span class="o">.</span><span class="n">MAX_MEMORY</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">memory</span> <span class="o">&gt;</span> <span class="n">config</span><span class="o">.</span><span class="n">MAX_MEMORY</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Max memory arg </span><span class="si">{}</span><span class="s2"> exceeded: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="n">devcloud_config</span><span class="o">.</span><span class="n">MAX_MEMORY</span><span class="p">,</span><span class="n">memory</span><span class="p">))</span>
+                    <span class="n">config</span><span class="o">.</span><span class="n">MAX_MEMORY</span><span class="p">,</span><span class="n">memory</span><span class="p">))</span>
 
-            <span class="k">if</span> <span class="n">memory</span> <span class="o">&lt;</span> <span class="n">devcloud_config</span><span class="o">.</span><span class="n">MIN_MEMORY</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">memory</span> <span class="o">&lt;</span> <span class="n">config</span><span class="o">.</span><span class="n">MIN_MEMORY</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Lower than min memory </span><span class="si">{}</span><span class="s2"> arg: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="n">devcloud_config</span><span class="o">.</span><span class="n">MIN_MEMORY</span><span class="p">,</span><span class="n">memory</span><span class="p">))</span>
+                    <span class="n">config</span><span class="o">.</span><span class="n">MIN_MEMORY</span><span class="p">,</span><span class="n">memory</span><span class="p">))</span>
 
             <span class="n">memory</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">MB&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">memory</span><span class="p">)</span>
 
@@ -826,17 +821,17 @@
                     <span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">memory</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span>
 
                     <span class="k">if</span> <span class="s1">&#39;G&#39;</span> <span class="ow">in</span> <span class="n">memory</span><span class="o">.</span><span class="n">upper</span><span class="p">():</span>
-                        <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="nb">int</span><span class="p">(</span><span class="n">devcloud_config</span><span class="o">.</span><span class="n">MAX_MEMORY</span><span class="o">/</span><span class="mi">1000</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="nb">int</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">MAX_MEMORY</span><span class="o">/</span><span class="mi">1000</span><span class="p">):</span>
                             <span class="n">valid</span> <span class="o">=</span> <span class="kc">False</span>
 
-                        <span class="k">elif</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="nb">int</span><span class="p">(</span><span class="n">devcloud_config</span><span class="o">.</span><span class="n">MIN_MEMORY</span><span class="o">/</span><span class="mi">1000</span><span class="p">):</span>
+                        <span class="k">elif</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="nb">int</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">MIN_MEMORY</span><span class="o">/</span><span class="mi">1000</span><span class="p">):</span>
                             <span class="n">valid</span> <span class="o">=</span> <span class="kc">False</span>
 
                     <span class="k">elif</span> <span class="s1">&#39;M&#39;</span> <span class="ow">in</span> <span class="n">memory</span><span class="o">.</span><span class="n">upper</span><span class="p">():</span>
-                        <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="n">devcloud_config</span><span class="o">.</span><span class="n">MAX_MEMORY</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="n">config</span><span class="o">.</span><span class="n">MAX_MEMORY</span><span class="p">:</span>
                             <span class="n">valid</span> <span class="o">=</span> <span class="kc">False</span>
 
-                        <span class="k">elif</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="n">devcloud_config</span><span class="o">.</span><span class="n">MIN_MEMORY</span><span class="p">:</span>
+                        <span class="k">elif</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="n">config</span><span class="o">.</span><span class="n">MIN_MEMORY</span><span class="p">:</span>
                             <span class="n">valid</span> <span class="o">=</span> <span class="kc">False</span>
 
                 <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
@@ -855,7 +850,7 @@
 
     <span class="c1">#--------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="QSession.generate_qsub_script"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.session.QSession.generate_qsub_script">[docs]</a>    <span class="k">def</span> <span class="nf">generate_qsub_script</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="QSession.generate_qsub_script"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.qsession.QSession.generate_qsub_script">[docs]</a>    <span class="k">def</span> <span class="nf">generate_qsub_script</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A method&#39;s docstring with parameters and return value.</span>
 <span class="sd">        </span>
@@ -875,18 +870,17 @@
 <span class="sd">        :raises: TypeError</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="sd">&quot;&quot;&quot;Generate a qsub submission bash script&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">default</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">scripts</span><span class="o">.</span><span class="n">job_script_default</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">n_nodes</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">n_cores</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">set_walltime</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">set_memory</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">set_cpu</span><span class="p">,</span>
-                <span class="s1">&#39;python </span><span class="si">{}</span><span class="s1">/job.py&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">devcloud_dir</span><span class="p">))</span></div>
+        <span class="k">return</span> <span class="n">scripts</span><span class="o">.</span><span class="n">qscript</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">n_nodes</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">n_cores</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_walltime</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_memory</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_cpu</span><span class="p">,</span>
+            <span class="s1">&#39;python </span><span class="si">{}</span><span class="s1">/pyscript.py&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_dir</span><span class="p">))</span></div>
 
     <span class="c1">#--------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="QSession.data_dump"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.session.QSession.data_dump">[docs]</a>    <span class="k">def</span> <span class="nf">data_dump</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">data</span><span class="p">,</span><span class="n">path</span><span class="p">):</span>
+<div class="viewcode-block" id="QSession.data_dump"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.qsession.QSession.data_dump">[docs]</a>    <span class="k">def</span> <span class="nf">data_dump</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">data</span><span class="p">,</span><span class="n">path</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A method&#39;s docstring with parameters and return value.</span>
 <span class="sd">        </span>
@@ -915,7 +909,7 @@
 
     <span class="c1">#--------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="QSession.write_script"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.session.QSession.write_script">[docs]</a>    <span class="k">def</span> <span class="nf">write_script</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">script</span><span class="p">,</span><span class="n">path</span><span class="p">,</span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="QSession.write_script"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.qsession.QSession.write_script">[docs]</a>    <span class="k">def</span> <span class="nf">write_script</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">script</span><span class="p">,</span><span class="n">path</span><span class="p">,</span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A method&#39;s docstring with parameters and return value.</span>
 <span class="sd">        </span>
@@ -983,220 +977,7 @@
 
     <span class="c1">#--------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="QSession.make_function"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.session.QSession.make_function">[docs]</a>    <span class="k">def</span> <span class="nf">make_function</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        A method&#39;s docstring with parameters and return value.</span>
-<span class="sd">        </span>
-<span class="sd">        Use all the cool Sphinx capabilities in this description, e.g. to give</span>
-<span class="sd">        usage examples ...</span>
-<span class="sd">        </span>
-<span class="sd">        :Example:</span>
-
-<span class="sd">        &gt;&gt;&gt; another_class.foo(&#39;&#39;, AClass())        </span>
-<span class="sd">        </span>
-<span class="sd">        :param arg1: first argument</span>
-<span class="sd">        :type arg1: string</span>
-<span class="sd">        :param arg2: second argument</span>
-<span class="sd">        :type arg2: :class:`module.AClass`</span>
-<span class="sd">        :return: something</span>
-<span class="sd">        :rtype: string</span>
-<span class="sd">        :raises: TypeError</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Create file for serialized function within local job folder</span>
-        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">function</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">jobs</span><span class="p">):</span>
-            <span class="n">function_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">local_job_dir</span><span class="p">,</span>
-                <span class="s1">&#39;func</span><span class="si">{}</span><span class="s1">.pkl&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
-
-            <span class="bp">self</span><span class="o">.</span><span class="n">data_dump</span><span class="p">(</span><span class="n">function</span><span class="p">,</span><span class="n">function_file</span><span class="p">)</span></div>
-
-
-    <span class="c1">#--------------------------------------------------------------------------</span>
-
-<div class="viewcode-block" id="QSession.make_arg"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.session.QSession.make_arg">[docs]</a>    <span class="k">def</span> <span class="nf">make_arg</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        A method&#39;s docstring with parameters and return value.</span>
-<span class="sd">        </span>
-<span class="sd">        Use all the cool Sphinx capabilities in this description, e.g. to give</span>
-<span class="sd">        usage examples ...</span>
-<span class="sd">        </span>
-<span class="sd">        :Example:</span>
-
-<span class="sd">        &gt;&gt;&gt; another_class.foo(&#39;&#39;, AClass())        </span>
-<span class="sd">        </span>
-<span class="sd">        :param arg1: first argument</span>
-<span class="sd">        :type arg1: string</span>
-<span class="sd">        :param arg2: second argument</span>
-<span class="sd">        :type arg2: :class:`module.AClass`</span>
-<span class="sd">        :return: something</span>
-<span class="sd">        :rtype: string</span>
-<span class="sd">        :raises: TypeError</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Create file for serialized args within local job folder</span>
-        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">arg</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">):</span>
-            <span class="n">arg_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">local_job_dir</span><span class="p">,</span><span class="s1">&#39;args</span><span class="si">{}</span><span class="s1">.pkl&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">data_dump</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span><span class="n">arg_file</span><span class="p">)</span></div>
-
-
-    <span class="c1">#--------------------------------------------------------------------------</span>
-
-<div class="viewcode-block" id="QSession.make_python"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.session.QSession.make_python">[docs]</a>    <span class="k">def</span> <span class="nf">make_python</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        A method&#39;s docstring with parameters and return value.</span>
-<span class="sd">        </span>
-<span class="sd">        Use all the cool Sphinx capabilities in this description, e.g. to give</span>
-<span class="sd">        usage examples ...</span>
-<span class="sd">        </span>
-<span class="sd">        :Example:</span>
-
-<span class="sd">        &gt;&gt;&gt; another_class.foo(&#39;&#39;, AClass())        </span>
-<span class="sd">        </span>
-<span class="sd">        :param arg1: first argument</span>
-<span class="sd">        :type arg1: string</span>
-<span class="sd">        :param arg2: second argument</span>
-<span class="sd">        :type arg2: :class:`module.AClass`</span>
-<span class="sd">        :return: something</span>
-<span class="sd">        :rtype: string</span>
-<span class="sd">        :raises: TypeError</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Create python script for unserializing data and calling function</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">local_pyscript</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">local_job_dir</span><span class="p">,</span><span class="s1">&#39;job.py&#39;</span><span class="p">)</span>
-
-        <span class="n">python_script</span> <span class="o">=</span> <span class="n">scripts</span><span class="o">.</span><span class="n">session_script</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="o">.</span><span class="n">major</span><span class="p">,</span>
-            <span class="s2">&quot;job_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time_id</span><span class="p">))</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">write_script</span><span class="p">(</span><span class="n">python_script</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">local_pyscript</span><span class="p">)</span></div>
-
-    <span class="c1">#--------------------------------------------------------------------------</span>
-
-<div class="viewcode-block" id="QSession.make_qsub"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.session.QSession.make_qsub">[docs]</a>    <span class="k">def</span> <span class="nf">make_qsub</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        A method&#39;s docstring with parameters and return value.</span>
-<span class="sd">        </span>
-<span class="sd">        Use all the cool Sphinx capabilities in this description, e.g. to give</span>
-<span class="sd">        usage examples ...</span>
-<span class="sd">        </span>
-<span class="sd">        :Example:</span>
-
-<span class="sd">        &gt;&gt;&gt; another_class.foo(&#39;&#39;, AClass())        </span>
-<span class="sd">        </span>
-<span class="sd">        :param arg1: first argument</span>
-<span class="sd">        :type arg1: string</span>
-<span class="sd">        :param arg2: second argument</span>
-<span class="sd">        :type arg2: :class:`module.AClass`</span>
-<span class="sd">        :return: something</span>
-<span class="sd">        :rtype: string</span>
-<span class="sd">        :raises: TypeError</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">local_sh_script</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">local_job_dir</span><span class="p">,</span><span class="s1">&#39;qsub_script&#39;</span><span class="p">)</span>
-
-        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="n">ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-            <span class="n">desc</span><span class="o">=</span><span class="s1">&#39;Generating qsub script: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">local_sh_script</span><span class="p">)):</span>
-            <span class="n">qsub_script</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_qsub_script</span><span class="p">()</span>
-
-        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="n">ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-            <span class="n">desc</span><span class="o">=</span><span class="s1">&#39;Writing qsub file: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">local_sh_script</span><span class="p">)):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">write_script</span><span class="p">(</span><span class="n">qsub_script</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">local_sh_script</span><span class="p">)</span></div>
-
-    <span class="c1">#--------------------------------------------------------------------------</span>
-
-<div class="viewcode-block" id="QSession.make_modules"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.session.QSession.make_modules">[docs]</a>    <span class="k">def</span> <span class="nf">make_modules</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        A method&#39;s docstring with parameters and return value.</span>
-<span class="sd">        </span>
-<span class="sd">        Use all the cool Sphinx capabilities in this description, e.g. to give</span>
-<span class="sd">        usage examples ...</span>
-<span class="sd">        </span>
-<span class="sd">        :Example:</span>
-
-<span class="sd">        &gt;&gt;&gt; another_class.foo(&#39;&#39;, AClass())        </span>
-<span class="sd">        </span>
-<span class="sd">        :param arg1: first argument</span>
-<span class="sd">        :type arg1: string</span>
-<span class="sd">        :param arg2: second argument</span>
-<span class="sd">        :type arg2: :class:`module.AClass`</span>
-<span class="sd">        :return: something</span>
-<span class="sd">        :rtype: string</span>
-<span class="sd">        :raises: TypeError</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">mod_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">local_job_dir</span><span class="p">,</span><span class="s2">&quot;req.modules&quot;</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="n">ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                <span class="n">desc</span><span class="o">=</span><span class="s1">&#39;Generating module file: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mod_file</span><span class="p">)):</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mh</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">mod_file</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-                    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">mh</span><span class="o">.</span><span class="n">generate_module_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">local_job_dir</span><span class="p">)</span></div>
-
-
-
-    <span class="c1">#--------------------------------------------------------------------------</span>
-
-<div class="viewcode-block" id="QSession.create_local_files_verbose"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.session.QSession.create_local_files_verbose">[docs]</a>    <span class="k">def</span> <span class="nf">create_local_files_verbose</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        A method&#39;s docstring with parameters and return value.</span>
-<span class="sd">        </span>
-<span class="sd">        Use all the cool Sphinx capabilities in this description, e.g. to give</span>
-<span class="sd">        usage examples ...</span>
-<span class="sd">        </span>
-<span class="sd">        :Example:</span>
-
-<span class="sd">        &gt;&gt;&gt; another_class.foo(&#39;&#39;, AClass())        </span>
-<span class="sd">        </span>
-<span class="sd">        :param arg1: first argument</span>
-<span class="sd">        :type arg1: string</span>
-<span class="sd">        :param arg2: second argument</span>
-<span class="sd">        :type arg2: :class:`module.AClass`</span>
-<span class="sd">        :return: something</span>
-<span class="sd">        :rtype: string</span>
-<span class="sd">        :raises: TypeError</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="sd">&quot;&quot;&quot;Create the required local files for the serialized data to send</span>
-<span class="sd">        to DevCloud and deletes the folder afterwards. Output what is going</span>
-<span class="sd">        on to the stdout.</span>
-
-<span class="sd">        Input: None</span>
-<span class="sd">        Output: None</span>
-
-<span class="sd">        Usage:</span>
-<span class="sd">            &gt;&gt; q = qsub(fnc,args)</span>
-<span class="sd">            &gt;&gt; q.create_local_files_verbose()</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="c1"># Create local scratch folder</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">local_dev_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s1">&#39;~&#39;</span><span class="p">),</span>
-            <span class="s1">&#39;devcloud_jobs&#39;</span><span class="p">)</span>
-
-        <span class="c1"># Check if path exists</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">local_dev_dir</span><span class="p">):</span>
-            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="n">ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                    <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Creating local devcloud directory: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">local_dev_dir</span><span class="p">)):</span>
-                <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">local_dev_dir</span><span class="p">)</span>
-
-        <span class="c1"># Check if path is dir</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">local_dev_dir</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">SystemError</span><span class="p">(</span><span class="s2">&quot;DevCloud dir path not dir: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">local_dev_dir</span><span class="p">))</span>
-
-        <span class="c1"># Create local job folder</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">local_job_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">local_dev_dir</span><span class="p">,</span>
-            <span class="s2">&quot;job_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time_id</span><span class="p">))</span>
-
-        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">local_job_dir</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">SystemError</span><span class="p">(</span><span class="s2">&quot;DevCloud dir path already exists: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">local_job_dir</span><span class="p">))</span>
-
-        <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">local_job_dir</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">make_python</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">make_qsub</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">make_arg</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">make_function</span><span class="p">()</span> 
-        <span class="bp">self</span><span class="o">.</span><span class="n">make_modules</span><span class="p">()</span>  </div>
-    <span class="c1">#--------------------------------------------------------------------------</span>
-
-<div class="viewcode-block" id="QSession.load"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.session.QSession.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">target</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="QSession.load"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.qsession.QSession.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">target</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A method&#39;s docstring with parameters and return value.</span>
 <span class="sd">        </span>
@@ -1220,71 +1001,35 @@
 
     <span class="c1">#--------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="QSession.run"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.session.QSession.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        A method&#39;s docstring with parameters and return value.</span>
-<span class="sd">        </span>
-<span class="sd">        Use all the cool Sphinx capabilities in this description, e.g. to give</span>
-<span class="sd">        usage examples ...</span>
-<span class="sd">        </span>
-<span class="sd">        :Example:</span>
+<div class="viewcode-block" id="QSession.push"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.qsession.QSession.push">[docs]</a>    <span class="k">def</span> <span class="nf">push</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_dir</span><span class="p">)</span>
 
-<span class="sd">        &gt;&gt;&gt; another_class.foo(&#39;&#39;, AClass())        </span>
-<span class="sd">        </span>
-<span class="sd">        :param arg1: first argument</span>
-<span class="sd">        :type arg1: string</span>
-<span class="sd">        :param arg2: second argument</span>
-<span class="sd">        :type arg2: :class:`module.AClass`</span>
-<span class="sd">        :return: something</span>
-<span class="sd">        :rtype: string</span>
-<span class="sd">        :raises: TypeError</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">create_local_files_verbose</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">fnc</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">jobs</span><span class="p">):</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_dir</span><span class="p">,</span><span class="s1">&#39;fnc</span><span class="si">{}</span><span class="s1">.pkl&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">i</span><span class="p">)),</span><span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">cloudpickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">fnc</span><span class="p">))</span>
 
-        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="n">ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                <span class="n">desc</span><span class="o">=</span><span class="s1">&#39;Sending job directory to DevCloud&#39;</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ssh</span><span class="o">.</span><span class="n">send_folder</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">local_job_dir</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">devcloud_dir</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">arg</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">):</span>      
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_dir</span><span class="p">,</span><span class="s1">&#39;args</span><span class="si">{}</span><span class="s1">.pkl&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">i</span><span class="p">)),</span><span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">arg</span><span class="p">))</span>
 
-        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="n">ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Running qsub </span><span class="si">{}</span><span class="s2">/qsub_script&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">devcloud_dir</span><span class="p">)):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">job_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ssh</span><span class="o">.</span><span class="n">send_command</span><span class="p">(</span><span class="s1">&#39;qsub </span><span class="si">{}</span><span class="s1">/qsub_script&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">devcloud_dir</span><span class="p">))</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_dir</span><span class="p">,</span><span class="s1">&#39;pyscript.py&#39;</span><span class="p">),</span><span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">scripts</span><span class="o">.</span><span class="n">session_pyscript</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="o">.</span><span class="n">major</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_dir</span><span class="p">))</span>
 
-            <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="o">.</span><span class="n">major</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">job_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_id</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_dir</span><span class="p">,</span><span class="s1">&#39;qscript&#39;</span><span class="p">),</span><span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">generate_qsub_script</span><span class="p">())</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">job</span><span class="o">.</span><span class="n">job_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_id</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ssh</span><span class="o">.</span><span class="n">send_folder</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_dir</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_dir</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">job</span></div>
+        <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">job_id</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ssh</span><span class="o">.</span><span class="n">send_command</span><span class="p">(</span><span class="s1">&#39;qsub </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">temp_dir</span><span class="p">,</span><span class="s1">&#39;qscript&#39;</span><span class="p">)))</span></div>
 
     <span class="c1">#--------------------------------------------------------------------------</span>
 
-    <span class="k">def</span> <span class="nf">_result</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        A method&#39;s docstring with parameters and return value.</span>
-<span class="sd">        </span>
-<span class="sd">        Use all the cool Sphinx capabilities in this description, e.g. to give</span>
-<span class="sd">        usage examples ...</span>
-<span class="sd">        </span>
-<span class="sd">        :Example:</span>
+<div class="viewcode-block" id="QSession.fetch_result"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.qsession.QSession.fetch_result">[docs]</a>    <span class="k">def</span> <span class="nf">fetch_result</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-<span class="sd">        &gt;&gt;&gt; another_class.foo(&#39;&#39;, AClass())        </span>
-<span class="sd">        </span>
-<span class="sd">        :param arg1: first argument</span>
-<span class="sd">        :type arg1: string</span>
-<span class="sd">        :param arg2: second argument</span>
-<span class="sd">        :type arg2: :class:`module.AClass`</span>
-<span class="sd">        :return: something</span>
-<span class="sd">        :rtype: string</span>
-<span class="sd">        :raises: TypeError</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="sd">&quot;&quot;&quot;Get the serialized result file res.pkl from the DevCloud</span>
-
-<span class="sd">        Runs qstat to look for the job id but then</span>
-<span class="sd">        </span>
-<span class="sd">        Input:  None</span>
-<span class="sd">        Output: None</span>
-<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">jobs</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">complete</span> <span class="o">=</span> <span class="p">[</span><span class="kc">False</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">jobs</span><span class="p">]</span>
 
@@ -1293,16 +1038,15 @@
         <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
 
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">result_index</span><span class="p">:</span>
-                <span class="n">local_result_file</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">/res</span><span class="si">{}</span><span class="s2">.pkl&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">local_job_dir</span><span class="p">,</span><span class="n">i</span><span class="p">)</span>
-                <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">/res</span><span class="si">{}</span><span class="s2">.pkl&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">devcloud_dir</span><span class="p">,</span><span class="n">i</span><span class="p">)</span>
+                <span class="n">local_result_file</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">/res</span><span class="si">{}</span><span class="s2">.pkl&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_dir</span><span class="p">,</span><span class="n">i</span><span class="p">)</span>
+                <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">/res</span><span class="si">{}</span><span class="s2">.pkl&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_dir</span><span class="p">,</span><span class="n">i</span><span class="p">)</span>
 
                 <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span>
                     <span class="s1">&#39;ssh colfax [ -f </span><span class="si">{}</span><span class="s1"> ] &amp;&amp; echo &quot;1&quot; || echo &quot;0&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                         <span class="n">path</span><span class="p">),</span><span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">STDOUT</span><span class="p">,</span><span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
                 <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span> <span class="o">==</span> <span class="mi">49</span><span class="p">:</span>
-                    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="n">ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Fetching results&quot;</span><span class="p">):</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">ssh</span><span class="o">.</span><span class="n">recieve_file</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="n">local_result_file</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">ssh</span><span class="o">.</span><span class="n">recieve_file</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="n">local_result_file</span><span class="p">)</span>
                     <span class="n">result_index</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
 
                     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">local_result_file</span><span class="p">,</span><span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
@@ -1318,33 +1062,16 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">all_complete</span> <span class="o">=</span> <span class="kc">True</span>
         
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">remove_dir</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">cleanup_devcloud</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">cleanup_local</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ssh</span><span class="o">.</span><span class="n">send_command</span><span class="p">(</span><span class="s1">&#39;rm -rf </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_dir</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ssh</span><span class="o">.</span><span class="n">send_command</span><span class="p">(</span><span class="s1">&#39;rm qsub_script.*</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">job_id</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">temp_dir</span><span class="p">)</span></div>
             
     <span class="c1">#--------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="QSession.fetch_result"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.session.QSession.fetch_result">[docs]</a>    <span class="k">def</span> <span class="nf">fetch_result</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        A method&#39;s docstring with parameters and return value.</span>
-<span class="sd">        </span>
-<span class="sd">        Use all the cool Sphinx capabilities in this description, e.g. to give</span>
-<span class="sd">        usage examples ...</span>
-<span class="sd">        </span>
-<span class="sd">        :Example:</span>
-
-<span class="sd">        &gt;&gt;&gt; another_class.foo(&#39;&#39;, AClass())        </span>
-<span class="sd">        </span>
-<span class="sd">        :param arg1: first argument</span>
-<span class="sd">        :type arg1: string</span>
-<span class="sd">        :param arg2: second argument</span>
-<span class="sd">        :type arg2: :class:`module.AClass`</span>
-<span class="sd">        :return: something</span>
-<span class="sd">        :rtype: string</span>
-<span class="sd">        :raises: TypeError</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fetch_thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_result</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="p">())</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fetch_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span></div></div>
+<div class="viewcode-block" id="QSession.pull"><a class="viewcode-back" href="../../../qsession.html#cweb.pbs.qsession.QSession.pull">[docs]</a>    <span class="k">def</span> <span class="nf">pull</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">result_thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fetch_result</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="p">())</span>
+        <span class="n">result_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span></div></div>
 
 
 </pre></div>

@@ -17,9 +17,10 @@ import sys
 import os
 import re
 
-from cweb.interfaces import ssh
-from cweb.pbs import scripts
-from cweb.pbs import config
+from clusterweb.interfaces import ssh
+from clusterweb.pbs import scripts
+from clusterweb.pbs import config
+from clusterweb.pbs import qstat
 
 """
 ===============================================================================
@@ -41,7 +42,8 @@ class Qsub():
         self.target = target
         self.args = args
 
-        self.ssh = ssh.SSH(config.USERNAME)
+        self.username = config.USERNAME
+        self.ssh = ssh.SSH(self.username)
 
         self.fnc = cloudpickle.dumps(target)
         self.args = pickle.dumps(args)
@@ -69,11 +71,49 @@ class Qsub():
 
         self.verbose = verbose
 
+    #--------------------------------------------------------------------------
+
+    def __lt__(self,job):
+        """Sets the amount of walltime
+
+        Will raise exception if str argument is not in the form hr:min:sec
+
+        :param walltime: amount of walltime in seconds
+        :type walltime: str, int, float
+
+        :returns: None
+
+        :Example:
+
+        >>> q.allocate_walltime('0:05:00') # Five minutes
+        >>> q.allocate_walltime(600) # Ten minutes
+        >>> q.allocate_walltime(599.6) # Rounds to ten minutes
+
+        .. note:: The walltime configuration can be adjusted by admins in 
+            `devcloud/devcloud_config.py`.
+
+        .. warning:: If users adjust `devcloud/devcloud_config.py` to
+            settings not authorized by cluster admins, it will raise
+            errors on the cluster and the job will not be submitted.
+        """
+        data = qstat.Qstat()
+
+
+
+        if self.qstat_update:
+
+
+
+
 
     #--------------------------------------------------------------------------
 
     def generate_qsub_script(self):
-        """Generate a qsub submission bash script"""
+        """Return the PBS submission script from the specified resource
+        allocations.
+
+        :returns: None
+        """
         return scripts.qscript.format(
             self.n_nodes,
             self.n_cores,
@@ -190,28 +230,4 @@ class Qsub():
     def pull(self):
         result_thread = threading.Thread(target=self.fetch_result,args=())
         result_thread.start()
-
-"""
-===============================================================================
-
-===============================================================================
-"""      
-
-def main():
-    constant = 2
-
-    squared = lambda x: math.sin(x**constant)
-
-    q = Qsub(squared,4)
-    q.push()
-    q.pull()
-    #q.run()
-    while not q.complete:
-        time.sleep(1)
-        print("Waiting...")
-
-    print(q.result)
-
-if __name__ == "__main__":
-    main()
 

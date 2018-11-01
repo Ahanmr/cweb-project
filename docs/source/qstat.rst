@@ -1,7 +1,7 @@
 Qstat: View PBS Job Status
 ==========================
 
-.. automodule:: cweb.pbs.qstat
+.. automodule:: clusterweb.pbs.qstat
     :members:
     :undoc-members:
     :show-inheritance:

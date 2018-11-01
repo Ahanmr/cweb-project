@@ -1,7 +1,7 @@
 Stat: View Job Status
 =====================
 
-.. automodule:: cweb.local.stat
+.. automodule:: clusterweb.local.stat
     :members:
     :undoc-members:
     :show-inheritance:

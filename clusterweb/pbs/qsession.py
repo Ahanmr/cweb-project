@@ -22,9 +22,9 @@ import sys
 import os
 import re
 
-from cweb.interfaces import ssh
-from cweb.pbs import scripts
-from cweb.pbs import config
+from clusterweb.interfaces import ssh
+from clusterweb.pbs import scripts
+from clusterweb.pbs import config
 
 __author__ = "Stephen Offer"
 

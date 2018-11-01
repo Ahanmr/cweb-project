@@ -1,7 +1,7 @@
 import time
 import math
 
-from cweb.pbs.qsession import QSession
+from clusterweb.pbs.qsession import QSession
 
 test_arg = 1e5
 
@@ -26,7 +26,7 @@ def main():
 
     while not sess.all_complete:
         time.sleep(1)
-        print("Waiting...")
+        print("Waiting...\t{}".format(sess.results))
 
     print(sess.results)
 

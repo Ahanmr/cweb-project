@@ -1,11 +1,7 @@
 #!/bin/env/python3
 #-*- encdoing: utf-8 -*-
 """
-===============================================================================
 
-===============================================================================
-
--------------------------------------------------------------------------------
 """
 from __future__ import print_function
 from __future__ import division
@@ -16,7 +12,7 @@ import tqdm
 import sys
 import os
 
-from cweb.interfaces import ssh
+from clusterweb.interfaces import ssh
 
 __author__ = "Stephen Offer"
 

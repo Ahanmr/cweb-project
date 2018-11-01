@@ -13,8 +13,8 @@ import time
 import sys
 import os
 
-from cweb.interfaces import ssh
-from cweb.pbs import config
+from clusterweb.interfaces import ssh
+from clusterweb.pbs import config
 
 __author__ = "Stephen Offer"
 
@@ -159,6 +159,14 @@ class Qstat():
 
     def __init__(self):
         self.ssh_interface = ssh.SSH(config.USERNAME)
+
+    #--------------------------------------------------------------------------
+
+    def login(self,address):
+        if not isinstance(address,str):
+            raise UserWarning("Invalid address arg type: {}".format(
+                type(address).__name__))
+        self.ssh_interface = ssh.SSH(address)
 
     #--------------------------------------------------------------------------
 

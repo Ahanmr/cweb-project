@@ -1,7 +1,7 @@
 import time
 import math
 
-from cweb.pbs import qsub
+from clusterweb.pbs import qsub
 
 test_arg = 1e5
 
@@ -12,17 +12,23 @@ def job(arg):
 	return a 
 
 def main():
-    q = qsub.Qsub(job,5)
+    q1 = qsub.Qsub(job,5)
 
-    q.push()
+    q1.push()
 
-    q.pull()
+    q1.pull()
 
-    while not q.complete:
+    q2 = qsub.Qsub(job,5)
+
+    q2.push()
+
+    q2.pull()
+
+    while not q1.complete and q2.complete:
         time.sleep(1)
         print("Waiting...")
 
-    print(q.result)
+    print(q1.result)
 
 if __name__ == "__main__":
 	main()

@@ -5,8 +5,6 @@
 """
 from __future__ import print_function
 from __future__ import division
-from pythonosc import dispatcher
-from pythonosc import osc_server
 import numpy as np
 import subprocess
 import threading
@@ -16,110 +14,7 @@ import sys
 import os
 import re
 
-from cweb.pbs.cluster_functions import *
-
-"""
-===============================================================================
-
-===============================================================================
-"""
-
-class OSCServer(object):
-
-    def __init__(self,host,port):
-        if not (re.match(r'^((\d){1,3}.){3}(\d{1,3})$',host,re.M|re.I)):
-            if not (host == 'localhost'):
-                raise Exception("Invalid host argument:{}".format(host))
-        if not isinstance(port,int):
-            raise Exception("Invalid port type:{}".format(
-                type(port).__name__))
-        if not (port >= 0 and port < 65535):
-            raise Exception("Invalid port range (0-65535): {}".format(port))
-        self.host = host
-        self.port = port
-
-    #--------------------------------------------------------------------------
-
-    def init_server(self,handle):
-        self.handler = dispatcher.Dispatcher()
-        self.handler.map("/filter", handle)
-        self.server = osc_server.ThreadingOSCUDPServer(
-            (self.host,self.port),self.handler)
-
-    #--------------------------------------------------------------------------
-
-    def print_volume_handler(self,unused_addr,args,volume):
-        print("VH [{0}] ~ {1}".format(args[0], volume))
-
-    #--------------------------------------------------------------------------
-
-    def print_compute_handler(self,unused_addr,args,volume):
-        try:
-            print("CH [{0}] ~ {1}".format(args[0], args[1](volume)))
-        except ValueError:
-            pass
-
-    #--------------------------------------------------------------------------
-
-    def listen(self):
-        self.server.serve_forever()
-
-    #--------------------------------------------------------------------------
-
-    def activate_listen_thread(self):
-        self.listen_thread = threading.Thread(target=self.listen,args=())
-        self.listen_thread.daemon = True
-        self.listen_thread.start()
-
-"""
-===============================================================================
-
-===============================================================================
-"""
-
-client_script = '''
-#!/bin/env/python
-#-*- encoding: utf-8 -*-
-"""
-Remote OSC Client Object
-"""
-from pythonosc import osc_message_builder
-from pythonosc import udp_client
-import time
-import sys
-import os
-import re
-
-#------------------------------------------------------------------------------
-
-class OSCClient(object):
-
-    def __init__(self,host,port):
-        self.host = host
-        self.port = port
-
-    #--------------------------------------------------------------------------
-
-    def init_client(self):
-        self.client = udp_client.SimpleUDPClient(self.host,self.port)
-
-    #--------------------------------------------------------------------------
-
-    def send_data(self,data,channel="/filter"):
-        self.client.send_message(channel,data)
-
-#------------------------------------------------------------------------------
-
-def main():
-    client = OSCClient('localhost','{}')
-    client.init_client()
-    while True:
-        client.send_data(str(time.time()))
-        time.sleep(1.0)
-
-main()
-
-'''
+from clusterweb.pbs.cluster_functions import *
 
 """
 ===============================================================================

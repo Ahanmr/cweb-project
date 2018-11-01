@@ -1,7 +1,7 @@
 Sub: Single Function Submission
 ===============================
 
-.. automodule:: cweb.local.del
+.. automodule:: clusterweb.local.del
     :members:
     :undoc-members:
     :show-inheritance:
