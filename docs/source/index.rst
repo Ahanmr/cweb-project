@@ -10,6 +10,7 @@ ClusterWeb Documentation
    - Test hardware and software configurations across many devices
    - Make custom distributed networks in Python
    - Run scripts all from a local machine across multiple clusters simultaneously
+   - 
 
 ClusterWeb is a Python library for creating compute clusters out of any devices that use SSH. 
 
@@ -62,8 +63,6 @@ ClusterWeb Documentation
    :caption: About ClusterWeb
 
    why
-
-   about
 
    install
 

@@ -26,7 +26,6 @@
 
   <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    <link rel="author" title="About these documents" href="../../../about.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
 
@@ -80,7 +79,6 @@
               <p class="caption"><span class="caption-text">About ClusterWeb</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../why.html">Why Use ClusterWeb</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../about.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Getting Started</a></li>
 </ul>
@@ -886,8 +884,7 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid memory arg type: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                 <span class="nb">type</span><span class="p">(</span><span class="n">memory</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_memory</span> <span class="o">=</span> <span class="n">memory</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">job</span><span class="o">.</span><span class="n">set_memory</span> <span class="o">=</span> <span class="n">memory</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_memory</span> <span class="o">=</span> <span class="n">memory</span></div>
 
     <span class="c1">#--------------------------------------------------------------------------</span>
 
@@ -900,7 +897,36 @@
             <span class="n">n_cores</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_cores</span> <span class="o">=</span> <span class="n">n_cores</span></div>
 
+    <span class="c1">#--------------------------------------------------------------------------</span>
 
+<div class="viewcode-block" id="Qsub.allocate_nodes"><a class="viewcode-back" href="../../../qsub.html#clusterweb.pbs.qsub.Qsub.allocate_nodes">[docs]</a>    <span class="k">def</span> <span class="nf">allocate_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">n_nodes</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Sets the number of nodes to a job submission.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n_nodes</span><span class="p">,(</span><span class="nb">float</span><span class="p">,</span><span class="nb">int</span><span class="p">,</span><span class="nb">str</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Invalid type for arg n_nodes: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="nb">type</span><span class="p">(</span><span class="n">n_nodes</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n_nodes</span><span class="p">,</span><span class="nb">str</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="nb">int</span><span class="p">(</span><span class="n">n_nodes</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Invalid arg n_nodes: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n_nodes</span><span class="p">))</span>
+
+        <span class="n">n_nodes</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">n_nodes</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">n_nodes</span> <span class="o">&lt;=</span> <span class="n">config</span><span class="o">.</span><span class="n">MIN_NODES</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">n_nodes</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Warning: </span><span class="si">{}</span><span class="s2"> lower than </span><span class="si">{}</span><span class="s2"> node, setting to </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">n_nodes</span><span class="p">,</span><span class="n">config</span><span class="o">.</span><span class="n">MIN_NODES</span><span class="p">,</span><span class="n">config</span><span class="o">.</span><span class="n">MIN_NODES</span><span class="p">),</span>
+                <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">n_nodes</span> <span class="o">&gt;</span> <span class="n">config</span><span class="o">.</span><span class="n">MAX_NODES</span><span class="p">:</span>
+            <span class="n">n_nodes</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">MAX_NODES</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Warning: </span><span class="si">{}</span><span class="s2"> exceeds limit of </span><span class="si">{}</span><span class="s2"> nodes, setting to </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">n_nodes</span><span class="p">,</span><span class="n">config</span><span class="o">.</span><span class="n">MAX_NODES</span><span class="p">,</span><span class="n">config</span><span class="o">.</span><span class="n">MAX_NODES</span><span class="p">),</span>
+                <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_nodes</span> <span class="o">=</span> <span class="n">n_nodes</span></div>
 
     <span class="c1">#--------------------------------------------------------------------------</span>
 
@@ -1075,7 +1101,7 @@
 
         <span class="k">elif</span> <span class="p">(</span><span class="ow">not</span> <span class="n">finished</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">timer</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;Timer exceeded&#39;</span>
-            
+
         <span class="bp">self</span><span class="o">.</span><span class="n">cleanup</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">complete</span> <span class="o">=</span> <span class="kc">True</span></div>
         

@@ -26,7 +26,6 @@
 
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Beginner Usage Tutorials" href="beginner.html" />
@@ -82,7 +81,6 @@
               <p class="caption"><span class="caption-text">About ClusterWeb</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="why.html">Why Use ClusterWeb</a></li>
-<li class="toctree-l1"><a class="reference internal" href="about.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Getting Started</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#system-requirements">System Requirements</a></li>
@@ -245,16 +243,12 @@
 <h3>Setup the Default Address<a class="headerlink" href="#setup-the-default-address" title="Permalink to this headline">¶</a></h3>
 <p>Before using the PBS API for the first time, the default ssh address is ‘localhost’. If the API will be used for only one cluster, change the default address to skip having to set the address every time.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">clusterweb.interfaces.ssh</span> <span class="kn">import</span> <span class="n">SSH</span>
-
-<span class="n">s</span> <span class="o">=</span> <span class="n">SSH</span><span class="p">()</span>
-<span class="n">s</span><span class="o">.</span><span class="n">change_default</span><span class="p">(</span><span class="s1">&#39;new_address&#39;</span><span class="p">)</span>
+<span class="n">SSH</span><span class="o">.</span><span class="n">change_default</span><span class="p">(</span><span class="s1">&#39;example&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>This will check ~/.ssh/config for the address if it is not an ip address. To disable this check, pass False to the verify flag.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">clusterweb.interfaces.ssh</span> <span class="kn">import</span> <span class="n">SSH</span>
-
-<span class="n">s</span> <span class="o">=</span> <span class="n">SSH</span><span class="p">()</span>
-<span class="n">s</span><span class="o">.</span><span class="n">change_default</span><span class="p">(</span><span class="s1">&#39;new_address&#39;</span><span class="p">,</span><span class="n">verify</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="n">SSH</span><span class="o">.</span><span class="n">change_default</span><span class="p">(</span><span class="s1">&#39;example&#39;</span><span class="p">,</span><span class="n">verify</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="section" id="common-errors">

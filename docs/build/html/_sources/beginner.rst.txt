@@ -109,15 +109,13 @@ Use the cluster to compute the nth fibonacci number but also compare with the ti
 
     from clusterweb.pbs.qsub import Qsub
 
-
     TEST_CONSTANT = int(1e6)
 
     def test(n):
-        a,b=1,1
+        a,b=0,1
         for _ in range(n):
-            a,b = b,a+b 
+            a,b = b,a+b
         return a
-
 
     def main():
         start_time = time.time()
@@ -129,21 +127,24 @@ Use the cluster to compute the nth fibonacci number but also compare with the ti
         q.pull()
 
         while not q.complete:
-            time.sleep(1)
+            time.sleep(1e-4)
 
-        print(q.result)
-
-        print("The cluster took {}s to complete with: {}".format(
+        print("The cluster took {} seconds to complete with argument: {}".format(
             time.time()-start_time,TEST_CONSTANT))
 
         start_time = time.time()
 
-        test(TEST_CONSTANT)
+        local_result = test(TEST_CONSTANT)
 
-        print("The local machine took {}s to complete with: {}".format(
+        print("The local machine took {} seconds to complete with argument: {}".format(
             time.time()-start_time,TEST_CONSTANT))
 
-        
+        if q.result == local_result:
+            print("Recieved the same results")
+        else:
+            print("Recieved different results")
+
+
     if __name__ == "__main__":
         main()
 
@@ -162,7 +163,7 @@ Sometimes scripts require more or less resources than the default configuration.
     TEST_CONSTANT = int(1e3)
 
     def test(n):
-        a,b=1,1
+        a,b = 0,1
         for _ in range(n):
             a,b = b,a+b 
         return a

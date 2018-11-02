@@ -26,7 +26,6 @@
 
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="QSession: Running Multiple Jobs" href="qsession.html" />
@@ -82,7 +81,6 @@
               <p class="caption"><span class="caption-text">About ClusterWeb</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="why.html">Why Use ClusterWeb</a></li>
-<li class="toctree-l1"><a class="reference internal" href="about.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
 </ul>
@@ -564,6 +562,12 @@ another job.</p>
 &gt;&gt;&gt; qsub_job.allocate_memory(3000)
 &gt;&gt;&gt; 
 &gt;&gt;&gt; qsub_job.start()</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="clusterweb.pbs.qsub.Qsub.allocate_nodes">
+<code class="descname">allocate_nodes</code><span class="sig-paren">(</span><em>n_nodes</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/clusterweb/pbs/qsub.html#Qsub.allocate_nodes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#clusterweb.pbs.qsub.Qsub.allocate_nodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the number of nodes to a job submission.</p>
 </dd></dl>
 
 <dl class="method">
