@@ -1,7 +1,6 @@
 cloudpickle
 sphinx_rtd_theme
 numpy
-calendar
 datetime
 time
 sys
