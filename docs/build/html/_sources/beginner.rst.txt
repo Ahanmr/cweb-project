@@ -101,7 +101,7 @@ Using QSession to Run Multiple Jobs On One Node
     if __name__ == "__main__":
         main()
 
-Using * to Create a QSession from QSub Jobs
+Using * to Create a QSession from Qsub Jobs
 -------------------------------------------
 
 .. code-block:: python
@@ -135,6 +135,8 @@ Using * to Create a QSession from QSub Jobs
 
 Deleting a Job While Running With a Timer
 -----------------------------------------
+
+
 
 .. code-block:: python
 
@@ -201,7 +203,7 @@ Deleting a Job While Running With a Timer
 
         q = qsub.Qsub(job,1e9)
 
-        q.create_timer(20)
+        q.create_timer(30)
 
         q.push()
         q.pull()

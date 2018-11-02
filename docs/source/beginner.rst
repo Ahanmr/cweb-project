@@ -136,6 +136,8 @@ Using * to Create a QSession from Qsub Jobs
 Deleting a Job While Running With a Timer
 -----------------------------------------
 
+
+
 .. code-block:: python
 
     from clusterweb.pbs import qsub
@@ -201,7 +203,7 @@ Deleting a Job While Running With a Timer
 
         q = qsub.Qsub(job,1e9)
 
-        q.create_timer(20)
+        q.create_timer(30)
 
         q.push()
         q.pull()

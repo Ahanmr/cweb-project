@@ -9,7 +9,7 @@ import shutil
 import sys
 import os
 
-temp_dir = 'temp_154110958909858427677'
+temp_dir = 'temp_15411157451458237804'
 
 try:
     with open(os.path.join(temp_dir,'fnc.pkl'),'rb') as f:
@@ -23,8 +23,7 @@ except Exception as e:
     output = e
 
 with open(os.path.join(temp_dir,'result.pkl'),'wb') as f:
-    output = fnc(args)
-    f.write(pickle.dumps(fnc(args)))
+    f.write(pickle.dumps(output))
 '''
 if PYTHON_VERSION == 2:
     subprocess.call(["python2","-c",script])

@@ -42,8 +42,7 @@ except Exception as e:
     output = e
 
 with open(os.path.join(temp_dir,'result.pkl'),'wb') as f:
-    output = fnc(args)
-    f.write(pickle.dumps(fnc(args)))
+    f.write(pickle.dumps(output))
 '''
 if PYTHON_VERSION == 2:
     subprocess.call(["python2","-c",script])

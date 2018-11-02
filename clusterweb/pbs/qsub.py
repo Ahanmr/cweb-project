@@ -583,7 +583,7 @@ class Qsub():
 
         >>> q = Qsub(job,arg)
         >>> q.change_default_address('192.168.1.24')
-        
+
         """
         if not isinstance(address,str):
             raise UserWarning("Invalid address arg type: {}".format(
@@ -890,11 +890,9 @@ class Qsub():
                     self.user_quit = True
             if self.user_quit:
                 break
-
             result = subprocess.check_output(
                 'ssh colfax [ -f {} ] && echo "1" || echo "0"'.format(
                     result_path),stderr=subprocess.STDOUT,shell=True)
-
             if int(result[-2]) == 49:
                 finished = True
                 break
@@ -903,17 +901,15 @@ class Qsub():
 
         if finished:
             self.ssh.recieve_file(result_path,result_path)
-
-            print(result_path)
-
             with open(result_path,'rb') as f:
                 self.result = pickle.loads(f.read())
 
         elif (not finished) and self.timer:
             self.result = 'Timer exceeded'
-        
-        self.complete = True
+            
         self.cleanup()
+        self.complete = True
+        
         
     #--------------------------------------------------------------------------
 
