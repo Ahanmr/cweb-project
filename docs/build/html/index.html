@@ -175,7 +175,17 @@
 <p class="first admonition-title">Note</p>
 <p class="last">ClusterWeb is currently in Beta, only the PBS API is available</p>
 </div>
-<p>Cluster Web is a Python library for creating wireless compute clusters of any devices that use SSH.</p>
+<div class="sidebar">
+<p class="first sidebar-title">Use Cases</p>
+<ul class="last simple">
+<li>Connect to an existing cluster</li>
+<li>Create a cluster with different devices</li>
+<li>Test hardware and software configurations across many devices</li>
+<li>Make custom distributed networks in Python</li>
+<li>Run scripts all from a local machine across multiple clusters simultaneously</li>
+</ul>
+</div>
+<p>ClusterWeb is a Python library for creating compute clusters out of any devices that use SSH.</p>
 <div class="section" id="compatiable-devices">
 <h2>Compatiable Devices<a class="headerlink" href="#compatiable-devices" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
@@ -192,7 +202,6 @@
 <li>Python 3.6 or above</li>
 <li>SSH</li>
 <li>Linux or OSX</li>
-<li>dill</li>
 <li>pickle</li>
 <li>cloudpickle (host machine)</li>
 </ul>
@@ -203,7 +212,7 @@
 <span class="kn">import</span> <span class="nn">time</span>
 
 <span class="k">def</span> <span class="nf">job</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
-   <span class="n">a</span><span class="p">,</span><span class="n">b</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span><span class="mi">1</span>
+   <span class="n">a</span><span class="p">,</span><span class="n">b</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span><span class="mi">1</span>
    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">arg</span><span class="p">)):</span>
       <span class="n">a</span><span class="p">,</span><span class="n">b</span> <span class="o">=</span> <span class="n">b</span><span class="p">,</span><span class="n">a</span><span class="o">+</span><span class="n">b</span>
    <span class="k">return</span> <span class="n">a</span>
@@ -219,41 +228,42 @@
 </div>
 </div>
 </div>
-<div class="section" id="cweb-documentation">
-<h1>CWeb Documentation<a class="headerlink" href="#cweb-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h1>ClusterWeb Documentation<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 <p class="caption"><span class="caption-text">About ClusterWeb</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="why.html">Why Use ClusterWeb</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="why.html#greater-functionality">Greater Functionality</a></li>
 <li class="toctree-l2"><a class="reference internal" href="why.html#more-cluster-security">More Cluster Security</a></li>
-<li class="toctree-l2"><a class="reference internal" href="why.html#faster-development-time">Faster Development Time</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="why.html#previous-development-process">Previous Development Process</a></li>
-<li class="toctree-l3"><a class="reference internal" href="why.html#new-development-process">New Development Process</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="why.html#faster-development-time">Faster Development Time</a></li>
 <li class="toctree-l2"><a class="reference internal" href="why.html#supports-multiple-types-of-devices">Supports Multiple Types of Devices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="why.html#complete-control-over-distributed-systems">Complete Control Over Distributed Systems</a></li>
 <li class="toctree-l2"><a class="reference internal" href="why.html#makes-it-easy-to-create-complex-systems">Makes It Easy to Create Complex Systems</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="about.html">Getting Started</a></li>
-<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-with-pip">Install with Pip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-with-conda">Install with Conda</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html#install-from-source">Install from Source</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="getting_started.html#requirements">Requirements</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="getting_started.html#optional-set-up-conda-environment"><cite>Optional: Set up conda environment</cite></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="getting_started.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#system-requirements">System Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#python-requirements">Python Requirements</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="getting_started.html#setup-ssh">Setup SSH</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="getting_started.html#install-ssh">Install SSH</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="getting_started.html#ubuntu">Ubuntu</a></li>
+<li class="toctree-l5"><a class="reference internal" href="getting_started.html#osx">OSX</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="getting_started.html#install-with-pip">Install with Pip</a></li>
-<li class="toctree-l3"><a class="reference internal" href="getting_started.html#install-with-conda">Install with Conda</a></li>
-<li class="toctree-l3"><a class="reference internal" href="getting_started.html#install-from-source">Install from Source</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="getting_started.html#install-requirements">Install Requirements</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="getting_started.html#install-ssh">Install SSH</a></li>
-<li class="toctree-l3"><a class="reference internal" href="getting_started.html#set-login">Set Login</a></li>
-<li class="toctree-l3"><a class="reference internal" href="getting_started.html#common-errors">Common Errors:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="getting_started.html#setup-the-default-address">Setup the Default Address</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="getting_started.html#common-errors">Common Errors:</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -293,7 +303,6 @@
 <li class="toctree-l3"><a class="reference internal" href="advanced.html#create-a-chat-session-with-multiple-user-devices">Create a Chat Session with Multiple User Devices</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="advanced.html#conclusion">Conclusion</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="cpu.html">CPU Optimization Techniques</a></li>
@@ -379,11 +388,11 @@
   <style>
     /* Sidebar header (and topbar for mobile) */
     .wy-side-nav-search, .wy-nav-top {
-      background: #2e6784;
+      background: #000000;
     }
     /* Sidebar */
     .wy-nav-side {
-      background: #262525;
+      background: #000000;
     }
   </style>
 

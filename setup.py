@@ -1,11 +1,12 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(name='clusterweb',
-      version='0.0.1',
-      description='CWeb: Cluster Python API',
+      version='0.0.3',
+      description='ClusterWeb, a distributed system API for SSH and PBS systems',
+      long_description=open('README.md').read(),
       url='https://github.com/gndctrl2mjrtm/cweb-project',
       author='Stephen Offer',
       author_email='offercstephen@example.com',
       license='MIT',
-      packages=['clusterweb'],
+      packages=find_packages(),
       zip_safe=False)

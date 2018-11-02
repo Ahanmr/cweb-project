@@ -105,7 +105,6 @@
 <li class="toctree-l3"><a class="reference internal" href="#create-a-chat-session-with-multiple-user-devices">Create a Chat Session with Multiple User Devices</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#conclusion">Conclusion</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="cpu.html">CPU Optimization Techniques</a></li>
@@ -212,20 +211,14 @@
 fine tuning. Here, a model that is developed locally is sent
 to the cluster without having to manually transfer any model
 files.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The weights are sent back since sending back a matrix of weights
+<p>The weights are sent back since sending back a matrix of weights
 is much simpler for the serialization process than the unreliable process
 of serializing entire models. This also allows for a smaller data transfer
 which speeds up the process as it is the most costly component.</p>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The keras library is installed both separate from the main
+<p>The Keras library is installed both separate from the main
 TensorFlow library as well as being included in the TensorFlow
 package. For your cluster, you may need to change the import
 commands to include your version of Keras.</p>
-</div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorflow.keras</span> <span class="kn">as</span> <span class="nn">keras</span>
 <span class="kn">from</span> <span class="nn">tensorflow.keras.datasets</span> <span class="kn">import</span> <span class="n">mnist</span>
 <span class="kn">from</span> <span class="nn">tensorflow.keras.models</span> <span class="kn">import</span> <span class="n">Sequential</span>
@@ -422,9 +415,6 @@ efficient as each instance must load the model.</p>
 </div>
 </div>
 </div>
-<div class="section" id="conclusion">
-<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h2>
-</div>
 </div>
 
 
@@ -488,11 +478,11 @@ efficient as each instance must load the model.</p>
   <style>
     /* Sidebar header (and topbar for mobile) */
     .wy-side-nav-search, .wy-nav-top {
-      background: #2e6784;
+      background: #000000;
     }
     /* Sidebar */
     .wy-nav-side {
-      background: #262525;
+      background: #000000;
     }
   </style>
 

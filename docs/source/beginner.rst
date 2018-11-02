@@ -302,7 +302,7 @@ Deleting a Job While Running With a Timer
     if __name__ == "__main__":
         main()
 
-.. note:: This is equivalent as to using the create_timer functionality:
+This is equivalent as to using the create_timer functionality:
 
 .. code-block:: python
 

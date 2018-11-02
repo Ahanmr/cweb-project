@@ -17,31 +17,27 @@ Faster Development Time
 
 ClusterWeb significantly reduces the amount of work required to develop solutions using the DevCloud by creating a simpler development process.
 
-Previous Development Process
-----------------------------
-Write code on local machine with text editor.
-Copy code over to DevCloud or update repo.
-Write PBS Scipt for example script.py in qsub_script:
-
-.. code-block:: bash
-
-	#PBS -l nodes=1
-	     cd $PBS_O_WORKDIR
-	     python script.py
-
-Run ``qsub qsub_script``.
-Wait and run ``qstat`` to check for status.
-Read output in example 123456.o123456 and 123456.e123456.
-In case of errors, either edit on DevCloud or on local text editor.
-If edited locally, update code on DevCloud.
-Repeat from step 4.
-
-New Development Process
------------------------
-Write code on local machine with text editor.
-Run code locally.
-Recieve output within script.
-Edit code and return to step 2.
++---------------------------------------------------------------------------+-----------------------------------------------+
+| Previous Development Process                                              | New Development Process                       |
++===========================================================================+===============================================+
+| Write code on local machine with text editor.                             | Write code on local machine with text editor. |
++---------------------------------------------------------------------------+-----------------------------------------------+
+| Copy code over to the cluster or update repo.                             | Run code locally.                             |
++---------------------------------------------------------------------------+-----------------------------------------------+
+| Write PBS Scipt for example script.py in qsub_script                      | Recieve output within script.                 |
++---------------------------------------------------------------------------+-----------------------------------------------+
+| Run ``qsub qsub_script``.                                                 | Edit code and return to step 2.               |
++---------------------------------------------------------------------------+-----------------------------------------------+
+| Wait and run ``qstat`` to check for status.                               |                                               |
++---------------------------------------------------------------------------+-----------------------------------------------+
+| Read output in example 123456.o123456 and 123456.e123456.                 |                                               |
++---------------------------------------------------------------------------+-----------------------------------------------+
+| In case of errors, either edit on the cluster or on local text editor.    |                                               |
++---------------------------------------------------------------------------+-----------------------------------------------+
+| If edited locally, update code on the cluster.                            |                                               |
++---------------------------------------------------------------------------+-----------------------------------------------+
+| Repeat from step 4.                                                       |                                               |
++---------------------------------------------------------------------------+-----------------------------------------------+
 
 Supports Multiple Types of Devices
 ##################################

@@ -37,6 +37,9 @@ MAX_MEMORY = 96000
 MIN_MEMORY = 100
 
 # Get ssh username
-with open(os.path.join(os.path.dirname(
-	os.path.abspath(__file__)),'username.txt'),'r') as f:
-	USERNAME = f.read()
+config_file = os.path.join(os.path.abspath(__file__),'username.txt')
+with open(config_file,'r') as f:
+	address_book = f.read()
+	address_book = address_book.split('\n')
+	if len(address_book) > 0:
+		USERNAME = address_book[0]

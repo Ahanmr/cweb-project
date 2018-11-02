@@ -3,7 +3,15 @@ ClusterWeb Documentation
 
 .. note:: ClusterWeb is currently in Beta, only the PBS API is available
 
-Cluster Web is a Python library for creating compute clusters out of any devices that use SSH. 
+.. sidebar:: Use Cases 
+
+   - Connect to an existing cluster
+   - Create a cluster with different devices
+   - Test hardware and software configurations across many devices
+   - Make custom distributed networks in Python
+   - Run scripts all from a local machine across multiple clusters simultaneously
+
+ClusterWeb is a Python library for creating compute clusters out of any devices that use SSH. 
 
 Compatiable Devices
 ~~~~~~~~~~~~~~~~~~~
@@ -33,7 +41,7 @@ Basic Usage:
    import time
 
    def job(arg):
-      a,b = 1,1
+      a,b = 0,1
       for _ in range(int(arg)):
          a,b = b,a+b
       return a 

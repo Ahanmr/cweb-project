@@ -1,8 +1,10 @@
-![alt text](./docs/source/images/logo.png?raw=true "Icon")
+![alt text](./docs/source/images/logo_color.png?raw=true "Icon")
 
 # ClusterWeb: Distributed System Python API
 
-### Documentation: <https://cluster-web.readthedocs.io/en/latest/>
+ClusterWeb is a Python library for creating compute clusters out of any devices that use SSH. 
+
+#### Documentation: <https://cluster-web.readthedocs.io/en/latest/>
 
 ### Compatiable Devices
 
@@ -30,7 +32,7 @@ from clusterweb.pbs.qsub import Qsub
 import time
 
 def job(arg):
-  a,b = 1,1
+  a,b = 0,1
   for _ in range(int(arg)):
      a,b = b,a+b
   return a 

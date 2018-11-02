@@ -83,7 +83,12 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="why.html">Why Use ClusterWeb</a></li>
 <li class="toctree-l1"><a class="reference internal" href="about.html">Getting Started</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#install-with-pip">Install with Pip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#install-with-conda">Install with Conda</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#install-from-source">Install from Source</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Developer Resources</span></p>
@@ -172,6 +177,52 @@
             
   <div class="section" id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="install-with-pip">
+<h2>Install with Pip<a class="headerlink" href="#install-with-pip" title="Permalink to this headline">¶</a></h2>
+<p>Pip is the package management system for Python, this is the recommend installation method.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pip</span> <span class="n">install</span> <span class="n">clusterweb</span>
+</pre></div>
+</div>
+<p>If you don’t have root access to the required files pip uses to install a package, such as if you are a non-admin user on a cluster,
+use the –user flag.</p>
+<p>&gt;&gt; pip install –user clusterweb</p>
+</div>
+<div class="section" id="install-with-conda">
+<h2>Install with Conda<a class="headerlink" href="#install-with-conda" title="Permalink to this headline">¶</a></h2>
+<div class="sidebar">
+<p class="first sidebar-title"><cite>Optional</cite> Set up conda environment</p>
+<p>To keep your libraries across your system clean and unmodified from this isntallation, it is highly recommend that you create a conda environment.</p>
+<blockquote class="last">
+<div><p>Create environment:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">conda</span> <span class="n">create</span> <span class="o">-</span><span class="n">n</span> <span class="o">&lt;</span><span class="n">ENV_NAME</span><span class="o">&gt;</span> <span class="n">python</span><span class="o">=</span><span class="mi">3</span>
+</pre></div>
+</div>
+<p>Access environment:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">source</span> <span class="n">activate</span> <span class="o">&lt;</span><span class="n">ENV_NAME</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<p>Conda is another package management system, but also includes environment control and is the preferred method for when dealing with conda environments.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">conda</span> <span class="n">install</span> <span class="n">clusterweb</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="install-from-source">
+<h2>Install from Source<a class="headerlink" href="#install-from-source" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">gndctrl2mjrtm</span><span class="o">/</span><span class="n">cweb</span><span class="o">-</span><span class="n">project</span><span class="o">.</span><span class="n">git</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cd</span> <span class="n">cweb</span><span class="o">-</span><span class="n">project</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">r</span> <span class="n">requirements</span><span class="o">.</span><span class="n">txt</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">e</span> <span class="o">.</span>
+</pre></div>
+</div>
+</div>
 </div>
 
 
@@ -235,11 +286,11 @@
   <style>
     /* Sidebar header (and topbar for mobile) */
     .wy-side-nav-search, .wy-nav-top {
-      background: #2e6784;
+      background: #000000;
     }
     /* Sidebar */
     .wy-nav-side {
-      background: #262525;
+      background: #000000;
     }
   </style>
 

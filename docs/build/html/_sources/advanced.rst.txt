@@ -25,15 +25,16 @@ fine tuning. Here, a model that is developed locally is sent
 to the cluster without having to manually transfer any model
 files. 
 
-.. note:: The weights are sent back since sending back a matrix of weights 
-	is much simpler for the serialization process than the unreliable process 
-	of serializing entire models. This also allows for a smaller data transfer 
-	which speeds up the process as it is the most costly component.
 
-.. note:: The keras library is installed both separate from the main
-	TensorFlow library as well as being included in the TensorFlow
-	package. For your cluster, you may need to change the import 
-	commands to include your version of Keras. 
+The weights are sent back since sending back a matrix of weights 
+is much simpler for the serialization process than the unreliable process 
+of serializing entire models. This also allows for a smaller data transfer 
+which speeds up the process as it is the most costly component.
+
+The Keras library is installed both separate from the main
+TensorFlow library as well as being included in the TensorFlow
+package. For your cluster, you may need to change the import 
+commands to include your version of Keras. 
 
 .. code-block:: python
 
@@ -223,8 +224,4 @@ Create a Chat Session with Multiple User Devices
 
 .. note:: Under Construction: Coming Soon
 
-
-
-Conclusion
-##########
 
