@@ -2,11 +2,6 @@ cloudpickle
 sphinx_rtd_theme
 numpy
 datetime
-time
-sys
-os
 threading
 subprocess
-math
-re
 random
