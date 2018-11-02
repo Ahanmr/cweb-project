@@ -65,18 +65,14 @@ Before using the PBS API for the first time, the default ssh address is 'localho
 .. code-block:: python
 	
 	from clusterweb.interfaces.ssh import SSH
-
-	s = SSH()
-	s.change_default('new_address')
+	SSH.change_default('example')
 
 This will check ~/.ssh/config for the address if it is not an ip address. To disable this check, pass False to the verify flag.
 
 .. code-block:: python
 	
 	from clusterweb.interfaces.ssh import SSH
-
-	s = SSH()
-	s.change_default('new_address',verify=False)
+	SSH.change_default('example',verify=False)
 
 Common Errors:
 --------------

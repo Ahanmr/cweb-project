@@ -11,7 +11,7 @@ Pip is the package management system for Python, this is the recommend installat
 If you don't have root access to the required files pip uses to install a package, such as if you are a non-admin user on a cluster,
 use the --user flag.
 
->> pip install --user clusterweb
+>>> pip install --user clusterweb
 
 Install with Conda
 ------------------

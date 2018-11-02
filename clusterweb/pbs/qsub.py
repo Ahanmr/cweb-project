@@ -718,7 +718,6 @@ class Qsub():
                 type(memory).__name__))
 
         self.set_memory = memory
-        self.job.set_memory = memory
 
     #--------------------------------------------------------------------------
 
@@ -731,7 +730,36 @@ class Qsub():
             n_cores = 1
         self.n_cores = n_cores
 
+    #--------------------------------------------------------------------------
 
+    def allocate_nodes(self,n_nodes):
+        """Sets the number of nodes to a job submission.
+        """
+        if not isinstance(n_nodes,(float,int,str)):
+            raise Exception("Invalid type for arg n_nodes: {}".format(
+                type(n_nodes).__name__))
+
+        if isinstance(n_nodes,str):
+            try:
+                int(n_nodes)
+            except:
+                raise Exception("Invalid arg n_nodes: {}".format(n_nodes))
+
+        n_nodes = int(n_nodes)
+
+        if n_nodes <= config.MIN_NODES-1:
+            n_nodes = 1
+            print("Warning: {} lower than {} node, setting to {}".format(
+                n_nodes,config.MIN_NODES,config.MIN_NODES),
+                file=sys.stderr)
+
+        elif n_nodes > config.MAX_NODES:
+            n_nodes = config.MAX_NODES
+            print("Warning: {} exceeds limit of {} nodes, setting to {}".format(
+                n_nodes,config.MAX_NODES,config.MAX_NODES),
+                file=sys.stderr)
+
+        self.n_nodes = n_nodes
 
     #--------------------------------------------------------------------------
 
@@ -906,7 +934,7 @@ class Qsub():
 
         elif (not finished) and self.timer:
             self.result = 'Timer exceeded'
-            
+
         self.cleanup()
         self.complete = True
         
