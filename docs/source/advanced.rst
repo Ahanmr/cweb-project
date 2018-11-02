@@ -1,8 +1,39 @@
 Advanced Usage Tutorials
 ========================
 
+
+Portable Batch System Examples:
+###############################
+
+
+Connect to Multiple Clusters
+----------------------------
+
+.. note:: Under Construction: Coming Soon
+
+
+Compare Muliple Clusters' Performance
+-------------------------------------
+
+.. note:: Under Construction: Coming Soon
+
 Train a Keras CNN Remotely and Retrieve the Weights
 ---------------------------------------------------
+
+Neural Networks are costly to compute but also may require much
+fine tuning. Here, a model that is developed locally is sent
+to the cluster without having to manually transfer any model
+files. 
+
+.. note:: The weights are sent back since sending back a matrix of weights 
+	is much simpler for the serialization process than the unreliable process 
+	of serializing entire models. This also allows for a smaller data transfer 
+	which speeds up the process as it is the most costly component.
+
+.. note:: The keras library is installed both separate from the main
+	TensorFlow library as well as being included in the TensorFlow
+	package. For your cluster, you may need to change the import 
+	commands to include your version of Keras. 
 
 .. code-block:: python
 
@@ -105,9 +136,14 @@ Train a Keras CNN Remotely and Retrieve the Weights
 Run Inference on an Image from a Webcam Remotely
 ------------------------------------------------
 
+The importance of remote compute to IoT applications needs no introduction. 
+In this example, OpneCV is used to take a picture while a pretrained network 
+runs inference on it on a remote nod. This is a simple example that is not 
+efficient as each instance must load the model. 
+
 .. code-block:: python
 
-	from keras.applications import vgg16, inception_v3, resnet50, mobilenet
+	from keras.applications import vgg16
 	from keras.preprocessing import image
 	from keras.applications.resnet50 import preprocess_input,decode_predictions
 	import numpy as np
@@ -157,3 +193,38 @@ Run Inference on an Image from a Webcam Remotely
 	    
 	if __name__ == "__main__":
 	    main()
+
+Secure Shell System Examples:
+#############################
+
+
+Using Basic Locks
+-----------------
+
+.. note:: Under Construction: Coming Soon
+
+Using Semaphores
+----------------
+
+.. note:: Under Construction: Coming Soon
+
+Setup a TCP Server on Remote Device
+-----------------------------------
+
+.. note:: Under Construction: Coming Soon
+
+Setup an OSC Server on a Remote Device
+--------------------------------------
+
+.. note:: Under Construction: Coming Soon
+
+Create a Chat Session with Multiple User Devices
+------------------------------------------------
+
+.. note:: Under Construction: Coming Soon
+
+
+
+Conclusion
+##########
+

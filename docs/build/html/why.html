@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Why to Use CWeb &mdash; clusterweb 0.0.1 documentation</title>
+  <title>Why Use ClusterWeb &mdash; clusterweb 0.0.1 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Getting Started" href="about.html" />
-    <link rel="prev" title="Cluster Web Documentation" href="index.html" /> 
+    <link rel="prev" title="ClusterWeb Documentation" href="index.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -81,15 +81,22 @@
             
               <p class="caption"><span class="caption-text">About ClusterWeb</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Why to Use CWeb</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#faster-development-time">Faster Development Time</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#multiple-types-of-devices">Multiple Types of Devices</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Why Use ClusterWeb</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#greater-functionality">Greater Functionality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#more-cluster-security">More Cluster Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#faster-development-time">Faster Development Time</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#previous-development-process">Previous Development Process</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#new-development-process">New Development Process</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#supports-multiple-types-of-devices">Supports Multiple Types of Devices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#complete-control-over-distributed-systems">Complete Control Over Distributed Systems</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#easy-to-create-complex-systems">Easy to Create Complex Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#makes-it-easy-to-create-complex-systems">Makes It Easy to Create Complex Systems</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="about.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Developer Resources</span></p>
 <ul>
@@ -156,7 +163,7 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Why to Use CWeb</li>
+      <li>Why Use ClusterWeb</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -175,19 +182,52 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="why-to-use-cweb">
-<h1>Why to Use CWeb<a class="headerlink" href="#why-to-use-cweb" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="why-use-clusterweb">
+<h1>Why Use ClusterWeb<a class="headerlink" href="#why-use-clusterweb" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="greater-functionality">
+<h2>Greater Functionality<a class="headerlink" href="#greater-functionality" title="Permalink to this headline">¶</a></h2>
+<p>Having all aspects of job submission and monitoring job status be within Python allows for controlling remote jobs through scripting. Instead of having to manually submit each job and manipulate file outputs, the user can control the entire workflow from within the script, have multiple job submissions return their value asynchronous, and create large systems with easy-to-use APIs.</p>
+</div>
+<div class="section" id="more-cluster-security">
+<h2>More Cluster Security<a class="headerlink" href="#more-cluster-security" title="Permalink to this headline">¶</a></h2>
+<p>Now that the users can submit jobs locally, it reduces the amount of time that the users spend on the actual cluster and can result in fewer mistakes that may damage the system and mispractice.</p>
+</div>
 <div class="section" id="faster-development-time">
 <h2>Faster Development Time<a class="headerlink" href="#faster-development-time" title="Permalink to this headline">¶</a></h2>
+<p>ClusterWeb significantly reduces the amount of work required to develop solutions using the DevCloud by creating a simpler development process.</p>
+<div class="section" id="previous-development-process">
+<h3>Previous Development Process<a class="headerlink" href="#previous-development-process" title="Permalink to this headline">¶</a></h3>
+<p>Write code on local machine with text editor.
+Copy code over to DevCloud or update repo.
+Write PBS Scipt for example script.py in qsub_script:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1">#PBS -l nodes=1</span>
+     <span class="nb">cd</span> <span class="nv">$PBS_O_WORKDIR</span>
+     python script.py
+</pre></div>
 </div>
-<div class="section" id="multiple-types-of-devices">
-<h2>Multiple Types of Devices<a class="headerlink" href="#multiple-types-of-devices" title="Permalink to this headline">¶</a></h2>
+<p>Run <code class="docutils literal notranslate"><span class="pre">qsub</span> <span class="pre">qsub_script</span></code>.
+Wait and run <code class="docutils literal notranslate"><span class="pre">qstat</span></code> to check for status.
+Read output in example 123456.o123456 and 123456.e123456.
+In case of errors, either edit on DevCloud or on local text editor.
+If edited locally, update code on DevCloud.
+Repeat from step 4.</p>
+</div>
+<div class="section" id="new-development-process">
+<h3>New Development Process<a class="headerlink" href="#new-development-process" title="Permalink to this headline">¶</a></h3>
+<p>Write code on local machine with text editor.
+Run code locally.
+Recieve output within script.
+Edit code and return to step 2.</p>
+</div>
+</div>
+<div class="section" id="supports-multiple-types-of-devices">
+<h2>Supports Multiple Types of Devices<a class="headerlink" href="#supports-multiple-types-of-devices" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="complete-control-over-distributed-systems">
 <h2>Complete Control Over Distributed Systems<a class="headerlink" href="#complete-control-over-distributed-systems" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="easy-to-create-complex-systems">
-<h2>Easy to Create Complex Systems<a class="headerlink" href="#easy-to-create-complex-systems" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="makes-it-easy-to-create-complex-systems">
+<h2>Makes It Easy to Create Complex Systems<a class="headerlink" href="#makes-it-easy-to-create-complex-systems" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 
@@ -202,7 +242,7 @@
         <a href="about.html" class="btn btn-neutral float-right" title="Getting Started" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="index.html" class="btn btn-neutral" title="Cluster Web Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral" title="ClusterWeb Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

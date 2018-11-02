@@ -30,7 +30,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Advanced Usage Tutorials" href="advanced.html" />
-    <link rel="prev" title="Installation" href="install.html" /> 
+    <link rel="prev" title="Getting Started" href="getting_started.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -81,15 +81,22 @@
             
               <p class="caption"><span class="caption-text">About ClusterWeb</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="why.html">Why to Use CWeb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="why.html">Why Use ClusterWeb</a></li>
 <li class="toctree-l1"><a class="reference internal" href="about.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Developer Resources</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Beginner Usage Tutorials</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#submitting-a-single-job-with-qsub">Submitting a Single Job with Qsub</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#submitting-a-single-job-with-qsub">Submitting a Single Job with Qsub</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#to-run-within-the-main-thread">To run within the main thread:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#to-run-asynchronous-with-the-main-thread">To run asynchronous with the main thread:</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#running-multiple-jobs-on-multiple-nodes">Running Multiple Jobs on Multiple Nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#compare-with-local-machine">Compare with Local Machine</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#resource-allocation">Resource Allocation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#using-qsession-to-run-multiple-jobs-on-one-node">Using QSession to Run Multiple Jobs On One Node</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#using-to-create-a-qsession-from-qsub-jobs">Using * to Create a QSession from Qsub Jobs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#deleting-a-job-while-running-with-a-timer">Deleting a Job While Running With a Timer</a></li>
@@ -180,6 +187,35 @@
 <h1>Beginner Usage Tutorials<a class="headerlink" href="#beginner-usage-tutorials" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="submitting-a-single-job-with-qsub">
 <h2>Submitting a Single Job with Qsub<a class="headerlink" href="#submitting-a-single-job-with-qsub" title="Permalink to this headline">¶</a></h2>
+<p>Send a job to the cluster that computes the millionth fibonacci
+number. Similar to git, the main commands for sending and
+recieving data is push and pull. The pull command automatically
+starts a thread in the background that checks for the result file
+unless a negative thread arguement is passed to pull.</p>
+<div class="section" id="to-run-within-the-main-thread">
+<h3>To run within the main thread:<a class="headerlink" href="#to-run-within-the-main-thread" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">clusterweb.pbs</span> <span class="kn">import</span> <span class="n">qsub</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="k">def</span> <span class="nf">job</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
+   <span class="n">a</span><span class="p">,</span><span class="n">b</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span><span class="mi">1</span>
+   <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">arg</span><span class="p">)):</span>
+      <span class="n">a</span><span class="p">,</span><span class="n">b</span> <span class="o">=</span> <span class="n">b</span><span class="p">,</span><span class="n">a</span><span class="o">+</span><span class="n">b</span>
+   <span class="k">return</span> <span class="n">a</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">qsub</span><span class="o">.</span><span class="n">Qsub</span><span class="p">(</span><span class="n">job</span><span class="p">,</span><span class="mf">1e6</span><span class="p">)</span>
+    <span class="n">q</span><span class="o">.</span><span class="n">push</span><span class="p">()</span>
+    <span class="n">q</span><span class="o">.</span><span class="n">pull</span><span class="p">(</span><span class="n">thread</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">q</span><span class="o">.</span><span class="n">result</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+   <span class="n">main</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="to-run-asynchronous-with-the-main-thread">
+<h3>To run asynchronous with the main thread:<a class="headerlink" href="#to-run-asynchronous-with-the-main-thread" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">clusterweb.pbs</span> <span class="kn">import</span> <span class="n">qsub</span>
 <span class="kn">import</span> <span class="nn">time</span>
 
@@ -202,6 +238,7 @@
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
    <span class="n">main</span><span class="p">()</span>
 </pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="running-multiple-jobs-on-multiple-nodes">
@@ -234,6 +271,91 @@
     <span class="k">print</span><span class="p">(</span><span class="s2">&quot;The 5th fibonnaci number is: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">q1</span><span class="o">.</span><span class="n">result</span><span class="p">))</span>
     <span class="k">print</span><span class="p">(</span><span class="s2">&quot;The 6th fibonnaci number is: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">q2</span><span class="o">.</span><span class="n">result</span><span class="p">))</span>
     <span class="k">print</span><span class="p">(</span><span class="s2">&quot;The 7th fibonnaci number is: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">q3</span><span class="o">.</span><span class="n">result</span><span class="p">))</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="compare-with-local-machine">
+<h2>Compare with Local Machine<a class="headerlink" href="#compare-with-local-machine" title="Permalink to this headline">¶</a></h2>
+<p>Use the cluster to compute the nth fibonacci number but also compare with the time required to compute with the local device. Increase or decrease <cite>TEST_CONSTANT</cite> to see at which threshold is it more efficient to use the cluster instead of the local machine. This is a way of testing how fast the connection to the cluster is and what kinds of functions are better to keep local.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
+
+<span class="kn">from</span> <span class="nn">clusterweb.pbs.qsub</span> <span class="kn">import</span> <span class="n">Qsub</span>
+
+
+<span class="n">TEST_CONSTANT</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">1e6</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="n">a</span><span class="p">,</span><span class="n">b</span> <span class="o">=</span> <span class="n">b</span><span class="p">,</span><span class="n">a</span><span class="o">+</span><span class="n">b</span>
+    <span class="k">return</span> <span class="n">a</span>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+    <span class="n">q</span> <span class="o">=</span> <span class="n">Qsub</span><span class="p">(</span><span class="n">test</span><span class="p">,</span><span class="n">TEST_CONSTANT</span><span class="p">)</span>
+
+    <span class="n">q</span><span class="o">.</span><span class="n">push</span><span class="p">()</span>
+
+    <span class="n">q</span><span class="o">.</span><span class="n">pull</span><span class="p">()</span>
+
+    <span class="k">while</span> <span class="ow">not</span> <span class="n">q</span><span class="o">.</span><span class="n">complete</span><span class="p">:</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="n">q</span><span class="o">.</span><span class="n">result</span><span class="p">)</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;The cluster took {}s to complete with: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">start_time</span><span class="p">,</span><span class="n">TEST_CONSTANT</span><span class="p">))</span>
+
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+    <span class="n">test</span><span class="p">(</span><span class="n">TEST_CONSTANT</span><span class="p">)</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;The local machine took {}s to complete with: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">start_time</span><span class="p">,</span><span class="n">TEST_CONSTANT</span><span class="p">))</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="resource-allocation">
+<h2>Resource Allocation<a class="headerlink" href="#resource-allocation" title="Permalink to this headline">¶</a></h2>
+<p>Sometimes scripts require more or less resources than the default configuration. This exercise will show how to adjust the amount of resources requested by the auto-generated PBS script. Note that these values go through error handling and will raise exceptions if they are invalid arguments. See the documentation for the rules regarding resource allocation.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
+
+<span class="kn">from</span> <span class="nn">clusterweb.pbs.qsub</span> <span class="kn">import</span> <span class="n">Qsub</span>
+
+
+<span class="n">TEST_CONSTANT</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">1e3</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="n">a</span><span class="p">,</span><span class="n">b</span> <span class="o">=</span> <span class="n">b</span><span class="p">,</span><span class="n">a</span><span class="o">+</span><span class="n">b</span>
+    <span class="k">return</span> <span class="n">a</span>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">Qsub</span><span class="p">(</span><span class="n">test</span><span class="p">,</span><span class="n">TEST_CONSTANT</span><span class="p">)</span>
+
+    <span class="n">q</span><span class="o">.</span><span class="n">allocate_memory</span><span class="p">(</span><span class="s1">&#39;16GB&#39;</span><span class="p">)</span>
+
+    <span class="n">q</span><span class="o">.</span><span class="n">allocate_nodes</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="n">q</span><span class="o">.</span><span class="n">push</span><span class="p">()</span>
+
+    <span class="n">q</span><span class="o">.</span><span class="n">pull</span><span class="p">()</span>
+
+    <span class="k">while</span> <span class="ow">not</span> <span class="n">q</span><span class="o">.</span><span class="n">complete</span><span class="p">:</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">1e-2</span><span class="p">)</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="n">q</span><span class="o">.</span><span class="n">result</span><span class="p">)</span>
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
     <span class="n">main</span><span class="p">()</span>
@@ -408,7 +530,7 @@
         <a href="advanced.html" class="btn btn-neutral float-right" title="Advanced Usage Tutorials" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="install.html" class="btn btn-neutral" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="getting_started.html" class="btn btn-neutral" title="Getting Started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

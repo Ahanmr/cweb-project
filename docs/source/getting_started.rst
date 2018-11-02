@@ -1,0 +1,178 @@
+Getting Started
+===============
+
+Requirements
+~~~~~~~~~~~~
+
+System Requirements:
+
+- Python 3.6 or above
+- SSH
+- Ubuntu or OSX
+
+Python Library Requirements:
+- dill 
+- tqdm
+- importlib
+- pickle
+
+`Optional: Set up conda environment`
+------------------------------------
+
+To keep your libraries across your system clean and unmodified from this isntallation, it is highly recommend that you create a conda environment.
+
+Create environment:
+
+>>> conda create -n <ENV_NAME> python=3
+
+Access environment:
+
+>>> source activate <ENV_NAME>
+
+
+Installation
+############
+
+Install with Pip
+----------------
+
+Pip is the package management system for Python, this is the recommend installation method.
+
+>>> pip install devcloud
+
+Install with Conda
+------------------
+
+Conda is another package management system, but also includes environment control and is the preferred method for when dealing with conda environments.
+
+>>> conda install devcloud
+
+Install from Source
+-------------------
+
+>>> git clone https://github.com/gndctrl2mjrtm/cweb-project.git
+
+>>> cd cweb-project
+
+>>> pip install -r requirements.txt
+
+>>> pip install -e .
+
+
+Install Requirements
+~~~~~~~~~~~~~~~~~~~~
+
+If building from source, navigate to the cloned directory:
+
+>>> cd devcloud
+
+Use pip to install all of the requirements:
+
+>>> pip install -r requirements
+
+
+Setup SSH
+#########
+
+The library communicates with a remote cluster through Secure Shell Protocol (SSH). Since SSH does not work on Windows except through Putty, DevCloud for Python does not currently support Windows.
+
+Install SSH
+-----------
+
+If already installed, continue to the next section about creating the user ssh config file.
+
+Ubuntu
+++++++
+
+SSH is not automatically installed and needs to be installed:
+
+>>> sudo apt-get install openssh-server
+
+Check to see if ssh has been installed correctly:
+
+>>> sudo service ssh status
+
+If you need to edit the ssh configuration file, it can be found with:
+
+>>> sudo nano /etc/ssh/sshd_config
+
+Save changes and reload SSH:
+
+>>> sudo service ssh restart
+
+OSX
++++
+
+SSH is automatically included in modern OSX devices, check to see if it's installed correctly with:
+
+>>> ssh
+usage: ssh [-1246AaCfGgKkMNnqsTtVvXxYy] [-b bind_address] [-c cipher_spec]
+           [-D [bind_address:]port] [-E log_file] [-e escape_char]
+           [-F configfile] [-I pkcs11] [-i identity_file]
+           [-J [user@]host[:port]] [-L address] [-l login_name] [-m mac_spec]
+           [-O ctl_cmd] [-o option] [-p port] [-Q query_option] [-R address]
+           [-S ctl_path] [-W host:port] [-w local_tun[:remote_tun]]
+           [user@]hostname [command]
+
+
+Set Login
+---------
+
+After setting up your user account with the DevCloud, the introduction email should have contained a SSH key file and your login keyword.
+
+Your access key format should look like this fake generated access key:
+
+>>> cat colfax-access-key-12345
+-----BEGIN RSA PRIVATE KEY-----
+b6j0fePvbgsFkshc3S9XsgYSSbGxZWBKTMGOX22xrJBWk2FrEgdHdhGRutNd7ODX
+eH6T963rAuUCxAdLGxjEZSPG73IdZuJLCRvlo04WunOBsFBM9SjYajxNCCtVwh4C
+BSa6w9UpxlCqlHaVxgBSKKp3ISm2qkTjrd10ZLk2a3xoSYiUIsgfiC91OMsVOvVz
+gKyYpXyoQy6oQrvpGzg2ZY6mHPy3nW0OdXGDmDwUsp3n2p31gMk8Ahe5NPlau5Zq
+TIPTcUl63Jn5V+umFAGWogDjCwtZhnoIJjCWHA52XPRV83i4c8DmBphwwf3kEIL0
+3ZoNvfDhzuZPzowsV0PckdzxWbhznlmM1awgSrJmzGgwcB4xXCisC7NMTgJlLRaR
+zkFibPSjHbEOumar4UzhKHwFOz74RONR5VPmvb1vHzvLiMDKZKyHeHIUYZrfkoBC
+qet9sc7nR1vGoVaf62WWXRbxTnpCLd3hPu28LG6ZVPwTjXpDDlkmnZejgjNiVzSU
+XySas0n2FEaQksMUHWn47q26L+TNgnToaepO5HxDCalknC0mvLIOmx49nmImzSH6
+Sku2xXkRtkXoxugJcT2kOc073JCPmTblJJe8SuK9i1b5uXy+EGzYZ1vkmRy0mBaJ
+zidDh9F5m1g75E785038hzbdAt5SE2brt7LPMMDyEd59CEsOOFdHzTZjN9Ado9lx
+TWIRQDsWgmX5mGwm3qvG7GJ1Zvon74XexHdj3JSURxJSGeoRGA0OmMdVBrG4xPPr
+EmQ6Bqn6qKeZHa5refQ6DCvYqkqDQZbrWovgc2l9fJ3mLP0kWoOpXTskU0oLRtmc
+Fpeza6F6xDX7zzQPXqfuFZi0a6h8VkIP1sw+xUzjs811j73308Axphe8bqj7qLNB
+hvpmNA0JD4RKEw25fFGS6nLnbnsAQ74Eqno3byt5Zd5O5TNW5QobrOHOS8H9aIUM
+IkVk37oD19fEqKwOmgtkSL0Bl1nYHRzCIqrfIoSib4pgm4QbQzpdGUXaYivuR5h4
+VbjlZNFM2WE+DlO6OJoTqyoXEQzBU8TFWFzKLImiGhkUejla9Nv0gTGwy697jugs
+DIApGv7b3xHTPANKVG2LhOqu0xnhT99aIcQGbTWyJxSOP2mpBNnSHNvLe90nbsyW
+IkvRjysUjOg3jZbyHwHsHekjXEIT7MHSPi7jqiSWnTFbWgBZhq77hn8DbIgIuByF
+t2yQG0V718ffMvEytMtwmsvfpJY3EOmWspp7FFZ7TuxhZmytZwmCoJ4gBhhJ4Jx5
+tcIxjrTbXy3kodSBIcMdQGhEvZT9KEZKW3LNwKFaSM11njSahjSUvrOOtzJc57yX
+maGHzdVEufhJs0eiYe6D9cn7WGhMMJk1ugzuoNSpo2m4btDb+U1oZqY7am03wMeT
+6bAyRToDzlTsGUQRwbgwa4rxBrCcIwjhsvPYPjonpYhPMUKvS9B5sXLpZ49dkVa5
+I6vE5Fu92dfKSF5QC512vkKoXISWhhIJoYC7dScfuMoc2lMbvUDvQKWFgcRZK75j
+Wgubgag38911b910uiGbliubgar&+2t29762lbaglgawrliu78bb==
+-----END RSA PRIVATE KEY-----
+
+The last five numbers in your access key is your user id, so do not rename this file. Also note that the generated ssh config file points to this file, so put this in a secure permanent location before you run the config generator script.
+
+Navigate to the automated script 
+
+>>> cd devcloud/
+
+Run the script with the path of your access key:
+
+>>> python setup_ssh_config.py --ssh_key=colfax-access-key-12345 --keyword=<keyword>
+
+A new config file will be in your ~/.ssh directory which will contain how ssh will log into the DevCloud.
+
+This file should look like:
+
+>>> cat ~/.ssh/config
+Host <login_keyword>
+	User u12345
+	IdentityFile <PATH>/<host>-access-key-12345
+	ProxyCommand ssh -T -i <PATH>/<host>-access-key-14092 guest@<cluster-<URL>
+
+Common Errors:
+--------------
+
+1. `SSH won't connect` This is an error with the SSH key and config settings, please check the config file and key file path.
+

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Cluster Web Documentation &mdash; clusterweb 0.0.1 documentation</title>
+  <title>ClusterWeb Documentation &mdash; clusterweb 0.0.1 documentation</title>
   
 
   
@@ -29,7 +29,7 @@
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Why to Use CWeb" href="why.html" /> 
+    <link rel="next" title="Why Use ClusterWeb" href="why.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -80,9 +80,10 @@
             
               <p class="caption"><span class="caption-text">About ClusterWeb</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="why.html">Why to Use CWeb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="why.html">Why Use ClusterWeb</a></li>
 <li class="toctree-l1"><a class="reference internal" href="about.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Developer Resources</span></p>
 <ul>
@@ -149,7 +150,7 @@
     
       <li><a href="#">Docs</a> &raquo;</li>
         
-      <li>Cluster Web Documentation</li>
+      <li>ClusterWeb Documentation</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -168,13 +169,13 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="cluster-web-documentation">
-<h1>Cluster Web Documentation<a class="headerlink" href="#cluster-web-documentation" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="clusterweb-documentation">
+<h1>ClusterWeb Documentation<a class="headerlink" href="#clusterweb-documentation" title="Permalink to this headline">¶</a></h1>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">ClusterWeb is currently in Beta, only the PBS API is available</p>
 </div>
-<p>Cluster Web is a Python library for creating wireless clusters of any devices that use SSH. This allows users to send jobs across a network of different kinds of devices. An example is a system that is made up of a laptop, CPU cluster, and a GPU workstation. Different jobs can be sent to each device all from the laptop and the results sent back to the laptop asynchronously.</p>
+<p>Cluster Web is a Python library for creating wireless compute clusters of any devices that use SSH.</p>
 <div class="section" id="compatiable-devices">
 <h2>Compatiable Devices<a class="headerlink" href="#compatiable-devices" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
@@ -198,7 +199,7 @@
 </div>
 <div class="section" id="basic-usage">
 <h3>Basic Usage:<a class="headerlink" href="#basic-usage" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cweb.pbs</span> <span class="kn">import</span> <span class="n">qsub</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">clusterweb.pbs.qsub</span> <span class="kn">import</span> <span class="n">Qsub</span>
 <span class="kn">import</span> <span class="nn">time</span>
 
 <span class="k">def</span> <span class="nf">job</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
@@ -207,19 +208,11 @@
       <span class="n">a</span><span class="p">,</span><span class="n">b</span> <span class="o">=</span> <span class="n">b</span><span class="p">,</span><span class="n">a</span><span class="o">+</span><span class="n">b</span>
    <span class="k">return</span> <span class="n">a</span>
 
-<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-    <span class="n">q</span> <span class="o">=</span> <span class="n">qsub</span><span class="o">.</span><span class="n">Qsub</span><span class="p">(</span><span class="n">job</span><span class="p">,</span><span class="mf">1e5</span><span class="p">)</span>
-    <span class="n">q</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s1">&#39;192.168.1.42&#39;</span><span class="p">)</span>
-    <span class="n">q</span><span class="o">.</span><span class="n">push</span><span class="p">()</span>
-    <span class="n">q</span><span class="o">.</span><span class="n">pull</span><span class="p">()</span>
+<span class="n">q</span> <span class="o">=</span> <span class="n">Qsub</span><span class="p">(</span><span class="n">job</span><span class="p">,</span><span class="mf">1e5</span><span class="p">)</span>
+<span class="n">q</span><span class="o">.</span><span class="n">push</span><span class="p">()</span>
+<span class="n">q</span><span class="o">.</span><span class="n">pull</span><span class="p">(</span><span class="n">thread</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
 
-    <span class="k">while</span> <span class="ow">not</span> <span class="n">q</span><span class="o">.</span><span class="n">complete</span><span class="p">:</span>
-        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-
-    <span class="k">print</span><span class="p">(</span><span class="n">q</span><span class="o">.</span><span class="n">result</span><span class="p">)</span>
-
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-   <span class="n">main</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="n">q</span><span class="o">.</span><span class="n">result</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>See more examples: <a class="reference internal" href="beginner.html#beginner-usage-tutorials"><span class="std std-ref">Beginner Usage Tutorials</span></a></p>
@@ -231,31 +224,76 @@
 <div class="toctree-wrapper compound">
 <p class="caption"><span class="caption-text">About ClusterWeb</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="why.html">Why to Use CWeb</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="why.html#faster-development-time">Faster Development Time</a></li>
-<li class="toctree-l2"><a class="reference internal" href="why.html#multiple-types-of-devices">Multiple Types of Devices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="why.html">Why Use ClusterWeb</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="why.html#greater-functionality">Greater Functionality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="why.html#more-cluster-security">More Cluster Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="why.html#faster-development-time">Faster Development Time</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="why.html#previous-development-process">Previous Development Process</a></li>
+<li class="toctree-l3"><a class="reference internal" href="why.html#new-development-process">New Development Process</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="why.html#supports-multiple-types-of-devices">Supports Multiple Types of Devices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="why.html#complete-control-over-distributed-systems">Complete Control Over Distributed Systems</a></li>
-<li class="toctree-l2"><a class="reference internal" href="why.html#easy-to-create-complex-systems">Easy to Create Complex Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="why.html#makes-it-easy-to-create-complex-systems">Makes It Easy to Create Complex Systems</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="about.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#requirements">Requirements</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="getting_started.html#optional-set-up-conda-environment"><cite>Optional: Set up conda environment</cite></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="getting_started.html#installation">Installation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="getting_started.html#install-with-pip">Install with Pip</a></li>
+<li class="toctree-l3"><a class="reference internal" href="getting_started.html#install-with-conda">Install with Conda</a></li>
+<li class="toctree-l3"><a class="reference internal" href="getting_started.html#install-from-source">Install from Source</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#install-requirements">Install Requirements</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="getting_started.html#install-ssh">Install SSH</a></li>
+<li class="toctree-l3"><a class="reference internal" href="getting_started.html#set-login">Set Login</a></li>
+<li class="toctree-l3"><a class="reference internal" href="getting_started.html#common-errors">Common Errors:</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </div>
 <div class="toctree-wrapper compound">
 <p class="caption"><span class="caption-text">Developer Resources</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="beginner.html">Beginner Usage Tutorials</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="beginner.html#submitting-a-single-job-with-qsub">Submitting a Single Job with Qsub</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beginner.html#submitting-a-single-job-with-qsub">Submitting a Single Job with Qsub</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="beginner.html#to-run-within-the-main-thread">To run within the main thread:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="beginner.html#to-run-asynchronous-with-the-main-thread">To run asynchronous with the main thread:</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="beginner.html#running-multiple-jobs-on-multiple-nodes">Running Multiple Jobs on Multiple Nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beginner.html#compare-with-local-machine">Compare with Local Machine</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beginner.html#resource-allocation">Resource Allocation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="beginner.html#using-qsession-to-run-multiple-jobs-on-one-node">Using QSession to Run Multiple Jobs On One Node</a></li>
 <li class="toctree-l2"><a class="reference internal" href="beginner.html#using-to-create-a-qsession-from-qsub-jobs">Using * to Create a QSession from Qsub Jobs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="beginner.html#deleting-a-job-while-running-with-a-timer">Deleting a Job While Running With a Timer</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced Usage Tutorials</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="advanced.html#train-a-keras-cnn-remotely-and-retrieve-the-weights">Train a Keras CNN Remotely and Retrieve the Weights</a></li>
-<li class="toctree-l2"><a class="reference internal" href="advanced.html#run-inference-on-an-image-from-a-webcam-remotely">Run Inference on an Image from a Webcam Remotely</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced.html#portable-batch-system-examples">Portable Batch System Examples:</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="advanced.html#connect-to-multiple-clusters">Connect to Multiple Clusters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="advanced.html#compare-muliple-clusters-performance">Compare Muliple Clusters’ Performance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="advanced.html#train-a-keras-cnn-remotely-and-retrieve-the-weights">Train a Keras CNN Remotely and Retrieve the Weights</a></li>
+<li class="toctree-l3"><a class="reference internal" href="advanced.html#run-inference-on-an-image-from-a-webcam-remotely">Run Inference on an Image from a Webcam Remotely</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="advanced.html#secure-shell-system-examples">Secure Shell System Examples:</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="advanced.html#using-basic-locks">Using Basic Locks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="advanced.html#using-semaphores">Using Semaphores</a></li>
+<li class="toctree-l3"><a class="reference internal" href="advanced.html#setup-a-tcp-server-on-remote-device">Setup a TCP Server on Remote Device</a></li>
+<li class="toctree-l3"><a class="reference internal" href="advanced.html#setup-an-osc-server-on-a-remote-device">Setup an OSC Server on a Remote Device</a></li>
+<li class="toctree-l3"><a class="reference internal" href="advanced.html#create-a-chat-session-with-multiple-user-devices">Create a Chat Session with Multiple User Devices</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="advanced.html#conclusion">Conclusion</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="cpu.html">CPU Optimization Techniques</a></li>
@@ -290,7 +328,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="why.html" class="btn btn-neutral float-right" title="Why to Use CWeb" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="why.html" class="btn btn-neutral float-right" title="Why Use ClusterWeb" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
     </div>

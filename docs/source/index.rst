@@ -1,9 +1,9 @@
-Cluster Web Documentation
+ClusterWeb Documentation
 *************************
 
 .. note:: ClusterWeb is currently in Beta, only the PBS API is available
 
-Cluster Web is a Python library for creating wireless clusters of any devices that use SSH. This allows users to send jobs across a network of different kinds of devices. An example is a system that is made up of a laptop, CPU cluster, and a GPU workstation. Different jobs can be sent to each device all from the laptop and the results sent back to the laptop asynchronously.
+Cluster Web is a Python library for creating compute clusters out of any devices that use SSH. 
 
 Compatiable Devices
 ~~~~~~~~~~~~~~~~~~~
@@ -20,7 +20,6 @@ Requirements
 - Python 3.6 or above
 - SSH
 - Linux or OSX
-- dill 
 - pickle
 - cloudpickle (host machine)
 
@@ -30,7 +29,7 @@ Basic Usage:
 
 .. code-block:: python
 
-   from cweb.pbs import qsub
+   from clusterweb.pbs.qsub import Qsub
    import time
 
    def job(arg):
@@ -39,24 +38,16 @@ Basic Usage:
          a,b = b,a+b
       return a 
 
-   def main():
-       q = qsub.Qsub(job,1e5)
-       q.connect('192.168.1.42')
-       q.push()
-       q.pull()
+   q = Qsub(job,1e5)
+   q.push()
+   q.pull(thread=False)
 
-       while not q.complete:
-           time.sleep(1)
-
-       print(q.result)
-
-   if __name__ == "__main__":
-      main()
+   print(q.result)
 
 See more examples: :ref:`Beginner Usage Tutorials`
 
-CWeb Documentation
-******************
+ClusterWeb Documentation
+************************
 
 .. toctree::
    :maxdepth: 6
@@ -67,6 +58,8 @@ CWeb Documentation
    about
 
    install
+
+   getting_started
 
 .. toctree::
    :maxdepth: 6

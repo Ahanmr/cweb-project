@@ -81,16 +81,31 @@
             
               <p class="caption"><span class="caption-text">About ClusterWeb</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="why.html">Why to Use CWeb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="why.html">Why Use ClusterWeb</a></li>
 <li class="toctree-l1"><a class="reference internal" href="about.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Developer Resources</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="beginner.html">Beginner Usage Tutorials</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Advanced Usage Tutorials</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#train-a-keras-cnn-remotely-and-retrieve-the-weights">Train a Keras CNN Remotely and Retrieve the Weights</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#run-inference-on-an-image-from-a-webcam-remotely">Run Inference on an Image from a Webcam Remotely</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#portable-batch-system-examples">Portable Batch System Examples:</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#connect-to-multiple-clusters">Connect to Multiple Clusters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#compare-muliple-clusters-performance">Compare Muliple Clusters’ Performance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#train-a-keras-cnn-remotely-and-retrieve-the-weights">Train a Keras CNN Remotely and Retrieve the Weights</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#run-inference-on-an-image-from-a-webcam-remotely">Run Inference on an Image from a Webcam Remotely</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#secure-shell-system-examples">Secure Shell System Examples:</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#using-basic-locks">Using Basic Locks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-semaphores">Using Semaphores</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setup-a-tcp-server-on-remote-device">Setup a TCP Server on Remote Device</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setup-an-osc-server-on-a-remote-device">Setup an OSC Server on a Remote Device</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create-a-chat-session-with-multiple-user-devices">Create a Chat Session with Multiple User Devices</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#conclusion">Conclusion</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="cpu.html">CPU Optimization Techniques</a></li>
@@ -175,8 +190,42 @@
             
   <div class="section" id="advanced-usage-tutorials">
 <h1>Advanced Usage Tutorials<a class="headerlink" href="#advanced-usage-tutorials" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="portable-batch-system-examples">
+<h2>Portable Batch System Examples:<a class="headerlink" href="#portable-batch-system-examples" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="connect-to-multiple-clusters">
+<h3>Connect to Multiple Clusters<a class="headerlink" href="#connect-to-multiple-clusters" title="Permalink to this headline">¶</a></h3>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Under Construction: Coming Soon</p>
+</div>
+</div>
+<div class="section" id="compare-muliple-clusters-performance">
+<h3>Compare Muliple Clusters’ Performance<a class="headerlink" href="#compare-muliple-clusters-performance" title="Permalink to this headline">¶</a></h3>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Under Construction: Coming Soon</p>
+</div>
+</div>
 <div class="section" id="train-a-keras-cnn-remotely-and-retrieve-the-weights">
-<h2>Train a Keras CNN Remotely and Retrieve the Weights<a class="headerlink" href="#train-a-keras-cnn-remotely-and-retrieve-the-weights" title="Permalink to this headline">¶</a></h2>
+<h3>Train a Keras CNN Remotely and Retrieve the Weights<a class="headerlink" href="#train-a-keras-cnn-remotely-and-retrieve-the-weights" title="Permalink to this headline">¶</a></h3>
+<p>Neural Networks are costly to compute but also may require much
+fine tuning. Here, a model that is developed locally is sent
+to the cluster without having to manually transfer any model
+files.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The weights are sent back since sending back a matrix of weights
+is much simpler for the serialization process than the unreliable process
+of serializing entire models. This also allows for a smaller data transfer
+which speeds up the process as it is the most costly component.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The keras library is installed both separate from the main
+TensorFlow library as well as being included in the TensorFlow
+package. For your cluster, you may need to change the import
+commands to include your version of Keras.</p>
+</div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorflow.keras</span> <span class="kn">as</span> <span class="nn">keras</span>
 <span class="kn">from</span> <span class="nn">tensorflow.keras.datasets</span> <span class="kn">import</span> <span class="n">mnist</span>
 <span class="kn">from</span> <span class="nn">tensorflow.keras.models</span> <span class="kn">import</span> <span class="n">Sequential</span>
@@ -276,8 +325,12 @@
 </div>
 </div>
 <div class="section" id="run-inference-on-an-image-from-a-webcam-remotely">
-<h2>Run Inference on an Image from a Webcam Remotely<a class="headerlink" href="#run-inference-on-an-image-from-a-webcam-remotely" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">keras.applications</span> <span class="kn">import</span> <span class="n">vgg16</span><span class="p">,</span> <span class="n">inception_v3</span><span class="p">,</span> <span class="n">resnet50</span><span class="p">,</span> <span class="n">mobilenet</span>
+<h3>Run Inference on an Image from a Webcam Remotely<a class="headerlink" href="#run-inference-on-an-image-from-a-webcam-remotely" title="Permalink to this headline">¶</a></h3>
+<p>The importance of remote compute to IoT applications needs no introduction.
+In this example, OpneCV is used to take a picture while a pretrained network
+runs inference on it on a remote nod. This is a simple example that is not
+efficient as each instance must load the model.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">keras.applications</span> <span class="kn">import</span> <span class="n">vgg16</span>
 <span class="kn">from</span> <span class="nn">keras.preprocessing</span> <span class="kn">import</span> <span class="n">image</span>
 <span class="kn">from</span> <span class="nn">keras.applications.resnet50</span> <span class="kn">import</span> <span class="n">preprocess_input</span><span class="p">,</span><span class="n">decode_predictions</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
@@ -329,6 +382,48 @@
     <span class="n">main</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+</div>
+<div class="section" id="secure-shell-system-examples">
+<h2>Secure Shell System Examples:<a class="headerlink" href="#secure-shell-system-examples" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="using-basic-locks">
+<h3>Using Basic Locks<a class="headerlink" href="#using-basic-locks" title="Permalink to this headline">¶</a></h3>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Under Construction: Coming Soon</p>
+</div>
+</div>
+<div class="section" id="using-semaphores">
+<h3>Using Semaphores<a class="headerlink" href="#using-semaphores" title="Permalink to this headline">¶</a></h3>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Under Construction: Coming Soon</p>
+</div>
+</div>
+<div class="section" id="setup-a-tcp-server-on-remote-device">
+<h3>Setup a TCP Server on Remote Device<a class="headerlink" href="#setup-a-tcp-server-on-remote-device" title="Permalink to this headline">¶</a></h3>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Under Construction: Coming Soon</p>
+</div>
+</div>
+<div class="section" id="setup-an-osc-server-on-a-remote-device">
+<h3>Setup an OSC Server on a Remote Device<a class="headerlink" href="#setup-an-osc-server-on-a-remote-device" title="Permalink to this headline">¶</a></h3>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Under Construction: Coming Soon</p>
+</div>
+</div>
+<div class="section" id="create-a-chat-session-with-multiple-user-devices">
+<h3>Create a Chat Session with Multiple User Devices<a class="headerlink" href="#create-a-chat-session-with-multiple-user-devices" title="Permalink to this headline">¶</a></h3>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Under Construction: Coming Soon</p>
+</div>
+</div>
+</div>
+<div class="section" id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 
