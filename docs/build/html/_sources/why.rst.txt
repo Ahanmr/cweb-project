@@ -42,10 +42,12 @@ ClusterWeb significantly reduces the amount of work required to develop solution
 Supports Multiple Types of Devices
 ##################################
 
+ClusterWeb can be used to create compute systems out of devices that use SSH, one of the most popular protocols used on Linux and OSX devices. This allows users to create systems made of the following example devices:
 
+- Xeon CPU Nodes
+- Apple Desktops 
+- GPU Gaming Station
+- Google Pixel phones
+- HP Laptops with Linux
+- Raspberry Pi 3 Model B+
 
-Complete Control Over Distributed Systems
-#########################################
-
-Makes It Easy to Create Complex Systems
-#######################################
