@@ -928,8 +928,11 @@ class Qsub():
 
         if finished:
             self.ssh.recieve_file(result_path,result_path)
-            with open(result_path,'rb') as f:
-                self.result = pickle.loads(f.read())
+            if os.path.getsize(result_path) > 1:
+                with open(result_path,'rb') as f:
+                    self.result = pickle.loads(f.read())
+            else:
+                self.result = 'Blank result file: {}'.format(result_path)
 
         elif (not finished) and self.timer:
             self.result = 'Timer exceeded'
