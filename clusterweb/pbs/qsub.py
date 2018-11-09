@@ -876,8 +876,11 @@ class Qsub():
 
         self.ssh.send_folder(self.temp_dir,self.temp_dir)
 
+
         [self.job_id] = self.ssh.send_command('qsub {} {}'.format(self.flags,
             os.path.join(self.temp_dir,'qscript')))
+        
+        # print(self.ssh.send_command('ls'))
 
         if self.timer == True:
             self.start_time = time.time()

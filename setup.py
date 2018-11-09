@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(name='clusterweb',
-      version='0.0.3',
+      version='0.0.0.2',
       description='ClusterWeb, a distributed system API for SSH and PBS systems',
       long_description=open('README.md').read(),
       url='https://github.com/gndctrl2mjrtm/cweb-project',

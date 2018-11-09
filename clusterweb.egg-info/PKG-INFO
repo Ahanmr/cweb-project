@@ -1,6 +1,6 @@
 Metadata-Version: 1.0
 Name: clusterweb
-Version: 0.0.3
+Version: 0.0.0.2
 Summary: ClusterWeb, a distributed system API for SSH and PBS systems
 Home-page: https://github.com/gndctrl2mjrtm/cweb-project
 Author: Stephen Offer
