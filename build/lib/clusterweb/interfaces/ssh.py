@@ -30,6 +30,49 @@ class SSH():
 
     #--------------------------------------------------------------------------
 
+    @classmethod
+    def change_default(self,address,verify=True):
+        if verify:
+            ssh_config_path = os.path.join(os.path.expanduser('~'),
+                '.ssh/config')
+
+            if not os.path.exists(ssh_config_path):
+                raise FileNotFoundError("SSH Config file not found: {}".format(
+                    ssh_config_path))
+
+            valid = False
+            with open(ssh_config_path,'r') as f:
+                ssh_config = f.read()
+
+                for n in ssh_config.split('\n'):
+                    n = n.split(' ')
+
+                    if n[0] == 'Host':
+                        if n[1] == address:
+                            valid = True
+            if not valid:
+                raise UserWarning("{} not found in ssh config: {}".format(
+                    address,ssh_config_path))
+
+        config_file = os.path.join(os.path.dirname(os.path.dirname(
+            os.path.abspath(__file__))),'pbs/username.txt')
+
+        if os.path.exists(config_file):
+            with open(config_file,'r') as f:
+                address_book = f.read()
+        else:
+            address_book = ''
+
+        with open(config_file,'w') as f:
+            if address_book != '':
+                address_book = '\n'.join([n for n in address_book.split('\n') 
+                    if n != address])
+
+            f.write('{}\n{}'.format(address,address_book))
+
+
+    #--------------------------------------------------------------------------
+
     def ssh_exists(self):
         """
         A method's docstring with parameters and return value.
@@ -186,83 +229,4 @@ class SSH():
                stdout=subprocess.PIPE,
                stderr=subprocess.PIPE)
         result = scp.stdout.readlines()
-"""
-===============================================================================
-
-===============================================================================
-"""
-
-def login(ssh_name):
-    """
-    A method's docstring with parameters and return value.
-    
-    Use all the cool Sphinx capabilities in this description, e.g. to give
-    usage examples ...
-    
-    :Example:
-
-    >>> login('colfax')        
-    
-    :param ssh_name: The keyword used to access a cluster
-    :type ssh_name: string
-    :raises: FileNotFoundError, UserWarning, Exception
-    """
-
-    dcf = DevCloudFunctions()
-
-    if isinstance(ssh_name,str):
-        if not ' ' in ssh_name:
-            ssh_config_path = os.path.join(os.path.expanduser('~'),'.ssh/config')
-            if not os.path.exists(ssh_config_path):
-                raise FileNotFoundError("SSH Config file not found: {}".format(
-                    ssh_config_path))
-
-            valid = False
-            with open(ssh_config_path,'r') as f:
-                ssh_config = f.read()
-                for n in ssh_config.split('\n'):
-                    n = n.split(' ')
-                    if n[0] == 'Host':
-                        print(n[1])
-                        if n[1] == ssh_name:
-                            valid = True
-
-            if not valid:
-                raise UserWarning("{} not found in ssh config: {}".format(
-                    ssh_name,ssh_config_path))
-
-
-            if not dcf.can_access_devcloud(ssh_name):
-                raise Exception("Cannot connect to DevCloud: {}".format(
-                        ssh_name))
-
-            with open(os.path.join(os.path.dirname(
-                os.path.abspath(__file__)),'username.txt'),'w') as f:
-                f.write(ssh_name)
-
-"""
-===============================================================================
-
-===============================================================================
-"""
-
-def test():
-    ssh = SSH('colfax',6006)
-    ssh.test()
-
-
-if __name__ == "__main__":
-    test()
-
-
-
-
-
-
-
-
-
-
-
-
 

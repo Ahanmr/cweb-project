@@ -27,7 +27,6 @@ MAX_NODES = 5
 # Minimum number of nodes
 MIN_NODES = 1
 
-
 MIN_CORES = 1
 
 # Maximum memory that can be allocated to a node
@@ -37,6 +36,19 @@ MAX_MEMORY = 96000
 MIN_MEMORY = 100
 
 # Get ssh username
-with open(os.path.join(os.path.dirname(
-	os.path.abspath(__file__)),'username.txt'),'r') as f:
-	USERNAME = f.read()
+config_file = os.path.join(os.path.dirname(
+	os.path.abspath(__file__)),'username.txt')
+
+if os.path.exists(config_file):
+	with open(config_file,'r') as f:
+		address_book = f.read()
+		address_book = address_book.split('\n')
+		if len(address_book) > 0:
+			USERNAME = address_book[0]
+else:
+	with open(config_file,'w') as f:
+		f.write('')
+	USERNAME = 'localhost'
+
+
+

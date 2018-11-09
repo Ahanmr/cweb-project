@@ -8,7 +8,6 @@ from __future__ import division
 import collections
 import functools
 import time
-import tqdm
 import sys
 import os
 
