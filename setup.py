@@ -9,4 +9,9 @@ setup(name='clusterweb',
       author_email='offercstephen@example.com',
       license='MIT',
       packages=find_packages(),
-      zip_safe=False)
+      zip_safe=False,
+      entry_points={
+      	'console_scripts':[
+      		'c-web = clusterweb.local.clusterweb:main'
+      	]
+      })

@@ -1,0 +1,3 @@
+[console_scripts]
+c-web = clusterweb.local.clusterweb:main
+

@@ -9,7 +9,6 @@
 from __future__ import print_function
 from __future__ import division
 import numpy as np
-import cloudpickle
 import subprocess
 import threading
 import datetime
@@ -21,6 +20,7 @@ import sys
 import os
 import re
 
+import clusterweb.cloudpickle as cloudpickle
 from clusterweb.interfaces import ssh
 from clusterweb.pbs import scripts
 from clusterweb.pbs import config
