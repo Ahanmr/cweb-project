@@ -4,7 +4,7 @@
 
 ClusterWeb is a Python library for creating compute clusters out of any devices that use SSH. 
 
-#### Documentation: <https://cluster-web.readthedocs.io/en/latest/>
+#### Documentation: https://cweb-project.readthedocs.io/en/latest/
 
 ### Compatiable Devices
 
