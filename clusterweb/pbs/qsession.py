@@ -20,7 +20,8 @@ import sys
 import os
 import re
 
-import clusterweb.cloudpickle as cloudpickle
+import cloudpickle
+# import clusterweb.cloudpickle as cloudpickle
 from clusterweb.interfaces import ssh
 from clusterweb.pbs import scripts
 from clusterweb.pbs import config

@@ -17,7 +17,8 @@ import sys
 import os
 import re
 
-import clusterweb.cloudpickle as cloudpickle
+import cloudpickle
+# import clusterweb.cloudpickle as cloudpickle
 from clusterweb.interfaces import ssh
 from clusterweb.pbs import scripts
 from clusterweb.pbs import config
@@ -874,11 +875,10 @@ class Qsub():
         with open(os.path.join(self.temp_dir,'qscript'),'w') as f:
             f.write(self.generate_qsub_script())
 
-        self.ssh.send_folder(self.temp_dir,self.temp_dir)
+        print(self.ssh.send_folder(self.temp_dir,self.temp_dir))
 
-
-        [self.job_id] = self.ssh.send_command('qsub {} {}'.format(self.flags,
-            os.path.join(self.temp_dir,'qscript')))
+        [self.job_id] = self.ssh.send_command('qsub {} {}'.format(
+            self.flags,os.path.join(self.temp_dir,'qscript')))
         
         # print(self.ssh.send_command('ls'))
 

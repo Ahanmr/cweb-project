@@ -1,62 +1,3 @@
-qscript = """
-### Script for setting qsub configuration and calling Python script
-### Set number of nodes: Set number of cores
-#PBS -l nodes={}:ppn={}
-
-### Set walltime
-#PBS -l walltime={}
-
-### Set amount of memory
-#PBS -l mem={}
-
-### Set CPU time ([[h:]m:]s).
-#PBS -l cput={}
-
-{}
-"""
-
-#------------------------------------------------------------------------------
-
-pyscript = """
-import subprocess
-
-PYTHON_VERSION = {}
-
-script = '''
-import pickle
-import shutil
-import sys
-import os
-
-temp_dir = '{}'
-
-try:
-    with open(os.path.join(temp_dir,'fnc.pkl'),'rb') as f:
-        fnc = pickle.loads(f.read())
-
-    with open(os.path.join(temp_dir,'args.pkl'),'rb') as f:
-        args = pickle.loads(f.read())
-        
-    output = fnc(args)
-except Exception as e:
-    exc_type, exc_obj, exc_tb = sys.exc_info()
-    fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-    str(exc_type)+str(fname)+str(exc_tb.tb_lineno)
-    output = str(e)+str(exc_type)+str(fname)+str(exc_tb.tb_lineno)
-
-with open(os.path.join(temp_dir,'result.pkl'),'wb') as f:
-    f.write(pickle.dumps(output))
-'''
-if PYTHON_VERSION == 2:
-    subprocess.call(["python2","-c",script])
-else:
-    subprocess.call(["python3","-c",script])
-
-"""
-
-#------------------------------------------------------------------------------
-
-session_pyscript = """
 #-*- encoding: utf-8 -*-
 import subprocess
 import threading
@@ -128,4 +69,3 @@ if PYTHON_VERSION == 2:
     subprocess.call(["python2","-c",script])
 else:
     subprocess.call(["python3","-c",script])
-"""

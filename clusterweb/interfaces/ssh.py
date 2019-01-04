@@ -168,13 +168,13 @@ class SSH():
             result = None
 
         else:
-
             ssh_output = subprocess.Popen(["ssh","%s"%self.host,command],
                    shell=False,
                    stdout=subprocess.PIPE,
                    stderr=subprocess.PIPE)
 
             result = ssh_output.stdout.readlines()
+
             for i,n in enumerate(result):
                 result[i] = n.decode()[:-1]
 
