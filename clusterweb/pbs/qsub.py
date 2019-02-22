@@ -41,9 +41,10 @@ class Qsub():
             set_memory=config.DEFAULT_MEMORY,
             set_cpu=config.DEFAULT_CPU,
             wait_time=config.DEFAULT_WAIT_TIME,
+            username=config.USERNAME,
             verbose=0):
 
-        self.username = config.USERNAME
+        self.username = username
         self.ssh = ssh.SSH(self.username)
 
         self.qdel = qdel.QDel()
@@ -841,7 +842,48 @@ class Qsub():
 
     #--------------------------------------------------------------------------
 
-    def push(self):
+    def send_to_queue(self,queue):
+        """
+        Send a job to a specific queue on a PBS system
+
+        :param queue: The name of the queue
+        """
+        assert isinstance(queue,str),("Invalid queue type: {}".format(
+            type(queue).__name__))
+        self.flags += ' -q {}'.format(queue)
+
+    #--------------------------------------------------------------------------
+
+    def run_command(self,command):
+        """ 
+
+        """
+        if not isinstance(command,str):
+            raise Exception("Invalid command arg type: {}".format(
+                type(command).__name__))
+
+        if 'python ' in command:
+            subprocess.call(['python',command.split(' ')[1]],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE) # FIX!!!
+            result = None
+
+        else:
+            ssh_output = subprocess.Popen([command],
+                   shell=False,
+                   stdout=subprocess.PIPE,
+                   stderr=subprocess.PIPE)
+
+            result = ssh_output.stdout.readlines()
+
+            for i,n in enumerate(result):
+                result[i] = n.decode()[:-1]
+
+        return result
+
+    #--------------------------------------------------------------------------
+
+    def push(self,remote=True):
         """Push the job to the remote cluster
 
         Serializes the function, arguments, and send the generated scripts
@@ -857,7 +899,6 @@ class Qsub():
         >>> q = Qsub(job,args)
         >>> q.push()
         """
-
         self.fnc = cloudpickle.dumps(self.target)
         self.args = pickle.dumps(self.args)
 
@@ -875,11 +916,15 @@ class Qsub():
         with open(os.path.join(self.temp_dir,'qscript'),'w') as f:
             f.write(self.generate_qsub_script())
 
-        print(self.ssh.send_folder(self.temp_dir,self.temp_dir))
+        if remote:
+            self.ssh.send_folder(self.temp_dir,self.temp_dir)
 
-        [self.job_id] = self.ssh.send_command('qsub {} {}'.format(
-            self.flags,os.path.join(self.temp_dir,'qscript')))
-        
+            [self.job_id] = self.ssh.send_command('qsub {} {}'.format(
+                self.flags,os.path.join(self.temp_dir,'qscript')))
+        else:
+            [self.job_id] = self.run_command('qsub {} {}'.format(
+                self.flags,os.path.join(self.temp_dir,'qscript')))
+
         # print(self.ssh.send_command('ls'))
 
         if self.timer == True:

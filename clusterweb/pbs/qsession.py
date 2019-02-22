@@ -15,6 +15,7 @@ import datetime
 import pickle
 import random
 import shutil
+import dill
 import time
 import sys
 import os
@@ -179,7 +180,7 @@ class QSession():
         
         Input
         """
-        pass
+        raise NotImplementedError
 
     #--------------------------------------------------------------------------
 
@@ -203,7 +204,7 @@ class QSession():
         :raises: TypeError
         """
         """Return false if both jobs are the same function else true"""
-        pass
+        raise NotImplementedError
 
     #--------------------------------------------------------------------------
 
@@ -231,7 +232,7 @@ class QSession():
         
 
         """
-        pass
+        raise NotImplementedError
 
     #--------------------------------------------------------------------------
 
@@ -255,7 +256,7 @@ class QSession():
         :raises: TypeError
         """
         """Return the item by the index key if a multitask job object"""
-        pass
+        raise NotImplementedError
 
     #--------------------------------------------------------------------------
 
@@ -283,7 +284,7 @@ class QSession():
         
 
         """
-        pass
+        raise NotImplementedError
 
 
     #--------------------------------------------------------------------------
@@ -312,7 +313,7 @@ class QSession():
         
 
         """
-        pass
+        raise NotImplementedError
 
     #--------------------------------------------------------------------------
 
@@ -340,7 +341,7 @@ class QSession():
         
 
         """
-        pass
+        raise NotImplementedError
 
     #--------------------------------------------------------------------------
 
@@ -364,7 +365,7 @@ class QSession():
         :raises: TypeError
         """
         """Return the index of the job ids if a multijob object"""
-        pass
+        raise NotImplementedError
 
 
     #--------------------------------------------------------------------------
@@ -388,7 +389,7 @@ class QSession():
         :rtype: string
         :raises: TypeError
         """
-        pass
+        raise NotImplementedError
 
     #--------------------------------------------------------------------------
 
@@ -435,7 +436,7 @@ class QSession():
         :raises: TypeError
         """
         #Exception handling here
-        return
+        raise NotImplementedError
 
     #--------------------------------------------------------------------------
 
